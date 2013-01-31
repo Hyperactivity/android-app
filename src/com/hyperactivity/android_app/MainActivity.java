@@ -2,7 +2,7 @@ package com.hyperactivity.android_app;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -23,11 +23,15 @@ public class MainActivity extends Activity {
         return true;
     }
     
-    @SuppressLint("NewApi")
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
+	/**
+	 * Triggers when an item in the menu is clicked such as "Settings" or "Help"
+	 */
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
         case R.id.menu_settings:
+        	// Settings has been clicked, check the android version to decide if to use fragmented settings or not
         	if(Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB){
         		startActivity(new Intent(this, SettingsActivity.class));
         	}else{
