@@ -7,9 +7,9 @@
     <string name="home_desc">Home</string>
     <string name="menu_help">Help</string>
     <string name="set_preferences">set_preferences</string>
-    <string name="pref_sync">set_preferences</string>
-    <string name="pref_sync_summ">set_preferences</string>
-    <string name="pref_syncConnectionType">set_preferences</string>
-    <string name="pref_syncConnectionTypes_entries">set_preferences</string>
-    <string name="pref_syncConnectionTypes_default">set_preferences</string>
+    <string name="pref_offline">Offline Mode</string>
+    <string name="pref_offline_summ">Will not work, this app is online!</string>
+    <string name="pref_colorsType">Colors</string>
+    <string name="pref_colorsType_entries">Vet inte vad denna gör</string>
+    <string name="pref_colorsType_default">1</string>
 </resources>

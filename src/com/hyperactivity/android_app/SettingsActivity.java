@@ -5,7 +5,7 @@ import android.preference.PreferenceActivity;
 
 /**
  * The loader for the menu-item "Settings" for Android versions below 3.0
- * The loader for versions 3.0 and higher is SettingsFragment
+ * The loader for versions 3.0 and higher is SettingsActivityHoneycomb together with SettingsFragment
  * @author OMMatte
  *
  */
@@ -16,6 +16,9 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
+        // Remember to add every time a new header is added to the headers xml
+        addPreferencesFromResource(R.xml.mood_colors_settings);
+        addPreferencesFromResource(R.xml.miscellaneous_settings);
+        
     }
 }

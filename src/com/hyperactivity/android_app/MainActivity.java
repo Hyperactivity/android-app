@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
         	if(Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB){
         		startActivity(new Intent(this, SettingsActivity.class));
         	}else{
-        		 getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+        		startActivity(new Intent(this, SettingsActivityHoneycomb.class));
         	}
                 return true;
         default:

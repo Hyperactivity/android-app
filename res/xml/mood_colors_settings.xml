@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="pref_colorsType"
+        android:title="@string/pref_colorsType"
+        android:dialogTitle="@string/pref_colorsType"
+        android:entries="@array/pref_colorsType_entries"
+        android:entryValues="@array/pref_colorsType_values"
+        android:defaultValue="@string/pref_colorsType_default" />
+</PreferenceScreen>

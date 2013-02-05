@@ -19,6 +19,8 @@ public class SettingsFragment extends PreferenceFragment {
 		super.onCreate(savedInstanceState);
 
 		// Load the preferences from an XML resource
-		addPreferencesFromResource(R.xml.preferences);
+		// Gets the value from the active head in the headers xml
+		int res=getActivity().getResources().getIdentifier(getArguments().getString("resource"), "xml", getActivity().getPackageName());
+	    addPreferencesFromResource(res);
 	}
 }
