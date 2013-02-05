@@ -27,4 +27,5 @@ proguard/
 *.iml
 *.ipr
 *.iws
+
 .idea/
