@@ -19,5 +19,6 @@
        android:layout_alignLeft="@+id/imageButton1"
        android:layout_below="@+id/imageButton1"
        />
+   <include layout="@layout/navigation_menu"/>
 
 </RelativeLayout>
