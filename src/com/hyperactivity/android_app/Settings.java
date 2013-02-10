@@ -39,6 +39,7 @@ public class Settings {
 		//Read all settings.
 		
 		
+		
 		loaded = true;
 	}
 	

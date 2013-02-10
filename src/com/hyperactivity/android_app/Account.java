@@ -11,7 +11,6 @@ public class Account {
 		this.id = id;
 		loaded = false;
 		profile = new Profile(id);
-		settings = new Settings(id);
 	}
 	
 	public String getUsername() {
@@ -30,20 +29,17 @@ public class Account {
 		return loaded;
 	}
 	
-	public boolean isLoaded(boolean profileIsLoaded, boolean settingsIsLoaded) {
-		return loaded && (profile.isLoaded() || (profileIsLoaded ? false : true)) && (settings.isLoaded() || (settingsIsLoaded ? false : true));
+	public boolean isLoaded(boolean profileIsLoaded) {
+		return loaded && (profile.isLoaded() || (profileIsLoaded ? false : true));
 	}
 	
-	public void load(boolean loadProfile, boolean loadSettings) {
+	public void load(boolean loadProfile) {
 		//load account data from server.
 		
 		loaded = true;
 		
 		if(loadProfile) {
 			profile.load();
-		}
-		if(loadSettings) {
-			settings.load();
 		}
 	}
 }

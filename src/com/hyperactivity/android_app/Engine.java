@@ -17,7 +17,7 @@ public class Engine extends Application{
 	private void initialize() {
 		loggedIn = false;
 		account = null;
-		settings = null;
+		settings = new Settings(this);
 		actionCount = 0;
 		timer = 0;
 	}
@@ -28,6 +28,7 @@ public class Engine extends Application{
 		initialize();
 		
 		//Read stored settings
+		settings.loadLocal();
 		
 		//See if persistent login is true in settings
 		
