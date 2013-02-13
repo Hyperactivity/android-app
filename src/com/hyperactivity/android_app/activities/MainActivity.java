@@ -31,24 +31,25 @@ public class MainActivity extends Activity {
 		isLocked = true;
 
 		final View topBar = (View) findViewById(R.id.top_bar);
-		final ImageView lockImageButton = (ImageView) findViewById(R.id.lockButton);
+		final ImageView lockImage = (ImageView) findViewById(R.id.lockButton);
 		final TextView lockTextView = (TextView) findViewById(R.id.lockText);
 
-		lockImageButton.setOnClickListener(new OnClickListener()
+		lockImage.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View arg0) {
+				System.out.println("clicked");
+
+				isLocked = !isLocked;
+				
 				if (isLocked) {
 					lockTextView.setText((String) getResources().getString(R.string.top_bar_private));
-					lockImageButton.setImageResource(R.drawable.locked);
+					lockImage.setImageResource(R.drawable.locked);
 				}
 				else {
 					lockTextView.setText((String) getResources().getString(R.string.top_bar_public));
-					lockImageButton.setImageResource(R.drawable.unlocked);
+					lockImage.setImageResource(R.drawable.unlocked);
 				}
-
-				lockImageButton.invalidate();
-				isLocked = !isLocked;
 			}
 		});
 	}

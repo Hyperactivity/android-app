@@ -15,10 +15,10 @@ public class Settings {
 	private String id;
 	private boolean loaded;
 	private ArrayList<Color> colors;
+	private boolean changed; //true if any changes have been made since last commit.
 	
 	//settings variables below
 	private boolean autoLogin;
-	private boolean changed; //true if any changes have been made since last commit.
 	
 	public Settings(Context context) {
 		this(context, "");
