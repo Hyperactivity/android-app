@@ -4,22 +4,27 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 public class Settings {
-	public static final String PREF_FILE_NAME = "settingsPrefFile";
-	
 	private Context context;
 	private String id;
 	private boolean loaded;
 	private ArrayList<Color> colors;
+	
+	//settings variables below
+	private boolean autoLogin;
+	private boolean changed; //true if any changes have been made since last commit.
 	
 	public Settings(Context context) {
 		this(context, "");
 	}
 	
 	public Settings(Context context, String id) {
+		this.context = context;
 		this.id = id;
 		loaded = false;
+		changed = false;
 		colors = new ArrayList<Color>();
 	}
 	
@@ -34,11 +39,10 @@ public class Settings {
 	public void loadLocal() {
 		loaded = false; //TODO: how does android handle synchronization? This will do for now.
 		
-		SharedPreferences prefs = context.getSharedPreferences(Settings.PREF_FILE_NAME, Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(context.getResources().getString(R.string.preferences_file_name), Context.MODE_PRIVATE);
 		
 		//Read all settings.
-		
-		
+		autoLogin = prefs.getBoolean(context.getResources().getString(R.string.settings_auto_login), context.getResources().getBoolean(R.bool.settings_auto_login_default_value));
 		
 		loaded = true;
 	}
@@ -66,6 +70,9 @@ public class Settings {
 	**/
 	public void loadDefault() {
 		loaded = false; //TODO: how does android handle synchronization? This will do for now.
+		
+		autoLogin = context.getResources().getBoolean(R.bool.settings_auto_login_default_value);
+		
 		loaded = true;
 	}
 	
@@ -73,7 +80,16 @@ public class Settings {
 	 * Save current settings to local android device
 	 */
 	public void saveLocal() {
-		
+		if(changed) {
+			SharedPreferences prefs = context.getSharedPreferences(context.getResources().getString(R.string.preferences_file_name), Context.MODE_PRIVATE);
+			Editor editor = prefs.edit();
+			
+			editor.putBoolean(context.getResources().getString(R.string.settings_auto_login), autoLogin);
+			
+			editor.commit();
+			
+			changed = false;
+		}
 	}
 	
 	/**
@@ -111,5 +127,20 @@ public class Settings {
 	
 	public int numColors() {
 		return colors.size();
+	}
+	
+	//Settings below
+	
+	public boolean getAutoLogin() {
+		return autoLogin;
+	}
+	
+	public void setAutoLogin(boolean autoLogin) {
+		setValue();
+		this.autoLogin = autoLogin;
+	}
+	
+	private void setValue(){
+		changed = true;
 	}
 }

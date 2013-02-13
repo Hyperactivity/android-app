@@ -22,6 +22,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        final TextView welcomeNameTextView = (TextView)findViewById(R.id.welcomeName);
+        welcomeNameTextView.setText(((Engine)getApplication()).getAccount().getUsername());
+        
         // Set up our lock button stuff
         isLocked = true;
         final TextView lockText = (TextView)findViewById(R.id.lockText);

@@ -3,8 +3,11 @@ package com.hyperactivity.android_app;
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.ComponentCallbacks;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 public class Engine extends Application{
 	private boolean loggedIn;
@@ -17,7 +20,7 @@ public class Engine extends Application{
 	private void initialize() {
 		loggedIn = false;
 		account = null;
-		settings = new Settings(this);
+		settings = new Settings(getApplicationContext());
 		actionCount = 0;
 		timer = 0;
 	}
@@ -25,16 +28,13 @@ public class Engine extends Application{
 	//Called when the application is starting, before any activity, service, or receiver objects (excluding content providers) have been created.
 	@Override
 	public void onCreate() {
+		super.onCreate();
+		
 		initialize();
 		
 		//Read stored settings
 		settings.loadLocal();
 		
-		//See if persistent login is true in settings
-		
-		//in that case see if there are any account details in stored
-		
-		super.onCreate();
 	}
 	
 	// Called by the system when the device configuration changes while you component is running.
@@ -53,7 +53,6 @@ public class Engine extends Application{
 	//This method is for use in emulated process environments.
 	@Override
 	public void onTerminate() {
-		// TODO Auto-generated method stub
 		super.onTerminate();
 	}
 
@@ -95,5 +94,17 @@ public class Engine extends Application{
 	public void unregisterComponentCallbacks(ComponentCallbacks callback) {
 		// TODO Auto-generated method stub
 		super.unregisterComponentCallbacks(callback);
+	}
+	
+	public Settings getSettings() {
+		return settings;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+	
+	public Account getAccount() {
+		return account;
 	}
 }
