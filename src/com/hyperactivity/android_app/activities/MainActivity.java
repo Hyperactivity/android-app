@@ -1,97 +1,82 @@
 package com.hyperactivity.android_app.activities;
 
-import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.R.drawable;
-import com.hyperactivity.android_app.R.id;
-import com.hyperactivity.android_app.R.layout;
-import com.hyperactivity.android_app.R.menu;
-import com.hyperactivity.android_app.core.Engine;
-
-import android.os.Build;
-import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Intent;
-import android.view.MenuItem;
+
+import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.Engine;
 
 public class MainActivity extends Activity {
-	
-	private Boolean isLocked;
-	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-        final TextView welcomeNameTextView = (TextView)findViewById(R.id.welcomeName);
-        welcomeNameTextView.setText(((Engine)getApplication()).getAccount().getUsername());
-        
-        // Set up our lock button stuff
-        isLocked = true;
-        final TextView lockText = (TextView)findViewById(R.id.lockText);
-        
-        final Drawable lockedImg = getResources().getDrawable(R.drawable.locked);
-        final Drawable unlockedImg = getResources().getDrawable(R.drawable.unlocked);
-        final ImageButton lockButton = (ImageButton)findViewById(R.id.lockButton);
-		
-        final String lockedText = "Locked";
-        final String unlockedText = "Unlocked";
-        
-        lockText.setText(lockedText);
-        
-        lockButton.setBackgroundDrawable(lockedImg);
-        lockButton.invalidate();
-		
-        lockButton.setOnClickListener(new OnClickListener()
-        {
+
+	private Boolean	isLocked;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		final TextView welcomeNameTextView = (TextView) findViewById(R.id.welcomeName);
+		welcomeNameTextView.setText(((Engine) getApplication()).getAccount().getUsername());
+
+		// Set up our lock button stuff
+		isLocked = true;
+
+		final View topBar = (View) findViewById(R.id.top_bar);
+		final ImageView lockImageButton = (ImageView) findViewById(R.id.lockButton);
+		final TextView lockTextView = (TextView) findViewById(R.id.lockText);
+
+		lockImageButton.setOnClickListener(new OnClickListener()
+		{
 			@Override
 			public void onClick(View arg0) {
 				if (isLocked) {
-					lockButton.setBackgroundDrawable(unlockedImg);
-					lockText.setText(unlockedText);
+					lockTextView.setText((String) getResources().getString(R.string.top_bar_private));
+					lockImageButton.setImageResource(R.drawable.locked);
 				}
 				else {
-					lockButton.setBackgroundDrawable(lockedImg);
-					lockText.setText(lockedText);
+					lockTextView.setText((String) getResources().getString(R.string.top_bar_public));
+					lockImageButton.setImageResource(R.drawable.unlocked);
 				}
-				
-				lockButton.invalidate();
-				isLocked = !isLocked;
-				
-			}});
-       
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
-    
+				lockImageButton.invalidate();
+				isLocked = !isLocked;
+			}
+		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	/**
 	 * Triggers when an item in the menu is clicked such as "Settings" or "Help"
 	 */
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-        case R.id.menu_settings:
-        	// Settings has been clicked, check the android version to decide if to use fragmented settings or not
-        	if(Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB){
-        		startActivity(new Intent(this, SettingsActivity.class));
-        	}else{
-        		startActivity(new Intent(this, SettingsActivityHoneycomb.class));
-        	}
-                return true;
-        default:
-            return super.onOptionsItemSelected(item);
-    	}
-    }
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_settings:
+				// Settings has been clicked, check the android version to decide if to use fragmented settings or not
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+					startActivity(new Intent(this, SettingsActivity.class));
+				} else {
+					startActivity(new Intent(this, SettingsActivityHoneycomb.class));
+				}
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 }

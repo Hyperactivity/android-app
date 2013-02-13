@@ -12,4 +12,6 @@
     <string name="pref_colorsType">Colors</string>
     <string name="pref_colorsType_entries">Vet inte vad denna gör</string>
     <string name="pref_colorsType_default">1</string>
+    <string name="top_bar_private">Private</string>
+    <string name="top_bar_public">Public</string>
 </resources>

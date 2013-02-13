@@ -4,29 +4,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-   <ImageButton
-        android:id="@+id/lockButton"
+    <include layout="@layout/top_bar" android:id="@+id/top_bar"/>
+
+    <TextView
+        android:id="@+id/welcomeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        
-       />
+        android:layout_centerInParent="true"
+        android:text="welcome@text.com" />
 
-   <TextView
-       android:id="@+id/lockText"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_alignLeft="@+id/imageButton1"
-       android:layout_below="@+id/imageButton1"
-       />
-   
-   <TextView
-       android:id="@+id/welcomeName"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_centerInParent="true"
-       android:text="welcome@text.com" />
-   
-   <include layout="@layout/navigation_menu"/>
+    <include layout="@layout/navigation_menu" />
 
 </RelativeLayout>
