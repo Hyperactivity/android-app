@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Possible entires present in android shared preferences file  -->
+<resources>
+    <string name="preferences_file_name">android_app_pref_file</string>
+    
+    <!-- Settings -->
+    <string name="settings_auto_login">settings_auto_login</string>
+    <bool name="settings_auto_login_default_value">true</bool>
+    
+    <!-- Login -->
+    <string name="account_username">account_username</string>
+    <string name="account_password">account_password</string>
+</resources>
