@@ -1,13 +1,5 @@
 package com.hyperactivity.android_app.activities;
 
-import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.R.id;
-import com.hyperactivity.android_app.R.layout;
-import com.hyperactivity.android_app.R.menu;
-import com.hyperactivity.android_app.R.string;
-import com.hyperactivity.android_app.core.Account;
-import com.hyperactivity.android_app.core.Engine;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -28,6 +20,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.Account;
+import com.hyperactivity.android_app.core.Engine;
 
 /**
  * Activity which displays a login screen to the user, offering registration as well.
