@@ -3,6 +3,8 @@ package com.hyperactivity.android_app.forum;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.accounts.Account;
+
 import com.hyperactivity.android_app.core.Color;
 
 public class Category {
@@ -32,5 +34,15 @@ public class Category {
 
 	public String getSubject() {
 		return subject;
+	}
+	
+	public void addThread(Thread thread) {
+		if(!threads.contains(thread)) {
+			threads.add(thread);
+		}
+	}
+	
+	public void createThread(Account author, String headline, String text) {
+		addThread(new Thread(author, headline, text));
 	}
 }

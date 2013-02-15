@@ -1,14 +1,14 @@
 package com.hyperactivity.android_app.forum;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import android.accounts.Account;
 
 import com.hyperactivity.android_app.core.Color;
 import com.hyperactivity.android_app.core.Post;
 import com.hyperactivity.android_app.core.Sort;
-
-import android.accounts.Account;
 
 public class Thread extends Post {
 	String		headline;
@@ -16,7 +16,11 @@ public class Thread extends Post {
 	Sort		sort;
 	Color		color;
 
-	public Thread(String headline, Sort sort, Color color, Account author, String text, Date date) {
+	public Thread(Account author, String headline, String text) {
+		this(author, headline, text, Sort.TIME, null, new Date());
+	}
+	
+	public Thread(Account author, String headline, String text, Sort sort, Color color, Date date) {
 		super(author, text, date);
 		this.headline = headline;
 		this.sort = sort;

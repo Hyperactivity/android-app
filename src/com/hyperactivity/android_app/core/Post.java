@@ -1,6 +1,6 @@
 package com.hyperactivity.android_app.core;
 
-import java.sql.Date;
+import java.util.Date;
 
 import android.accounts.Account;
 

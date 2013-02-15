@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.core.Engine;
 
 public class MainActivity extends Activity {
 
@@ -23,9 +22,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		final TextView welcomeNameTextView = (TextView) findViewById(R.id.welcomeName);
-		welcomeNameTextView.setText(((Engine) getApplication()).getAccount().getUsername());
 
 		// Set up our lock button stuff
 		isLocked = true;
@@ -41,7 +37,7 @@ public class MainActivity extends Activity {
 				System.out.println("clicked");
 
 				isLocked = !isLocked;
-				
+
 				if (isLocked) {
 					lockTextView.setText((String) getResources().getString(R.string.top_bar_private));
 					lockImage.setImageResource(R.drawable.locked);
