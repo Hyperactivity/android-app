@@ -1,0 +1,13 @@
+package com.hyperactivity.android_app.core;
+
+public enum Error {
+	NO_ERROR,
+	NOT_IMPLEMENTED,
+	LOGIN_FAILED,
+	SHOULD_NOT_REACH,
+	PROFILE_NOT_FOUND, 
+	PROFILE_UPLOAD_DENIED, 
+	ID_MISMATCH, 
+	NOT_LOADED, 
+	CHANGE_PASSWORD_DENIED
+}
