@@ -1,5 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
+import javax.net.ssl.SSLServerSocket;
+
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.R.id;
 import com.hyperactivity.android_app.R.layout;
@@ -15,6 +17,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.YuvImage;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -257,24 +260,9 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mUsername)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
+			Account account = ((Engine)getApplication()).getServerLink().login(mUsername, mPassword);
+			
+			if(account != null && account.isLoaded()) {
 				if (((Engine) getApplication()).getSettings().getAutoLogin()) {
 					// Save username and password in prefs file.
 					SharedPreferences prefs = getSharedPreferences(getResources().getString(R.string.preferences_file_name), MODE_PRIVATE);
@@ -284,11 +272,27 @@ public class LoginActivity extends Activity {
 					editor.commit();
 				}
 				
-				//Create the account object and store in in engine
-				Account account = new Account("1337");
-				account.setUsername(mUsername);
+				//Save account in engine.
 				((Engine)getApplication()).setAccount(account);
+			
+				System.out.println("Login success:");
+				System.out.println("account id: " + account.getId());
+				System.out.println("account username:" + account.getUsername());
 				
+				return true;
+			}
+			else {
+				System.err.println("Login failed with error code: " + ((Engine)getApplication()).getServerLink().getErrorCode());
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			showProgress(false);
+
+			if (success) {
 				activity.startActivity(new Intent(activity, MainActivity.class));
 				finish();
 			} else {
