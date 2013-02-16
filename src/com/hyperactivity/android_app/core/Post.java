@@ -2,8 +2,6 @@ package com.hyperactivity.android_app.core;
 
 import java.util.Date;
 
-import android.accounts.Account;
-
 public class Post {
 	Account	author;
 	String	text;

@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.accounts.Account;
-
+import com.hyperactivity.android_app.core.Account;
 import com.hyperactivity.android_app.core.Color;
 import com.hyperactivity.android_app.core.Post;
 import com.hyperactivity.android_app.core.Sort;

@@ -18,10 +18,12 @@ public class Engine extends Application {
 	int				timer;
 	PublicForum		publicForum;
 	PrivateForum	privateForum;
+	boolean 		publicModeActive;
 
 	// Initialize all data to be needed in Application. Use lazy loading to speed up the app startup process.
 	private void initialize() {
 		loggedIn = false;
+		publicModeActive = true;
 		serverLink = new ServerLink(this);
 		account = null;
 		settings = new Settings(getApplicationContext());
@@ -123,5 +125,17 @@ public class Engine extends Application {
 
 	public ServerLink getServerLink() {
 		return serverLink;
+	}
+	
+	public boolean isPublicMode() {
+		return publicModeActive;
+	}
+
+	public boolean isPrivateMode() {
+		return !isPublicMode();
+	}
+	
+	public void setChangeMode(boolean publicModeActive) {
+		this.publicModeActive = publicModeActive;
 	}
 }

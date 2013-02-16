@@ -3,17 +3,22 @@ package com.hyperactivity.android_app.forum;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.accounts.Account;
-
+import com.hyperactivity.android_app.core.Account;
 import com.hyperactivity.android_app.core.Color;
+import com.hyperactivity.android_app.core.RemoteObject;
 
-public class Category {
+public class Category extends RemoteObject{
 	String			subject;
 	List<Category>	categories;
 	List<Thread>	threads;
 	Color			color;
 
-	public Category(String subject, Color color) {
+	public Category(String id, String subject) {
+		this(id, subject, null);
+	}
+	
+	public Category(String id, String subject, Color color) {
+		super(id);
 		this.subject = subject;
 		this.color = color;
 		this.categories = new LinkedList<Category>();
@@ -28,6 +33,10 @@ public class Category {
 		return threads;
 	}
 
+	public boolean isColored() {
+		return color != null;
+	}
+	
 	public Color getColor() {
 		return color;
 	}

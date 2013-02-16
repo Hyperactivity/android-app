@@ -3,6 +3,8 @@ package com.hyperactivity.android_app.core;
 import java.util.Date;
 import java.util.UUID;
 
+import com.hyperactivity.android_app.forum.Category;
+
 import android.graphics.Bitmap;
 
 public class ServerLink {
@@ -104,5 +106,41 @@ public class ServerLink {
 
 	public Error getErrorCode() {
 		return errorCode;
+	}
+	
+	public Category getCategory(String id) {
+		//TODO: make request to server
+		boolean success = true;
+		
+		if(success){
+			//Load dummy data for now
+			Category category;
+			
+			if(engine.isPrivateMode()) {
+				//Generate dummy data category for private category
+				category = new Category(UUID.randomUUID().toString(), "How to happy");
+				category.createThread(engine.getAccount(), "Eat bananas", "It makes me more happy because I like banans.");
+				category.createThread(engine.getAccount(), "Oranges work too", "Just realized");
+				category.createThread(engine.getAccount(), "I think I like fruit", "Maybe thats why I like banans and oranges");
+				
+				//TODO: test with subcategories later.
+				
+				category.setLoaded(true);
+			}
+			else {
+				//generate dummy data for public category
+				category = new Category(UUID.randomUUID().toString(), "The subject of cats");
+				
+				//TODO: Create threads by different authors.
+				
+				category.setLoaded(true);
+			}
+			
+			return category;
+		}
+		else {
+			errorCode = Error.CATEGORY_NOT_FOUND;
+			return null;
+		}
 	}
 }
