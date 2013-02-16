@@ -8,10 +8,8 @@ import android.content.SharedPreferences.Editor;
 
 import com.hyperactivity.android_app.R;
 
-public class Settings {
+public class Settings extends RemoteObject {
 	private Context				context;
-	private String				id;
-	private boolean				loaded;
 	private ArrayList<Color>	colors;
 	private boolean				changed;	// true if any changes have been made since last commit.
 
@@ -23,15 +21,10 @@ public class Settings {
 	}
 
 	public Settings(Context context, String id) {
+		super(id);
 		this.context = context;
-		this.id = id;
-		loaded = false;
 		changed = false;
 		colors = new ArrayList<Color>();
-	}
-
-	public boolean isLoaded() {
-		return loaded;
 	}
 
 	/**
@@ -39,14 +32,14 @@ public class Settings {
 	 * If no settings are found the default settings gets loaded.
 	 **/
 	public void loadLocal() {
-		loaded = false; // TODO: how does android handle synchronization? This will do for now.
+		setLoaded(false); // TODO: how does android handle synchronization? This will do for now.
 
 		SharedPreferences prefs = context.getSharedPreferences(context.getResources().getString(R.string.preferences_file_name), Context.MODE_PRIVATE);
 
 		// Read all settings.
 		autoLogin = prefs.getBoolean(context.getResources().getString(R.string.settings_auto_login), context.getResources().getBoolean(R.bool.settings_auto_login_default_value));
 
-		loaded = true;
+		super.load();
 	}
 
 	/**
@@ -54,11 +47,11 @@ public class Settings {
 	 * If no settings are found the default settings gets loaded.
 	 **/
 	public void loadRemote() {
-		loaded = false; // TODO: how does android handle synchronization? This will do for now.
+		setLoaded(false); // TODO: how does android handle synchronization? This will do for now.
 
-		if (id.length() > 0) {
+		if (getId().length() > 0) {
 			// Load from server
-			loaded = true;
+			super.load();
 		}
 		else {
 			// Load default
@@ -71,11 +64,11 @@ public class Settings {
 	 * If no settings are found the default settings gets loaded.
 	 **/
 	public void loadDefault() {
-		loaded = false; // TODO: how does android handle synchronization? This will do for now.
+		setLoaded(false); // TODO: how does android handle synchronization? This will do for now.
 
 		autoLogin = context.getResources().getBoolean(R.bool.settings_auto_login_default_value);
 
-		loaded = true;
+		super.load();
 	}
 
 	/**
@@ -99,10 +92,6 @@ public class Settings {
 	 */
 	public void saveRemote() {
 
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public Color getColor(int index) {

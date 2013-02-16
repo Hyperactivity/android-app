@@ -13,6 +13,7 @@ public class Engine extends Application {
 	boolean			loggedIn;
 	Account			account;
 	Settings		settings;
+	ServerLink		serverLink;
 	int				actionCount;
 	int				timer;
 	PublicForum		publicForum;
@@ -21,6 +22,7 @@ public class Engine extends Application {
 	// Initialize all data to be needed in Application. Use lazy loading to speed up the app startup process.
 	private void initialize() {
 		loggedIn = false;
+		serverLink = new ServerLink(this);
 		account = null;
 		settings = new Settings(getApplicationContext());
 		actionCount = 0;
@@ -110,12 +112,16 @@ public class Engine extends Application {
 	public Account getAccount() {
 		return account;
 	}
-	
+
 	public PublicForum getPublicForum() {
 		return publicForum;
 	}
-	
+
 	public PrivateForum getPrivateForum() {
 		return privateForum;
+	}
+
+	public ServerLink getServerLink() {
+		return serverLink;
 	}
 }
