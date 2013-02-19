@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android" > 
-    <header android:fragment="com.hyperactivity.android_app.SettingsFragment" 
+    <header android:fragment="com.hyperactivity.android_app.activities.SettingsFragment" 
         android:title="Mood Colors">
         <extra android:name="resource" android:value="mood_colors_settings" />
     </header>
-    <header android:fragment="com.hyperactivity.android_app.SettingsFragment" 
+    <header android:fragment="com.hyperactivity.android_app.activities.SettingsFragment" 
         android:title="Random Settings">
         <extra android:name="resource" android:value="miscellaneous_settings" />
     </header>
