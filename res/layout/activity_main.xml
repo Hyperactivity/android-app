@@ -4,14 +4,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <include layout="@layout/top_bar" android:id="@+id/top_bar"/>
-
-    <TextView
-        android:id="@+id/welcomeName"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="welcome@text.com" />
+        layout="@layout/top_bar" />
 
     <include layout="@layout/navigation_menu" />
 

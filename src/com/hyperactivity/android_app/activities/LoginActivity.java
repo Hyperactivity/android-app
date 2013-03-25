@@ -1,13 +1,5 @@
 package com.hyperactivity.android_app.activities;
 
-import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.R.id;
-import com.hyperactivity.android_app.R.layout;
-import com.hyperactivity.android_app.R.menu;
-import com.hyperactivity.android_app.R.string;
-import com.hyperactivity.android_app.core.Account;
-import com.hyperactivity.android_app.core.Engine;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -28,6 +20,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.Account;
+import com.hyperactivity.android_app.core.Engine;
 
 /**
  * Activity which displays a login screen to the user, offering registration as well.
@@ -167,7 +163,8 @@ public class LoginActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4) {
+		}
+		else if (mPassword.length() < 4) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
@@ -178,7 +175,8 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mUsername.contains("@")) {
+		}
+		else if (!mUsername.contains("@")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -188,7 +186,8 @@ public class LoginActivity extends Activity {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
-		} else {
+		}
+		else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
@@ -228,7 +227,8 @@ public class LoginActivity extends Activity {
 							mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 						}
 					});
-		} else {
+		}
+		else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -253,28 +253,14 @@ public class LoginActivity extends Activity {
 			try {
 				// Simulate network access.
 				Thread.sleep(2000);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				return false;
 			}
 
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mUsername)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
+			Account account = ((Engine) getApplication()).getServerLink().login(mUsername, mPassword);
 
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
+			if (account != null && account.isLoaded()) {
 				if (((Engine) getApplication()).getSettings().getAutoLogin()) {
 					// Save username and password in prefs file.
 					SharedPreferences prefs = getSharedPreferences(getResources().getString(R.string.preferences_file_name), MODE_PRIVATE);
@@ -283,15 +269,32 @@ public class LoginActivity extends Activity {
 					editor.putString(getResources().getString(R.string.account_password), mPassword);
 					editor.commit();
 				}
-				
-				//Create the account object and store in in engine
-				Account account = new Account("1337");
-				account.setUsername(mUsername);
-				((Engine)getApplication()).setAccount(account);
-				
+
+				// Save account in engine.
+				((Engine) getApplication()).setAccount(account);
+
+				System.out.println("Login success:");
+				System.out.println("account id: " + account.getId());
+				System.out.println("account username:" + account.getUsername());
+
+				return true;
+			}
+			else {
+				System.err.println("Login failed with error code: " + ((Engine) getApplication()).getServerLink().getErrorCode());
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			showProgress(false);
+
+			if (success) {
 				activity.startActivity(new Intent(activity, MainActivity.class));
 				finish();
-			} else {
+			}
+			else {
 				mPasswordView.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 			}

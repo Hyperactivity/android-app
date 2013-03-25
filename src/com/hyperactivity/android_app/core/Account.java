@@ -1,15 +1,17 @@
 package com.hyperactivity.android_app.core;
 
-public class Account {
-	private String id; 			//Can be changed to UUID/GUID later depending on how we store this on server.
-	private boolean loaded; 	//Tells if information have been loaded from server (only username for now).
+public class Account extends RemoteObject{
 	private String username;
 	private Profile profile;
 	private Settings settings;
 	
 	public Account(String id) {
-		this.id = id;
-		loaded = false;
+		this(id, "");
+	}
+	
+	public Account(String id, String username) {
+		super(id);
+		this.username = username;
 		profile = new Profile(id);
 	}
 	
@@ -25,25 +27,25 @@ public class Account {
 		return settings;
 	}
 	
-	public boolean isLoaded() {
-		return loaded;
-	}
-	
 	public boolean isLoaded(boolean profileIsLoaded) {
-		return loaded && (profile.isLoaded() || (profileIsLoaded ? false : true));
+		return isLoaded() && (profile.isLoaded() || (profileIsLoaded ? false : true));
 	}
 	
 	public void load(boolean loadProfile) {
 		//load account data from server.
 		
-		loaded = true;
-		
 		if(loadProfile) {
 			profile.load();
 		}
+		
+		super.load();
 	}
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 }

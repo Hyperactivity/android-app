@@ -5,7 +5,7 @@ public class Color {
 	String description;
 	
 	Color() {
-		
+		//TODO: Default color and description.
 	}
 	
 	Color(int color) {
