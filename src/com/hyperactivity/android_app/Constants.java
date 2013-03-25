@@ -17,11 +17,21 @@ public class Constants {
         public static final int TIMEOUT = 10000;
     }
 
+    public class Methods {
+        public static final String LOGIN = "login";
+        public static final String REGISTER = "register";
+        public static final String GET_PROFILE = "getProfile";
+    }
+
     public class Transfer {
         public static final String VALUE = "value";
         public static final String FAILED = "failed";
 
         public static final String ID = "id";
-        public static final String RESULT = "RESULT";
+        public static final String RESULT = "result";
+        public static final String EMAIL = "email";
+        public static final String USERNAME = "username";
+        public static final String FACEBOOK_ID = "facebookID";
+        public static final String USER_ID = "userID";
     }
 }

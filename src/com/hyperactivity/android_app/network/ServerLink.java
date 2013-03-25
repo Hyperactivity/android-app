@@ -1,14 +1,13 @@
 package com.hyperactivity.android_app.network;
 
-import android.graphics.Bitmap;
-import com.hyperactivity.android_app.core.Account;
+import android.os.AsyncTask;
+import android.util.Log;
+import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.core.Engine;
-import com.hyperactivity.android_app.core.Profile;
-import com.hyperactivity.android_app.core.Utils;
-import com.hyperactivity.android_app.forum.Category;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
 
 /*
 //TODO: enable the fb stuff
@@ -25,158 +24,77 @@ public class ServerLink {
         this.engine = engine;
     }
 
-    public void login(final NetworkCallback activityCallBack) {
+    public void login(final NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        String email = "TODO";
+        String facebookID = "TODO";
 
         /*
         TODO: fix fb stuff
         Response facebookUser = getFacebookUserInfo();
-        String email = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.EMAIL);
-        String userId = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
-        java.util.Map<String, Object> params = new HashMap<String, Object>();
-        params.put(Constants.Transfer.EMAIL, email);
-
-        sendRequest(Constants.Methods.LOGIN, userId, params, activityCallBack, true);
+        email = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.EMAIL);
+        facebookID = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
         */
+
+        params.put(Constants.Transfer.EMAIL, email);
+        sendRequest(Constants.Methods.LOGIN, facebookID, params, callback, true);
     }
 
-    //TODO: old login
-    public Account login(String username, String password) {
-        // TODO: make server auth request.
-        // TODO: this method should also do take a callback
-        boolean auth = true;
+    public void register(String username, final NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        String email = "TODO";
+        String facebookID = "TODO";
 
-        if (auth) {
-            // Populate an account with dummy data for now
-            Account account = new Account(UUID.randomUUID().toString());
-            account.setUsername(username);
-            account.setProfile(getProfile(account.getId()));
-            account.setLoaded(true);
-
-            return account;
-        } else {
-            return null;
-        }
-    }
-
-    //TODO: new register
-    public void register(String username, final NetworkCallback activityCallBack) {
+        //TODO: should this method method auth with fb-email or fid (facebook id)?
 
         /*
         TODO: fix fb stuff
         Response facebookUser = getFacebookUserInfo();
-        String email = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.EMAIL);
-        String userId = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
-        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        email = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.EMAIL);
+        facebookID = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
+        */
+
         params.put(Constants.Transfer.EMAIL, email);
         params.put(Constants.Transfer.USERNAME, username);
 
-        sendRequest(Constants.Methods.REGISTER, userId, params, activityCallBack, true);
-        */
+        sendRequest(Constants.Methods.REGISTER, facebookID, params, callback, true);
     }
 
-    //TODO: old registe
-    public Account createAccount(String username, String password, Date birthdate) {
-        //TODO: make request to server
-        //TODO: this method should also take a callback
-        boolean success = true;
+    private void sendRequest(String method, String id, List<Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+        final JSONRPC2Request reqOut = new JSONRPC2Request(method, params, id);
+        sendRequest(reqOut, activityCallback, lockWithLoadingScreen);
+    }
 
-        if (success) {
-            Account account = new Account(UUID.randomUUID().toString());
-            account.setUsername(username);
-            account.setLoaded(true);
-            account.setProfile(uploadProfile(new Profile(account.getId())));
-            return account;
-        } else {
-            return null;
+    private void sendRequest(String method, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+        sendRequest(method, engine.getAccount().getId(), params, activityCallback, lockWithLoadingScreen);
+    }
+
+    private void sendRequest(String method, String id, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+        final JSONRPC2Request reqOut = new JSONRPC2Request(method, params, id);
+        sendRequest(reqOut, activityCallback, lockWithLoadingScreen);
+    }
+
+    private void sendRequest(JSONRPC2Request request, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+        try {
+            AsyncTask asyncTask = new NetworkAsyncTask(activityCallback, lockWithLoadingScreen);
+            asyncTask.execute(request);
+        } catch (Exception e) {
+            Log.e(Constants.Log.TAG, "exception: ", e);
         }
     }
 
-    //---------------------------------------------------------------
-    //TODO: all methods below should be using callback
+    /*
+    TODO: implement fb stuff
+    private Response getFacebookUserInfo() {
+        Session session = Session.getActiveSession();
 
-    public Profile getProfile(String id) {
-        // TODO: make server auth request.
-        boolean exist = true;
+        Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
 
-        if (exist) {
-            // Populate an profile with dummy data for now
-            Profile profile = new Profile(UUID.randomUUID().toString());
-            profile.setAvatar(Bitmap.createBitmap(32, 32, Bitmap.Config.ARGB_8888));
-            profile.setBirthdate(new Date());
-            profile.setDescription("Im a dummy user :)");
-            profile.setLoaded(true);
-
-            return profile;
-        } else {
-            return null;
-        }
-    }
-
-    public Profile uploadProfile(Profile profile) {
-        if (profile.isLoaded()) {
-            // Make sure profile and currently logged in user have the same id.
-            if (Utils.sameId(engine.getAccount(), profile)) {
-                // TODO: make the server request
-                boolean success = true;
-
-                if (success) {
-                    return profile;
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
+            @Override
+            public void onCompleted(GraphUser user, Response response) {
             }
-        } else {
-            return null;
-        }
+        });
+        return request.executeAndWait();
     }
-
-    public boolean changePassword(String password) {
-        if (engine.getAccount().isLoaded()) {
-            // TODO: make the password change remote
-            boolean success = true;
-
-            if (success) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public Category getCategory(String id) {
-        //TODO: make request to server
-        boolean success = true;
-
-        if (success) {
-            //Load dummy data for now
-            Category category;
-
-            if (engine.isPrivateMode()) {
-                //Generate dummy data category for private category
-                category = new Category(UUID.randomUUID().toString(), "How to happy");
-                category.createThread(engine.getAccount(), "Eat bananas", "It makes me more happy because I like banans.");
-                category.createThread(engine.getAccount(), "Oranges work too", "Just realized");
-                category.createThread(engine.getAccount(), "I think I like fruit", "Maybe thats why I like banans and oranges");
-
-                //TODO: test with subcategories later.
-
-                category.setLoaded(true);
-            } else {
-                //generate dummy data for public category
-                category = new Category(UUID.randomUUID().toString(), "The subject of cats");
-
-                //TODO: Create threads by different authors.
-
-                category.setLoaded(true);
-            }
-
-            return category;
-        } else {
-            return null;
-        }
-    }
+    */
 }
