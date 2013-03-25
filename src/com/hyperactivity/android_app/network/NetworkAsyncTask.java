@@ -1,28 +1,20 @@
-package com.intnet.space_escape.network;
+package com.hyperactivity.android_app.network;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.intnet.space_escape.R;
-import com.intnet.space_escape.assistant.Constants;
+import com.hyperactivity.android_app.Constants;
+import com.hyperactivity.android_app.R;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2Session;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2SessionException;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2SessionOptions;
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created with IntelliJ IDEA.
- * User: OMMatte
- * Date: 2013-03-15
- * Time: 10:19
- */
 public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Response> {
     private NetworkCallback networkCallback;
     ProgressDialog progressDialog;
@@ -40,16 +32,16 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
         URL serverURL = null;
 
         try {
-            serverURL = new URL("http://" + Constants.Server.IP_ADDRESS + ":" + Constants.Server.PORT + "/");
+            serverURL = new URL("http://" + Constants.Server.IP + ":" + Constants.Server.PORT + "/");
         } catch (MalformedURLException e) {
             Log.d(Constants.Log.TAG, "exception: ", e);
         }
         JSONRPC2Session mySession = new JSONRPC2Session(serverURL);
         JSONRPC2SessionOptions options = new JSONRPC2SessionOptions();
-        options.setConnectTimeout(10000);
+        options.setConnectTimeout(Constants.Server.TIMEOUT);
         mySession.setOptions(options);
 
-        JSONRPC2Response response = null;
+        JSONRPC2Response response;
         // Send request
         try {
             response = mySession.send(jsonrpc2Request);
@@ -109,10 +101,9 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
 
         Object result = null;
 
-        if(jsonrpc2Response.indicatesSuccess()) {
+        if (jsonrpc2Response.indicatesSuccess()) {
             result = jsonrpc2Response.getResult();
-        }
-        else {
+        } else {
             result = jsonrpc2Response.getError();
         }
 

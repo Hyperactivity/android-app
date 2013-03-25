@@ -14,4 +14,9 @@
     <string name="pref_colorsType_default">1</string>
     <string name="top_bar_private">Private</string>
     <string name="top_bar_public">Public</string>
+    <string name="connection_problems_text">Unable to connect to server, please try again later.</string>
+    <string name="connection_problems_caption">Network problems</string>
+    <string name="ok">OK</string>
+    <string name="wait_server_caption">Please wait</string>
+    <string name="wait_server_text">Chatting with server...</string>
 </resources>
