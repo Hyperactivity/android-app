@@ -63,7 +63,7 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
             errorType = "Bad response Error: " + e.getMessage();
         }
         if (e.getCauseType() == JSONRPC2SessionException.NETWORK_EXCEPTION) {
-            errorType = "Network Error: " + e.getMessage();
+            errorType = "ServerLink Error: " + e.getMessage();
         }
         if (e.getCauseType() == JSONRPC2SessionException.UNEXPECTED_CONTENT_TYPE) {
             errorType = "Wrong content Error: " + e.getMessage();

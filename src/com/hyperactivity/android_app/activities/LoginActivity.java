@@ -280,7 +280,7 @@ public class LoginActivity extends Activity {
 				return true;
 			}
 			else {
-				System.err.println("Login failed with error code: " + ((Engine) getApplication()).getServerLink().getErrorCode());
+				System.err.println("Login failed");
 				return false;
 			}
 		}
