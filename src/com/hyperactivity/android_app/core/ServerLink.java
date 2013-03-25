@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.hyperactivity.android_app.forum.Category;
 
+import android.accounts.AccountManagerCallback;
 import android.graphics.Bitmap;
 
 public class ServerLink {
@@ -36,6 +37,22 @@ public class ServerLink {
 		}
 	}
 
+	public Account createAccount(String username, String password, Date birthdate) {
+		//TODO: make request to server
+		boolean success = true;
+		
+		if(success) {
+			Account account = new Account(UUID.randomUUID().toString());
+			account.setUsername(username);
+			account.setLoaded(true);
+			account.setProfile(uploadProfile(new Profile(account.getId())));
+			return account;
+		}else {
+			errorCode = Error.CREATE_ACCOUNT_FAILED;
+			return null;
+		}
+	}
+	
 	public Profile getProfile(String id) {
 		// TODO: make server auth request.
 		boolean exist = true;
@@ -103,10 +120,6 @@ public class ServerLink {
 			return false;
 		}
 	}
-
-	public Error getErrorCode() {
-		return errorCode;
-	}
 	
 	public Category getCategory(String id) {
 		//TODO: make request to server
@@ -142,5 +155,9 @@ public class ServerLink {
 			errorCode = Error.CATEGORY_NOT_FOUND;
 			return null;
 		}
+	}
+	
+	public Error getErrorCode() {
+		return errorCode;
 	}
 }

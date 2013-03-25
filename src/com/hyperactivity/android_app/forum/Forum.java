@@ -23,6 +23,6 @@ public class Forum {
 	}
 	
 	public void createCategory(String subject, Color color) {
-		addCategory(new Category(subject, color));
+		addCategory(new Category("TODO make id", subject, color));
 	}
 }

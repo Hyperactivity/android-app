@@ -8,7 +8,7 @@ public class Profile extends RemoteObject{
 	private Bitmap avatar;
 	private String description;
 	private Date birthdate;
-	
+
 	public Profile(String id) {
 		super(id);
 	}
