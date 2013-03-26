@@ -19,7 +19,7 @@ public abstract class NetworkCallback {
 
             if (!successful) {
                 if (result != null) {
-                    onError((JSONRPC2Error)result, userId);
+                    onError((JSONRPC2Error) result, userId);
                 } else {
                     onError(userId);
                 }
@@ -36,18 +36,18 @@ public abstract class NetworkCallback {
         }
     }
 
-    public void onSuccess(Object result, String userId) throws Exception {
+    public void onSuccess(Object result, String userId) {
     }
 
-    public void onError(JSONRPC2Error error, String userId) throws Exception {
+    public void onError(JSONRPC2Error error, String userId) {
         showDialog();
     }
 
-    public void onError(JSONObject error, String userId) throws Exception {
+    public void onError(JSONObject error, String userId) {
         showDialog();
     }
 
-    public void onError(String userId) throws Exception {
+    public void onError(String userId) {
         showDialog();
     }
 
@@ -55,17 +55,21 @@ public abstract class NetworkCallback {
     }
 
     private void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.connection_problems_text)
-                .setTitle(R.string.connection_problems_caption)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        onErrorDismissed();
-                    }
-                });
-        // Create the AlertDialog object and return it
-        builder.create().show();
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.connection_problems_text)
+                    .setTitle(R.string.connection_problems_caption)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            onErrorDismissed();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            builder.create().show();
+        } catch (Exception e) {
+            Log.e(Constants.Log.TAG, "NetworkCallback.showDialog exception");
+        }
     }
 
     public abstract Activity getActivity();
