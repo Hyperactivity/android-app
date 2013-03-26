@@ -40,33 +40,69 @@ public class ServerLink {
         sendRequest(Constants.Methods.LOGIN, facebookID, params, callback, true);
     }
 
-    public void register(String username, final NetworkCallback callback) {
+    public void getProfile(String accountID, NetworkCallback callback) {
         java.util.Map<String, Object> params = new HashMap<String, Object>();
-        String email = "TODO";
-        String facebookID = "TODO";
 
-        //TODO: should this method method auth with fb-email or fid (facebook id)?
+        params.put(Constants.Transfer.ACCOUNT_ID, accountID);
 
-        /*
-        TODO: fix fb stuff
-        Response facebookUser = getFacebookUserInfo();
-        email = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.EMAIL);
-        facebookID = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
-        */
-
-        params.put(Constants.Transfer.EMAIL, email);
-        params.put(Constants.Transfer.USERNAME, username);
-
-        sendRequest(Constants.Methods.REGISTER, facebookID, params, callback, true);
+        sendRequest(Constants.Methods.GET_PROFILE, params, callback, true);
     }
 
-    private void sendRequest(String method, String id, List<Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+    public void getForum(String type, NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put(Constants.Transfer.TYPE, type);
+
+        sendRequest(Constants.Methods.GET_FORUM, params, callback, true);
+    }
+
+    public void getCategoryContent(String categoryID, NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put(Constants.Transfer.CATEGORY_ID, categoryID);
+
+        sendRequest(Constants.Methods.GET_CATEGORY_CONTENT, params, callback, true);
+    }
+
+    public void getThread(String threadID, NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put(Constants.Transfer.THREAD_ID, threadID);
+
+        sendRequest(Constants.Methods.GET_THREAD, params, callback, true);
+    }
+
+    public void createThread(String categoryID, String headline, String text, NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put(Constants.Transfer.CATEGORY_ID, categoryID);
+        params.put(Constants.Transfer.HEADLINE, headline);
+        params.put(Constants.Transfer.TEXT, text);
+
+        sendRequest(Constants.Methods.CREATE_THREAD, params, callback, true);
+    }
+
+    public void createReply(String threadID, String text, NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put(Constants.Transfer.THREAD_ID, threadID);
+        params.put(Constants.Transfer.TEXT, text);
+
+        sendRequest(Constants.Methods.CREATE_REPLY, params, callback, true);
+    }
+
+    private void sendRequest(String method, String id, List<Object> params, final NetworkCallback callback, boolean lockWithLoadingScreen) {
         final JSONRPC2Request reqOut = new JSONRPC2Request(method, params, id);
-        sendRequest(reqOut, activityCallback, lockWithLoadingScreen);
+        sendRequest(reqOut, callback, lockWithLoadingScreen);
     }
 
-    private void sendRequest(String method, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
-        sendRequest(method, engine.getAccount().getId(), params, activityCallback, lockWithLoadingScreen);
+    private void sendRequest(String method, java.util.Map<String, Object> params, final NetworkCallback callback, boolean lockWithLoadingScreen) {
+        if (engine.getAccount() != null) {
+            sendRequest(method, engine.getAccount().getId(), params, callback, lockWithLoadingScreen);
+
+        } else {
+            callback.onError("TODO"); //TODO: handle message better. maybe create json error object
+        }
     }
 
     private void sendRequest(String method, String id, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
