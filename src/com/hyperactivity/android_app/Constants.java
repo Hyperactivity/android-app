@@ -33,5 +33,6 @@ public class Constants {
         public static final String USERNAME = "username";
         public static final String FACEBOOK_ID = "facebookID";
         public static final String USER_ID = "userID";
+        public static final String SUCCESS = "success";
     }
 }

@@ -19,4 +19,5 @@
     <string name="ok">OK</string>
     <string name="wait_server_caption">Please wait</string>
     <string name="wait_server_text">Chatting with server...</string>
+    <string name="login">Login</string>
 </resources>

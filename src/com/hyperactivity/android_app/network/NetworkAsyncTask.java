@@ -27,6 +27,10 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
 
     @Override
     protected JSONRPC2Response doInBackground(Object... jsonrpc2Requests) {
+        if(networkCallback instanceof TestNetworkCallback) {
+            return ((TestNetworkCallback)networkCallback).getResponse();
+        }
+
         JSONRPC2Request jsonrpc2Request = (JSONRPC2Request) jsonrpc2Requests[0];
         String id = jsonrpc2Request.getID().toString();
         URL serverURL = null;
