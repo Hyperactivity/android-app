@@ -24,4 +24,6 @@
         <item name="android:padding">16dp</item>
     </style>
 
+    <color name="fps_color">#00ff0000</color>
+
 </resources>
