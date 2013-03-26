@@ -26,17 +26,14 @@ public class ServerLink {
 
     public void login(final NetworkCallback callback) {
         java.util.Map<String, Object> params = new HashMap<String, Object>();
-        String email = "TODO";
         String facebookID = "TODO";
 
         /*
         TODO: fix fb stuff
         Response facebookUser = getFacebookUserInfo();
-        email = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.EMAIL);
         facebookID = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
         */
 
-        params.put(Constants.Transfer.EMAIL, email);
         sendRequest(Constants.Methods.LOGIN, facebookID, params, callback, true);
     }
 
