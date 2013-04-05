@@ -12,12 +12,12 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.core.ThreadPicker;
+import com.hyperactivity.android_app.core.ScrollPicker;
 
 public class MainActivity extends Activity {
 
     private Boolean isLocked;
-    private ThreadPicker threadPicker;
+    private ScrollPicker scrollPicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,8 @@ public class MainActivity extends Activity {
         });
 
         View view = findViewById(R.id.forum_surface_view);
-        threadPicker = (ThreadPicker) view;
-        threadPicker.getThread().setState(ThreadPicker.ThreadPickerThread.STATE_READY);
+        scrollPicker = (ScrollPicker) view;
+        scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
     }
 
     @Override

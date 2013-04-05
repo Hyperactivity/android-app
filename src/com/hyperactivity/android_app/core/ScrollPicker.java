@@ -3,7 +3,6 @@ package com.hyperactivity.android_app.core;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -13,16 +12,17 @@ import android.view.SurfaceView;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 
-public class ThreadPicker extends SurfaceView implements SurfaceHolder.Callback {
-    private ThreadPickerThread thread;          //The thread that actually draws the animation
+import java.util.LinkedList;
+
+public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback {
+    private ScrollPickerThread thread;          //The thread that actually draws the animation
     private float xTouch;
     private float yTouch;
     private float xOffset;
     private float yOffset;
     private float scrollSpeed;
-    private String friendID;
 
-    public ThreadPicker(Context context, AttributeSet attrs) {
+    public ScrollPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // register our interest in hearing about changes to our surface
@@ -30,7 +30,7 @@ public class ThreadPicker extends SurfaceView implements SurfaceHolder.Callback 
         holder.addCallback(this);
 
         // create thread only; it's started in surfaceCreated()
-        thread = new ThreadPickerThread(holder, context);
+        thread = new ScrollPickerThread(holder, context);
 
         scrollSpeed = (float) getResources().getInteger(R.integer.scroll_speed);
     }
@@ -118,32 +118,87 @@ public class ThreadPicker extends SurfaceView implements SurfaceHolder.Callback 
         }
     }
 
-    public ThreadPickerThread getThread() {
+    public ScrollPickerThread getThread() {
         return thread;
     }
 
-    public class ThreadPickerThread extends Thread {
+    public class ScrollPickerThread extends Thread {
         //State-tracking constants
         public static final int STATE_READY = 1;
         public static final int STATE_RUNNING = 2;
         public static final int STATE_PAUSE = 3;
-        int state;                      //The state of the renderer. READY, RUNNING or PAUSE
-        boolean run = false;            //Indicate whether the surface has been created & is ready to draw
-        SurfaceHolder surfaceHolder;    //Handle to the surface manager object we interact with
-        long lastTime;                  //Used to figure out elapsed time between frames
-        Context context;                //Handle to the application context, used to e.g. fetch Drawables.
-        float fpsTimer;
-        int fps;
-        int frames;
-        Paint fpsPaint;
-        float canvasWidth = 1;          //width of the drawable area
-        float canvasHeight = 1;         //height of the drawable area
-        float canvasRatio;              //ratio of the drawable height and width. height / width
-        Rect clipBounds;
+        private int state;                      //The state of the renderer. READY, RUNNING or PAUSE
+        private boolean run = false;            //Indicate whether the surface has been created & is ready to draw
+        private SurfaceHolder surfaceHolder;    //Handle to the surface manager object we interact with
+        private long lastTime;                  //Used to figure out elapsed time between frames
+        private Context context;                //Handle to the application context, used to e.g. fetch Drawables.
+        private float fpsTimer;
+        private int fps;
+        private int frames;
+        private Paint fpsPaint;
+        private float canvasWidth = 1;          //width of the drawable area, will be updated by function below.
+        private float canvasHeight = 1;         //height of the drawable area, will be update by function below.
 
-        public ThreadPickerThread(SurfaceHolder surfaceHolder, Context context) {
+        private ScrollPickerItem mainItem;
+        private LinkedList<ScrollPickerItem> subItems;
+
+        public ScrollPickerThread(SurfaceHolder surfaceHolder, Context context) {
             this.surfaceHolder = surfaceHolder;
             this.context = context;
+        }
+
+        /**
+         * Initializes the thread
+         */
+        private void doInit() {
+            fpsPaint = new Paint();
+            fpsPaint.setColor(getResources().getColor(R.color.fps_color));
+            fpsPaint.setTextSize(16f);
+
+            subItems = new LinkedList<ScrollPickerItem>();
+
+            mainItem = new ScrollPickerItem("fisk", 10, 20);
+            mainItem.setCenterX(20f);
+            mainItem.setCenterY(canvasHeight - 100f);
+            mainItem.setRadius(20f);
+        }
+
+        /**
+         * logic goes here.
+         */
+        private void doUpdate(float delta) {
+            //Compute fps
+            frames++;
+            fpsTimer += delta;
+            if (fpsTimer >= 1) {
+                fps = frames;
+                frames = 0;
+                fpsTimer = 0;
+            }
+
+            if (state == STATE_READY) {
+                doInit();
+                setState(STATE_RUNNING);
+            } else if (state == STATE_RUNNING) {
+                //TODO: do me
+            }
+        }
+
+        /**
+         * draw all the graphics
+         */
+        private void doDraw(Canvas canvas) {
+            if (state == STATE_RUNNING) {
+                //TODO: do me
+
+                canvas.drawColor(01);
+
+                mainItem.doDraw(canvas);
+
+                //Iterator<ScrollPickerItem> it = subItems.clone()
+
+                canvas.drawText("FPS: " + fps, 10, 20, fpsPaint);
+            }
         }
 
         /**
@@ -216,8 +271,6 @@ public class ThreadPicker extends SurfaceView implements SurfaceHolder.Callback 
                         delta = (now - lastTime) / 1000.0f;
                         lastTime = now;
 
-                        clipBounds = c.getClipBounds();
-
                         if (state == STATE_RUNNING || state == STATE_READY) {
                             doUpdate(delta);
                         }
@@ -238,27 +291,6 @@ public class ThreadPicker extends SurfaceView implements SurfaceHolder.Callback 
         }
 
         /**
-         * logic goes here.
-         */
-        private void doUpdate(float delta) {
-            //Compute fps
-            frames++;
-            fpsTimer += delta;
-            if (fpsTimer >= 1) {
-                fps = frames;
-                frames = 0;
-                fpsTimer = 0;
-            }
-
-            if (state == STATE_READY) {
-                doInit();
-                setState(STATE_RUNNING);
-            } else if (state == STATE_RUNNING) {
-                //TODO: do me
-            }
-        }
-
-        /**
          * Pauses the physics doUpdate & animation.
          */
         public void pause() {
@@ -266,29 +298,6 @@ public class ThreadPicker extends SurfaceView implements SurfaceHolder.Callback 
                 if (state == STATE_RUNNING) {
                     setState(STATE_PAUSE);
                 }
-            }
-        }
-
-        /**
-         * Initializes the thread
-         */
-        private void doInit() {
-            fpsPaint = new Paint();
-            fpsPaint.setColor(getResources().getColor(R.color.fps_color));
-            fpsPaint.setTextSize(16f);
-
-            //TODO: do me
-        }
-
-        /**
-         * draw all the graphics
-         */
-        private void doDraw(Canvas canvas) {
-            if (state == STATE_RUNNING) {
-                //TODO: do me
-
-                canvas.drawColor(01);
-                canvas.drawText("FPS: " + fps, 10, 20, fpsPaint);
             }
         }
 
@@ -318,7 +327,7 @@ public class ThreadPicker extends SurfaceView implements SurfaceHolder.Callback 
                 canvasWidth = width;
                 canvasHeight = height;
 
-                canvasRatio = (float) canvasHeight / canvasWidth;
+                float canvasRatio = canvasHeight / canvasWidth;
 
                 Log.i(this.getClass().getName(), "Canvas width: " + canvasWidth + " height: " + canvasHeight + " ratio: " + canvasRatio);
             }
