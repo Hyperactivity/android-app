@@ -11,69 +11,72 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.ThreadPicker;
 
 public class MainActivity extends Activity {
 
-	private Boolean	isLocked;
+    private Boolean isLocked;
+    private ThreadPicker threadPicker;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		// Set up our lock button stuff
-		isLocked = true;
+        // Set up our lock button stuff
+        isLocked = true;
 
-		final View topBar = (View) findViewById(R.id.top_bar);
-		final ImageView lockImage = (ImageView) findViewById(R.id.lockButton);
-		final TextView lockTextView = (TextView) findViewById(R.id.lockText);
+        final View topBar = findViewById(R.id.top_bar);
+        final ImageView lockImage = (ImageView) findViewById(R.id.lockButton);
+        final TextView lockTextView = (TextView) findViewById(R.id.lockText);
 
-		lockImage.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View arg0) {
-				System.out.println("clicked");
+        lockImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                System.out.println("clicked");
 
-				isLocked = !isLocked;
+                isLocked = !isLocked;
 
-				if (isLocked) {
-					lockTextView.setText((String) getResources().getString(R.string.top_bar_private));
-					lockImage.setImageResource(R.drawable.locked);
-				}
-				else {
-					lockTextView.setText((String) getResources().getString(R.string.top_bar_public));
-					lockImage.setImageResource(R.drawable.unlocked);
-				}
-			}
-		});
-	}
+                if (isLocked) {
+                    lockTextView.setText(getResources().getString(R.string.top_bar_private));
+                    lockImage.setImageResource(R.drawable.locked);
+                } else {
+                    lockTextView.setText(getResources().getString(R.string.top_bar_public));
+                    lockImage.setImageResource(R.drawable.unlocked);
+                }
+            }
+        });
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
+        View view = findViewById(R.id.forum_surface_view);
+        threadPicker = (ThreadPicker) view;
+        threadPicker.getThread().setState(ThreadPicker.ThreadPickerThread.STATE_READY);
+    }
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	@Override
-	/**
-	 * Triggers when an item in the menu is clicked such as "Settings" or "Help"
-	 */
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_settings:
-				// Settings has been clicked, check the android version to decide if to use fragmented settings or not
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-					startActivity(new Intent(this, SettingsActivity.class));
-				} else {
-					startActivity(new Intent(this, SettingsActivityHoneycomb.class));
-				}
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+    /**
+     * Triggers when an item in the menu is clicked such as "Settings" or "Help"
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                // Settings has been clicked, check the android version to decide if to use fragmented settings or not
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                    startActivity(new Intent(this, SettingsActivity.class));
+                } else {
+                    startActivity(new Intent(this, SettingsActivityHoneycomb.class));
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
