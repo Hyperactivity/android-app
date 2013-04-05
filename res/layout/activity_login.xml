@@ -12,5 +12,4 @@
             android:layout_centerVertical="true"
             android:onClick="loginClicked"
             />
-
 </RelativeLayout>
