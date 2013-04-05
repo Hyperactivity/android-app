@@ -15,7 +15,7 @@ public class ScrollPickerItem {
     public ScrollPickerItem(String text, int circleColor, int textColor) {
         this.text = text;
         circlePaint = new Paint(circleColor);
-        textPaint = new Paint(textPaint);
+        textPaint = new Paint(textColor);
 
         visible = false;
         centerX = 0f;

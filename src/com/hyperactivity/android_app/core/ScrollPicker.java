@@ -152,7 +152,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
          */
         private void doInit() {
             fpsPaint = new Paint();
-            fpsPaint.setColor(getResources().getColor(R.color.fps_color));
+            fpsPaint.setColor(getResources().getColor(R.color.fps));
             fpsPaint.setTextSize(16f);
 
             subItems = new LinkedList<ScrollPickerItem>();
@@ -191,13 +191,13 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
             if (state == STATE_RUNNING) {
                 //TODO: do me
 
-                canvas.drawColor(01);
+                canvas.drawColor(context.getResources().getColor(R.color.background));
 
-                mainItem.doDraw(canvas);
+                //mainItem.doDraw(canvas);
 
                 //Iterator<ScrollPickerItem> it = subItems.clone()
 
-                canvas.drawText("FPS: " + fps, 10, 20, fpsPaint);
+                canvas.drawText("FPS: " + fps, 0, 30, fpsPaint);
             }
         }
 

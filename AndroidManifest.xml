@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hyperactivity.android_app"
-    android:versionCode="1"
-    android:versionName="1.0" >
+          package="com.hyperactivity.android_app"
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="17" />
+            android:minSdkVersion="7"
+            android:targetSdkVersion="17"/>
 
     <application
-        android:name="com.hyperactivity.android_app.core.Engine"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+            android:name="com.hyperactivity.android_app.core.Engine"
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:hardwareAccelerated="true">
         <activity
-            android:name="com.hyperactivity.android_app.activities.MainActivity"
-            android:label="@string/app_name" >
+                android:name="com.hyperactivity.android_app.activities.LoginActivity"
+                android:label="@string/app_name">
         </activity>
         <activity
-            android:name="com.hyperactivity.android_app.activities.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+                android:name="com.hyperactivity.android_app.activities.MainActivity"
+                android:label="@string/title_activity_login"
+                android:windowSoftInputMode="adjustResize|stateVisible">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name="com.hyperactivity.android_app.activities.SettingsActivity"
-            android:label="@string/app_settings_name" >
+                android:name="com.hyperactivity.android_app.activities.SettingsActivity"
+                android:label="@string/app_settings_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
         <activity
-            android:name="com.hyperactivity.android_app.activities.SettingsActivityHoneycomb"
-            android:label="@string/app_settings_name" >
+                android:name="com.hyperactivity.android_app.activities.SettingsActivityHoneycomb"
+                android:label="@string/app_settings_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
     </application>
