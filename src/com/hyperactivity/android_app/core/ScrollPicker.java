@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback {
@@ -134,23 +135,22 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         private Context context;                //Handle to the application context, used to e.g. fetch Drawables.
         private float canvasWidth = 1;          //width of the drawable area, will be updated by function below.
         private float canvasHeight = 1;         //height of the drawable area, will be update by function below.
-
-        private ScrollPickerItem selectedItem;
-        private LinkedList<ScrollPickerItem> items;
+        private ScrollPickerItemManager itemManager;
 
         public ScrollPickerThread(SurfaceHolder surfaceHolder, Context context) {
             this.surfaceHolder = surfaceHolder;
             this.context = context;
-
-            items = new LinkedList<ScrollPickerItem>();
-            selectedItem = new ScrollPickerItem("fisk", context.getResources().getColor(R.color.scroll_picker_categories), context.getResources().getColor(R.color.scroll_picker_categories_text));
         }
 
         /**
          * Initializes the thread
          */
         private void doInit() {
-            selectedItem.setVisible(true);
+            itemManager = new ScrollPickerItemManager(canvasWidth, canvasHeight, context.getResources().getInteger(R.integer.scroll_picker_categories_size)/100f, context.getResources().getInteger(R.integer.scroll_picker_categories_text_size));
+
+            itemManager.addItem("fisk", context.getResources().getColor(R.color.scroll_picker_categories), context.getResources().getColor(R.color.scroll_picker_categories_text), true);
+
+            itemManager.recalculateItems();
         }
 
         /**
@@ -161,7 +161,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                 doInit();
                 setState(STATE_RUNNING);
             } else if (state == STATE_RUNNING) {
-
+                itemManager.doUpdate(delta);
             }
         }
 
@@ -174,9 +174,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
                 canvas.drawColor(context.getResources().getColor(R.color.background));
 
-                selectedItem.doDraw(canvas);
-
-                //Iterator<ScrollPickerItem> it = subItems.clone()
+                itemManager.doDraw(canvas);
             }
         }
 
@@ -307,21 +305,9 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
                 Log.i(this.getClass().getName(), "Canvas width: " + canvasWidth + " height: " + canvasHeight + " ratio: " + canvasRatio);
 
-                float diameter = ((float)context.getResources().getInteger(R.integer.scroll_picker_categories_size)/100f)*canvasHeight;
-                float textSize = ((float)context.getResources().getInteger(R.integer.scroll_picker_categories_text_size));
-                float margin = (canvasHeight - diameter - textSize)/3f;
-
-                if(margin < 0f) {
-                    Log.w(Constants.Log.TAG, "Margin of scroll picker is negative.");
+                if(itemManager != null) {
+                    itemManager.onCanvasChanged(canvasWidth, canvasHeight);
                 }
-
-                selectedItem.setRadius(diameter/2f);
-                selectedItem.setCenterX(canvasWidth/2f);
-                selectedItem.setCenterY(selectedItem.getRadius() + margin);
-                selectedItem.setTextSize(textSize);
-                selectedItem.setTextMargin(margin);
-
-                //TODO: fix all the other circles
             }
         }
     }

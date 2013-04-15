@@ -96,4 +96,17 @@ public class ScrollPickerItem {
     public void setTextSize(float textSize) {
         textPaint.setTextSize(textSize);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof ScrollPickerItem) {
+            ScrollPickerItem obj = (ScrollPickerItem)o;
+
+            if(getText().equals(obj.getText()) && isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterY() && getCenterY() == obj.getCenterY() && getCirclePaint().equals(obj.getCirclePaint())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
