@@ -11,6 +11,7 @@ public class ScrollPickerItem {
     private float radius;
     private Paint circlePaint;
     private Paint textPaint;
+    private float textMargin;
 
     public ScrollPickerItem(String text, int circleColor, int textColor) {
         this.text = text;
@@ -35,7 +36,7 @@ public class ScrollPickerItem {
 
             if(text.length() > 0) {
                 //draw text.
-                canvas.drawText(text, centerX, centerY, textPaint);
+                canvas.drawText(text, centerX - textPaint.measureText(text)/2f, centerY + radius + textMargin + textPaint.getTextSize()/1.25f, textPaint);
             }
         }
     }
@@ -86,5 +87,13 @@ public class ScrollPickerItem {
 
     public Paint getCirclePaint() {
         return circlePaint;
+    }
+
+    public void setTextMargin(float textMargin) {
+        this.textMargin = textMargin;
+    }
+
+    public void setTextSize(float textSize) {
+        textPaint.setTextSize(textSize);
     }
 }

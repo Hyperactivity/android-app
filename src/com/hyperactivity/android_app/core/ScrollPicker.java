@@ -141,20 +141,15 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         public ScrollPickerThread(SurfaceHolder surfaceHolder, Context context) {
             this.surfaceHolder = surfaceHolder;
             this.context = context;
+
+            items = new LinkedList<ScrollPickerItem>();
+            selectedItem = new ScrollPickerItem("fisk", context.getResources().getColor(R.color.scroll_picker_categories), context.getResources().getColor(R.color.scroll_picker_categories_text));
         }
 
         /**
          * Initializes the thread
          */
         private void doInit() {
-            items = new LinkedList<ScrollPickerItem>();
-
-            selectedItem = new ScrollPickerItem("fisk", context.getResources().getColor(R.color.scroll_picker_categories), 20);
-
-
-            selectedItem.setRadius(canvasHeight/2f - 10f);
-            selectedItem.setCenterX(canvasWidth/2f);
-            selectedItem.setCenterY(canvasHeight/2f);
             selectedItem.setVisible(true);
         }
 
@@ -311,6 +306,22 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                 float canvasRatio = canvasHeight / canvasWidth;
 
                 Log.i(this.getClass().getName(), "Canvas width: " + canvasWidth + " height: " + canvasHeight + " ratio: " + canvasRatio);
+
+                float diameter = ((float)context.getResources().getInteger(R.integer.scroll_picker_categories_size)/100f)*canvasHeight;
+                float textSize = ((float)context.getResources().getInteger(R.integer.scroll_picker_categories_text_size));
+                float margin = (canvasHeight - diameter - textSize)/3f;
+
+                if(margin < 0f) {
+                    Log.w(Constants.Log.TAG, "Margin of scroll picker is negative.");
+                }
+
+                selectedItem.setRadius(diameter/2f);
+                selectedItem.setCenterX(canvasWidth/2f);
+                selectedItem.setCenterY(selectedItem.getRadius() + margin);
+                selectedItem.setTextSize(textSize);
+                selectedItem.setTextMargin(margin);
+
+                //TODO: fix all the other circles
             }
         }
     }
