@@ -15,8 +15,6 @@ import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.ScrollPicker;
 
 public class MainActivity extends Activity {
-
-    private Boolean isLocked;
     private ScrollPicker scrollPicker;
 
     @Override
@@ -24,31 +22,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set up our lock button stuff
-        isLocked = true;
-
-        final View topBar = findViewById(R.id.top_bar);
-        final ImageView lockImage = (ImageView) findViewById(R.id.lockButton);
-        final TextView lockTextView = (TextView) findViewById(R.id.lockText);
-
-        lockImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                System.out.println("clicked");
-
-                isLocked = !isLocked;
-
-                if (isLocked) {
-                    lockTextView.setText(getResources().getString(R.string.top_bar_private));
-                    lockImage.setImageResource(R.drawable.locked);
-                } else {
-                    lockTextView.setText(getResources().getString(R.string.top_bar_public));
-                    lockImage.setImageResource(R.drawable.unlocked);
-                }
-            }
-        });
-
-        View view = findViewById(R.id.forum_surface_view);
+        View view = findViewById(R.id.forum_categories_surface_view);
         scrollPicker = (ScrollPicker) view;
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
     }
