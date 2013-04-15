@@ -132,15 +132,11 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         private SurfaceHolder surfaceHolder;    //Handle to the surface manager object we interact with
         private long lastTime;                  //Used to figure out elapsed time between frames
         private Context context;                //Handle to the application context, used to e.g. fetch Drawables.
-        private float fpsTimer;
-        private int fps;
-        private int frames;
-        private Paint fpsPaint;
         private float canvasWidth = 1;          //width of the drawable area, will be updated by function below.
         private float canvasHeight = 1;         //height of the drawable area, will be update by function below.
 
-        private ScrollPickerItem mainItem;
-        private LinkedList<ScrollPickerItem> subItems;
+        private ScrollPickerItem selectedItem;
+        private LinkedList<ScrollPickerItem> items;
 
         public ScrollPickerThread(SurfaceHolder surfaceHolder, Context context) {
             this.surfaceHolder = surfaceHolder;
@@ -151,36 +147,26 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
          * Initializes the thread
          */
         private void doInit() {
-            fpsPaint = new Paint();
-            fpsPaint.setColor(getResources().getColor(R.color.fps));
-            fpsPaint.setTextSize(16f);
+            items = new LinkedList<ScrollPickerItem>();
 
-            subItems = new LinkedList<ScrollPickerItem>();
+            selectedItem = new ScrollPickerItem("fisk", context.getResources().getColor(R.color.scroll_picker_categories), 20);
 
-            mainItem = new ScrollPickerItem("fisk", 10, 20);
-            mainItem.setCenterX(20f);
-            mainItem.setCenterY(canvasHeight - 100f);
-            mainItem.setRadius(20f);
+
+            selectedItem.setRadius(canvasHeight/2f - 10f);
+            selectedItem.setCenterX(canvasWidth/2f);
+            selectedItem.setCenterY(canvasHeight/2f);
+            selectedItem.setVisible(true);
         }
 
         /**
          * logic goes here.
          */
         private void doUpdate(float delta) {
-            //Compute fps
-            frames++;
-            fpsTimer += delta;
-            if (fpsTimer >= 1) {
-                fps = frames;
-                frames = 0;
-                fpsTimer = 0;
-            }
-
             if (state == STATE_READY) {
                 doInit();
                 setState(STATE_RUNNING);
             } else if (state == STATE_RUNNING) {
-                //TODO: do me
+
             }
         }
 
@@ -193,11 +179,9 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
                 canvas.drawColor(context.getResources().getColor(R.color.background));
 
-                //mainItem.doDraw(canvas);
+                selectedItem.doDraw(canvas);
 
                 //Iterator<ScrollPickerItem> it = subItems.clone()
-
-                canvas.drawText("FPS: " + fps, 0, 30, fpsPaint);
             }
         }
 
@@ -256,9 +240,6 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
         @Override
         public void run() {
-            fpsTimer = 0;
-            fps = 0;
-            frames = 0;
             long now;
             float delta;
 
