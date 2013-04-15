@@ -12,6 +12,11 @@
             android:layout_height="wrap_content"
             layout="@layout/top_bar"/>
 
+    <fragment android:id="@+id/thread_list"
+        	android:name="com.hyperactivity.android_app.activities.ThreadListFragment"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"/>
+    
     <com.hyperactivity.android_app.core.ScrollPicker
             android:id="@+id/forum_surface_view"
             android:layout_width="fill_parent"
