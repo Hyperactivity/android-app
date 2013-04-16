@@ -180,6 +180,10 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                 canvas.drawColor(context.getResources().getColor(R.color.background));
 
                 itemManager.doDraw(canvas);
+
+                Paint paint = new Paint();
+                paint.setColor(android.graphics.Color.BLUE);
+                canvas.drawRect((int)canvasWidth/2 -1, 0, (int)canvasWidth/2 + 1, (int)canvasHeight, paint);
             }
         }
 
@@ -234,6 +238,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         }
 
         public void onTouchMove(float dx, float dy) {
+            itemManager.move(dx);
         }
 
         @Override

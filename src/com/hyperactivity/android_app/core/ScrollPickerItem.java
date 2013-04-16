@@ -102,7 +102,7 @@ public class ScrollPickerItem {
         if(o instanceof ScrollPickerItem) {
             ScrollPickerItem obj = (ScrollPickerItem)o;
 
-            if(getText().equals(obj.getText()) && isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterY() && getCenterY() == obj.getCenterY() && getCirclePaint().equals(obj.getCirclePaint())) {
+            if(getText().equals(obj.getText()) && isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY() && getCirclePaint().equals(obj.getCirclePaint())) {
                 return true;
             }
         }

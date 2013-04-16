@@ -23,25 +23,99 @@ public class ScrollPickerItemManager {
     private ScrollPickerItem selectedItem;
     private LinkedList<ScrollPickerItem> items;
 
+    private float movingSpeed;
+    private float movingFriction;
+    private ScrollPickerItem nextSelectedItem;
+    private float moveTargetX;
+    private int moveDirection;
+
     public ScrollPickerItemManager(float canvasWidth, float canvasHeight, float itemPercentSize, float textSize) {
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
         this.itemPercentSize = itemPercentSize;
         this.textSize = textSize;
+        this.movingSpeed = 0f;
+        this.movingFriction = 5f;
+        this.nextSelectedItem = null;
+        this.moveTargetX = 0f;
+        this.moveDirection = 0;
 
         items = new LinkedList<ScrollPickerItem>();
     }
 
+    public void move(float x) {
+        float limit = 50f;
+
+        if (x > limit) {
+            moveDirection = 1;
+            movingSpeed = x;
+            nextSelectedItem = getItemsLeft().get(0);
+            moveTargetX = selectedItem.getCenterX();
+        } else if (x < -limit) {
+            moveDirection = -1;
+            movingSpeed = -x;
+            nextSelectedItem = getItemsRight().get(0);
+            moveTargetX = selectedItem.getCenterX();
+        } else {
+            Log.d(Constants.Log.TAG, "move x: " + x);
+        }
+    }
+
     public void doUpdate(float delta) {
+        if (movingSpeed != 0f) {
+            movingSpeed -= movingFriction * delta;
+
+            Log.d(Constants.Log.TAG, "movingSpeed: " + movingSpeed);
+
+            if (movingSpeed < 0f) {
+                movingSpeed = 0f;
+            } else {
+                if (moveDirection > 0) {
+                    if (nextSelectedItem.getCenterX() < moveTargetX) {
+                        float move = moveDirection*movingSpeed*delta;
+                        float diff = moveTargetX - (nextSelectedItem.getCenterX()+move);
+
+                        if(diff > 0f) {
+                            diff = 0f;
+                        } else if(diff < 0) {
+                            Log.d("hej","hej");
+                        }
+
+                        for (ScrollPickerItem item : items) {
+                            item.setCenterX(item.getCenterX() + diff + moveDirection * movingSpeed * delta);
+                        }
+                    }
+                } else if (moveDirection < 0) {
+                    if (nextSelectedItem.getCenterX() > moveTargetX) {
+                        float move = moveDirection*movingSpeed*delta;
+                        float diff = moveTargetX - (nextSelectedItem.getCenterX()+move);
+
+                        if(diff < 0f) {
+                            diff = 0f;
+                        }
+
+                        for (ScrollPickerItem item : items) {
+                            item.setCenterX(item.getCenterX() + diff + moveDirection * movingSpeed * delta);
+                        }
+                    }
+                } else {
+                    moveDirection = 0;
+                    movingSpeed = 0f;
+                    selectedItem = nextSelectedItem;
+                    moveTargetX = 0f;
+                }
+            }
+        }
+
         Iterator<ScrollPickerItem> it = items.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             it.next().doUpdate(delta);
         }
     }
 
     public void doDraw(Canvas canvas) {
         Iterator<ScrollPickerItem> it = items.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             it.next().doDraw(canvas);
         }
     }
@@ -57,13 +131,13 @@ public class ScrollPickerItemManager {
     public void addItem(String text, int itemColor, int textColor, boolean selected, boolean calculate) {
         ScrollPickerItem item = new ScrollPickerItem(text, itemColor, textColor);
 
-        if(selected) {
+        if (selected) {
             selectedItem = item;
         }
 
         items.add(item);
 
-        if(calculate) {
+        if (calculate) {
             recalculateItems();
         }
     }
@@ -80,14 +154,14 @@ public class ScrollPickerItemManager {
         List<ScrollPickerItem> listRight = getItemsRight();
 
         int position = -listLeft.size();
-        for(ScrollPickerItem item : listLeft) {
+        for (ScrollPickerItem item : listLeft) {
             updateItemFrame(item, position);
             position++;
         }
 
         updateItemFrame(selectedItem, position);
 
-        for(ScrollPickerItem item : listRight) {
+        for (ScrollPickerItem item : listRight) {
             position++;
             updateItemFrame(item, position);
         }
@@ -97,10 +171,10 @@ public class ScrollPickerItemManager {
         List<ScrollPickerItem> list = new LinkedList<ScrollPickerItem>();
 
         Iterator<ScrollPickerItem> it = items.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             ScrollPickerItem item = it.next();
 
-            if(item.equals(selectedItem)) {
+            if (item.equals(selectedItem)) {
                 return list;
             }
 
@@ -114,10 +188,10 @@ public class ScrollPickerItemManager {
         List<ScrollPickerItem> list = new LinkedList<ScrollPickerItem>();
 
         Iterator<ScrollPickerItem> it = items.descendingIterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             ScrollPickerItem item = it.next();
 
-            if(item.equals(selectedItem)) {
+            if (item.equals(selectedItem)) {
                 return list;
             }
 
@@ -128,7 +202,7 @@ public class ScrollPickerItemManager {
     }
 
     private void updateItemFrame(ScrollPickerItem item, int pos) {
-        float diameter =  itemPercentSize*canvasHeight;
+        float diameter = itemPercentSize * canvasHeight;
         float margin = (canvasHeight - diameter - textSize) / 3f;
         float centerX = canvasWidth / 2f;
 
@@ -137,7 +211,7 @@ public class ScrollPickerItemManager {
         }
 
         item.setRadius(diameter / 2f);
-        item.setCenterX(centerX + pos*diameter);
+        item.setCenterX(centerX + pos * diameter);
         item.setCenterY(item.getRadius() + margin);
         item.setTextSize(textSize);
         item.setTextMargin(margin);
