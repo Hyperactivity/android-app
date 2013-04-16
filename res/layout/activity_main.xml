@@ -14,14 +14,15 @@
             android:layout_width="fill_parent"
             android:layout_height="60dp"/>
 
-    <!-- TODO: Replace me with real forum threads fragment -->
         <fragment android:id="@+id/thread_list"
         	android:name="com.hyperactivity.android_app.activities.ThreadListFragment"
         	android:layout_width="fill_parent"
         	android:layout_height="0dp"
         	android:layout_weight="1"/>
 
-
-    <include layout="@layout/navigation_menu"/>
+	<fragment android:id="@+id/navigation_menu_fragment"
+	    android:name="com.hyperactivity.android_app.activities.NavigationMenuFragment"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"/>
 
 </LinearLayout>

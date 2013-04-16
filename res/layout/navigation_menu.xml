@@ -4,6 +4,7 @@
               android:layout_height="wrap_content">
 
     <ImageButton
+        	android:id="@+id/navigation_menu_button_1"
             android:src="@drawable/home"
             android:contentDescription="@string/home_desc"
             android:layout_width="wrap_content"
@@ -11,6 +12,7 @@
             android:layout_weight="1"/>
 
     <ImageButton
+        	android:id="@+id/navigation_menu_button_2"
             android:src="@drawable/home"
             android:contentDescription="@string/home_desc"
             android:layout_width="wrap_content"
@@ -18,6 +20,7 @@
             android:layout_weight="1"/>
 
     <ImageButton
+        	android:id="@+id/navigation_menu_button_3"
             android:src="@drawable/home"
             android:contentDescription="@string/home_desc"
             android:layout_width="wrap_content"
@@ -25,6 +28,7 @@
             android:layout_weight="1"/>
 
     <ImageButton
+        	android:id="@+id/navigation_menu_button_4"
             android:src="@drawable/home"
             android:contentDescription="@string/home_desc"
             android:layout_width="wrap_content"

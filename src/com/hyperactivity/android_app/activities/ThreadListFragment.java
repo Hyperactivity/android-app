@@ -34,7 +34,6 @@ public class ThreadListFragment extends ListFragment {
 		data.add(row2);
 		
         SimpleAdapter adapter = new SimpleAdapter(inflater.getContext(), data, R.layout.thread_list_item, from, to);
-        
         /** Setting the list adapter for the ListFragment */
         setListAdapter(adapter);
  
