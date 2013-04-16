@@ -45,65 +45,49 @@ public class ScrollPickerItemManager {
 
     public void move(float x) {
         float limit = 50f;
+        float speed = 5f;
 
-        if (x > limit) {
-            moveDirection = 1;
-            movingSpeed = x;
-            nextSelectedItem = getItemsLeft().get(0);
-            moveTargetX = selectedItem.getCenterX();
-        } else if (x < -limit) {
-            moveDirection = -1;
-            movingSpeed = -x;
-            nextSelectedItem = getItemsRight().get(0);
-            moveTargetX = selectedItem.getCenterX();
-        } else {
-            Log.d(Constants.Log.TAG, "move x: " + x);
+        if (moveDirection == 0) {
+            if (x > limit) {
+                moveDirection = 1;
+                movingSpeed = x*speed;
+                nextSelectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
+                moveTargetX = selectedItem.getCenterX();
+            } else if (x < -limit) {
+                moveDirection = -1;
+                movingSpeed = -x*speed;
+                nextSelectedItem = getItemsRight().get(0);
+                moveTargetX = selectedItem.getCenterX();
+            } else {
+                Log.d(Constants.Log.TAG, "move x: " + x);
+            }
         }
     }
 
     public void doUpdate(float delta) {
-        if (movingSpeed != 0f) {
-            movingSpeed -= movingFriction * delta;
+        if (moveDirection != 0) {
+            if (moveDirection * nextSelectedItem.getCenterX() < moveDirection * moveTargetX) {
+                float move = moveDirection * movingSpeed * delta;
+                float diff = moveDirection*moveTargetX - moveDirection*(nextSelectedItem.getCenterX() + move);
 
-            Log.d(Constants.Log.TAG, "movingSpeed: " + movingSpeed);
-
-            if (movingSpeed < 0f) {
-                movingSpeed = 0f;
-            } else {
-                if (moveDirection > 0) {
-                    if (nextSelectedItem.getCenterX() < moveTargetX) {
-                        float move = moveDirection*movingSpeed*delta;
-                        float diff = moveTargetX - (nextSelectedItem.getCenterX()+move);
-
-                        if(diff > 0f) {
-                            diff = 0f;
-                        } else if(diff < 0) {
-                            Log.d("hej","hej");
-                        }
-
-                        for (ScrollPickerItem item : items) {
-                            item.setCenterX(item.getCenterX() + diff + moveDirection * movingSpeed * delta);
-                        }
-                    }
-                } else if (moveDirection < 0) {
-                    if (nextSelectedItem.getCenterX() > moveTargetX) {
-                        float move = moveDirection*movingSpeed*delta;
-                        float diff = moveTargetX - (nextSelectedItem.getCenterX()+move);
-
-                        if(diff < 0f) {
-                            diff = 0f;
-                        }
-
-                        for (ScrollPickerItem item : items) {
-                            item.setCenterX(item.getCenterX() + diff + moveDirection * movingSpeed * delta);
-                        }
-                    }
-                } else {
-                    moveDirection = 0;
-                    movingSpeed = 0f;
-                    selectedItem = nextSelectedItem;
-                    moveTargetX = 0f;
+                if (diff > 0f) {
+                    diff = 0f;
+                } else if (diff < 0f) {
+                    Log.d("hej", "hej");
                 }
+
+                Log.d(Constants.Log.TAG, "x: " + nextSelectedItem.getCenterX() + " tx: " + moveTargetX + " move: " + move + " diff: " + moveDirection*diff);
+
+                for (ScrollPickerItem item : items) {
+                    item.setCenterX(item.getCenterX() + moveDirection*diff + move);
+                }
+            } else {
+                Log.d(Constants.Log.TAG, "Done: x: " + nextSelectedItem.getCenterX() + " tx: " + moveTargetX);
+                moveDirection = 0;
+                movingSpeed = 0f;
+                selectedItem = nextSelectedItem;
+                nextSelectedItem = null;
+                moveTargetX = 0f;
             }
         }
 
