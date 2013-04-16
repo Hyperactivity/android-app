@@ -8,25 +8,52 @@
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:gravity="center">
-      <ImageButton android:background="@drawable/home_pressed"
+      <ImageButton 
+          android:id="@+id/button1"
+          android:background="@drawable/active_house"
           android:contentDescription="@string/home_desc"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:adjustViewBounds="true"
+          android:scaleType="fitXY"
+         
           android:layout_weight="1"/>
-      <ImageButton android:background="@drawable/forum"
+      <ImageButton android:background="@drawable/non_active_bubble"
+                    android:id="@+id/button2"
+          
           android:contentDescription="@string/home_desc"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+                 android:scaleType="fitXY"
           android:layout_weight="1"/>
-      <ImageButton android:background="@drawable/favourite"
+      <ImageButton android:background="@drawable/non_active_star"
+                    android:id="@+id/button3"
+          
           android:contentDescription="@string/home_desc"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+            android:adjustViewBounds="true"
           android:layout_weight="1"/>
-      <ImageButton android:background="@drawable/search"
+      <ImageButton android:background="@drawable/non_active_search"
+                    android:id="@+id/button4"
+          
           android:contentDescription="@string/home_desc"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+                 android:scaleType="fitXY"
           android:layout_weight="1"/>
+       <ImageButton android:background="@drawable/non_active_search"
+                    android:id="@+id/button5"
+          
+          android:contentDescription="@string/home_desc"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+                 android:scaleType="fitXY"
+          android:layout_weight="1"/>
+      
    </LinearLayout>
 </LinearLayout>
