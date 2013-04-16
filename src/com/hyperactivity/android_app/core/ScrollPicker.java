@@ -148,7 +148,12 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         private void doInit() {
             itemManager = new ScrollPickerItemManager(canvasWidth, canvasHeight, context.getResources().getInteger(R.integer.scroll_picker_categories_size)/100f, context.getResources().getInteger(R.integer.scroll_picker_categories_text_size));
 
-            itemManager.addItem("fisk", context.getResources().getColor(R.color.scroll_picker_categories), context.getResources().getColor(R.color.scroll_picker_categories_text), true);
+            int categoryColor = context.getResources().getColor(R.color.scroll_picker_categories);
+            int textColor = context.getResources().getColor(R.color.scroll_picker_categories_text);
+
+            itemManager.addItem("flek", categoryColor, textColor);
+            itemManager.addItem("fisk", categoryColor, textColor, true);
+            itemManager.addItem("stek", categoryColor, textColor);
 
             itemManager.recalculateItems();
         }

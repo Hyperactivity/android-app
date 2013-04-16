@@ -76,8 +76,21 @@ public class ScrollPickerItemManager {
     }
 
     public void recalculateItems() {
-        //TODO: do not do like this
-        updateItemFrame(selectedItem, canvasWidth/2f);
+        List<ScrollPickerItem> listLeft = getItemsLeft();
+        List<ScrollPickerItem> listRight = getItemsRight();
+
+        int position = -listLeft.size();
+        for(ScrollPickerItem item : listLeft) {
+            updateItemFrame(item, position);
+            position++;
+        }
+
+        updateItemFrame(selectedItem, position);
+
+        for(ScrollPickerItem item : listRight) {
+            position++;
+            updateItemFrame(item, position);
+        }
     }
 
     public List<ScrollPickerItem> getItemsLeft() {
@@ -97,7 +110,7 @@ public class ScrollPickerItemManager {
         return list;
     }
 
-    public List<ScrollPickerItem> getItemsRigh() {
+    public List<ScrollPickerItem> getItemsRight() {
         List<ScrollPickerItem> list = new LinkedList<ScrollPickerItem>();
 
         Iterator<ScrollPickerItem> it = items.descendingIterator();
@@ -114,17 +127,18 @@ public class ScrollPickerItemManager {
         return list;
     }
 
-    private void updateItemFrame(ScrollPickerItem item, float centerX) {
+    private void updateItemFrame(ScrollPickerItem item, int pos) {
         float diameter =  itemPercentSize*canvasHeight;
         float margin = (canvasHeight - diameter - textSize) / 3f;
+        float centerX = canvasWidth / 2f;
 
         if (margin < 0f) {
             Log.w(Constants.Log.TAG, "Margin of scroll picker is negative.");
         }
 
         item.setRadius(diameter / 2f);
-        item.setCenterX(centerX);
-        item.setCenterY(selectedItem.getRadius() + margin);
+        item.setCenterX(centerX + pos*diameter);
+        item.setCenterY(item.getRadius() + margin);
         item.setTextSize(textSize);
         item.setTextMargin(margin);
 
