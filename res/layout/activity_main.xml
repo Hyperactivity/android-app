@@ -5,10 +5,7 @@
               android:layout_height="match_parent"
               tools:context=".MainActivity"
               android:orientation="vertical">
-
-
-
-
+              
     <com.hyperactivity.android_app.core.ScrollPicker
             android:id="@+id/forum_categories_surface_view"
             android:layout_width="fill_parent"

@@ -1,37 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-    <ImageButton
-        	android:id="@+id/navigation_menu_button_1"
-            android:src="@drawable/home"
-            android:contentDescription="@string/home_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-    <ImageButton
-        	android:id="@+id/navigation_menu_button_2"
-            android:src="@drawable/home"
-            android:contentDescription="@string/home_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-    <ImageButton
-        	android:id="@+id/navigation_menu_button_3"
-            android:src="@drawable/home"
-            android:contentDescription="@string/home_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-    <ImageButton
-        	android:id="@+id/navigation_menu_button_4"
-            android:src="@drawable/home"
-            android:contentDescription="@string/home_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+              android:layout_height="wrap_content"
+    android:background="#d9d9d9"
+    android:gravity="bottom" >
+      <ImageButton 
+          android:id="@+id/button1"
+          android:background="@drawable/active_house"
+          android:contentDescription="@string/home_desc"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:adjustViewBounds="true"
+          android:scaleType="fitXY"
+         
+          android:layout_weight="1"/>
+      <ImageButton android:background="@drawable/non_active_bubble"
+                    android:id="@+id/button2"
+          
+          android:contentDescription="@string/home_desc"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+                 android:scaleType="fitXY"
+          android:layout_weight="1"/>
+      <ImageButton android:background="@drawable/non_active_star"
+                    android:id="@+id/button3"
+          
+          android:contentDescription="@string/home_desc"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+          android:layout_weight="1"/>
+      <ImageButton android:background="@drawable/non_active_search"
+                    android:id="@+id/button4"
+          
+          android:contentDescription="@string/home_desc"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+                 android:scaleType="fitXY"
+          android:layout_weight="1"/>
+       <ImageButton android:background="@drawable/non_active_search"
+                    android:id="@+id/button5"
+          
+          android:contentDescription="@string/home_desc"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+                 android:scaleType="fitXY"
+          android:layout_weight="1"/>
+      
 </LinearLayout>
