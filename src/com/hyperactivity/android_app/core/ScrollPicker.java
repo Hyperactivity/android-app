@@ -1,8 +1,7 @@
 package com.hyperactivity.android_app.core;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -150,11 +149,11 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
             int categoryColor = context.getResources().getColor(R.color.scroll_picker_categories);
 
-            itemManager.addItem(categoryColor);
-            itemManager.addItem(categoryColor);
-            itemManager.addItem(categoryColor, true);
-            itemManager.addItem(categoryColor);
-            itemManager.addItem(categoryColor);
+            itemManager.addItem(android.graphics.Color.BLUE);
+            itemManager.addItem(android.graphics.Color.YELLOW);
+            itemManager.addItem(android.graphics.Color.CYAN, true);
+            itemManager.addItem(android.graphics.Color.RED);
+            itemManager.addItem(android.graphics.Color.MAGENTA);
 
             itemManager.recalculateItems();
         }

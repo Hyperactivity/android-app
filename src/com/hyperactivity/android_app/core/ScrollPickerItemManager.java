@@ -27,6 +27,9 @@ public class ScrollPickerItemManager {
     private ScrollPickerItem nextSelectedItem;
     private int moveDirection;
 
+    private float sideX1;
+    private float sideX2;
+
     public ScrollPickerItemManager(float canvasWidth, float canvasHeight, float itemPercentSize) {
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
@@ -76,6 +79,7 @@ public class ScrollPickerItemManager {
 
                 for (ScrollPickerItem item : items) {
                     item.setCenterX(item.getCenterX() + move + diff);
+
                 }
             } else {
                 Log.d(Constants.Log.TAG, "Done: x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f);
@@ -93,10 +97,18 @@ public class ScrollPickerItemManager {
     }
 
     public void doDraw(Canvas canvas) {
-        Iterator<ScrollPickerItem> it = items.iterator();
+        Iterator<ScrollPickerItem> it = getItemsLeft().iterator();
         while (it.hasNext()) {
             it.next().doDraw(canvas);
         }
+
+        it = ((LinkedList<ScrollPickerItem>) getItemsRight()).descendingIterator();
+
+        while (it.hasNext()) {
+            it.next().doDraw(canvas);
+        }
+
+        selectedItem.doDraw(canvas);
     }
 
     public void addItem(int itemColor) {
@@ -129,6 +141,10 @@ public class ScrollPickerItemManager {
     }
 
     public void recalculateItems() {
+        float radius = itemPercentSize * canvasHeight / 2f;
+        sideX1 = canvasWidth / 2f + radius;
+        sideX2 = sideX1 + radius;
+
         List<ScrollPickerItem> listLeft = getItemsLeft();
         List<ScrollPickerItem> listRight = getItemsRight();
 
@@ -190,7 +206,7 @@ public class ScrollPickerItemManager {
         }
 
         item.setRadius(diameter / 2f);
-        item.setCenterX(centerX + pos * diameter);
+        item.setCenterX(centerX + pos * item.getRadius());
         item.setCenterY(item.getRadius() + margin);
 
         item.setVisible(true);
