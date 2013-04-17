@@ -71,15 +71,33 @@ public class ScrollPickerItemManager {
 
                 if (moveDirection * diff > 0f) {
                     diff = 0f;
-                } else if (diff < 0f) {
-                    Log.d("hej", "hej");
                 }
 
-                Log.d(Constants.Log.TAG, "x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f + " move: " + move + " diff: " + diff);
+                float totalMove = computeRadiusByPos(0);
+                float currMove = Math.abs((nextSelectedItem.getCenterX() + move + diff - canvasWidth / 2f));
+                float progress = (totalMove - currMove) / totalMove;
 
+                Log.d(Constants.Log.TAG, "x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f + " move: " + move + " diff: " + diff + " progress: " + progress);
+
+                int pos = -getItemsLeft().size();
                 for (ScrollPickerItem item : items) {
                     item.setCenterX(item.getCenterX() + move + diff);
 
+                    float nr = item.getRadius();
+
+                    if (moveDirection < 0) {
+                        float r = computeRadiusByPos(Math.abs(pos));
+                        float rd = signum(pos, -1) * (computeRadiusByPos(pos) - computeRadiusByPos(Math.abs(pos) + 1));
+                        nr = r + progress * rd;
+
+                    } else {
+                        float r = computeRadiusByPos(Math.abs(pos));
+                        float rd = -signum(pos, 1) * (computeRadiusByPos(pos) - computeRadiusByPos(Math.abs(pos) + 1));
+                        nr = r + progress * rd;
+                    }
+
+                    item.setRadius(nr);
+                    pos++;
                 }
             } else {
                 Log.d(Constants.Log.TAG, "Done: x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f);
@@ -206,7 +224,7 @@ public class ScrollPickerItemManager {
 
         item.setRadius(computeRadiusByPos(pos));
         item.setCenterX(computeXByPos(pos));
-        item.setCenterY(diameter/2f + margin);
+        item.setCenterY(diameter / 2f + margin);
 
         item.setVisible(true);
     }
@@ -219,14 +237,27 @@ public class ScrollPickerItemManager {
     }
 
     private float computeXByPos(int pos) {
-        float centerX = canvasWidth/2f;
+        float centerX = canvasWidth / 2f;
 
         float result = centerX;
 
-        for(int i = 0; i < Math.abs(pos); i++) {
-            result += Math.signum(pos)*computeRadiusByPos(i);
+        for (int i = 0; i < Math.abs(pos); i++) {
+            result += Math.signum(pos) * computeRadiusByPos(i);
         }
 
         return result;
+    }
+
+    /**
+     * @return -1 if value < 0. 1 if value > 0. resultOnZero if value = 0
+     */
+    private int signum(int value, int resultOnZero) {
+        if (value < 0) {
+            return -1;
+        } else if (value > 0) {
+            return 1;
+        }
+
+        return resultOnZero;
     }
 }
