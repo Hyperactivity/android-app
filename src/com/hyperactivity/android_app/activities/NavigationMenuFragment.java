@@ -1,7 +1,9 @@
 package com.hyperactivity.android_app.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +17,17 @@ public class NavigationMenuFragment extends Fragment {
 	
 	public static final int NUMBER_OF_BUTTONS = 5;
 	
-	private static int[] active = new int[] {R.drawable.active_house, R.drawable.active_bubble, R.drawable.active_star, R.drawable.active_search, R.drawable.active_search};
-	private static int[] inactive = new int[] {R.drawable.non_active_house, R.drawable.non_active_bubble, R.drawable.non_active_star, R.drawable.non_active_search, R.drawable.non_active_search};
+	private static NavigationButtonInfo[] buttonInfo;
+	
+	static {
+		buttonInfo = new NavigationButtonInfo[NUMBER_OF_BUTTONS];
+		buttonInfo[0] = new NavigationButtonInfo(R.id.navigation_menu_button_1, R.drawable.active_house, R.drawable.non_active_house, MainActivity.class);
+		buttonInfo[1] = new NavigationButtonInfo(R.id.navigation_menu_button_2, R.drawable.active_bubble, R.drawable.non_active_bubble, ForumActivity.class);
+		buttonInfo[2] = new NavigationButtonInfo(R.id.navigation_menu_button_3, R.drawable.active_star, R.drawable.non_active_star, DiaryActivity.class);
+		buttonInfo[3] = new NavigationButtonInfo(R.id.navigation_menu_button_4, R.drawable.active_search, R.drawable.non_active_search, ForumActivity.class);
+		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, ForumActivity.class);
+		
+	}
 	
 	private ImageView[] buttons;
 	private int activeButton;
@@ -31,37 +42,52 @@ public class NavigationMenuFragment extends Fragment {
 		int height = (int)(width*0.87/NUMBER_OF_BUTTONS);
 		
 		buttons = new ImageView[NUMBER_OF_BUTTONS];
-		buttons[0] = (ImageView) view.findViewById(R.id.navigation_menu_button_1);
-		buttons[1] = (ImageView) view.findViewById(R.id.navigation_menu_button_2);
-		buttons[2] = (ImageView) view.findViewById(R.id.navigation_menu_button_3);
-		buttons[3] = (ImageView) view.findViewById(R.id.navigation_menu_button_4);
-		buttons[4] = (ImageView) view.findViewById(R.id.navigation_menu_button_5);
 		for (int i = 0; i < buttons.length; i++) {
 			final int index = i;
-			ImageView button = buttons[i];
-			button.getLayoutParams().height = height;
-			button.setImageResource(inactive[i]);
-			button.setOnClickListener(new OnClickListener() {
+			buttons[i] = (ImageView) view.findViewById(buttonInfo[i].buttonID);
+			buttons[i].getLayoutParams().height = height;
+			buttons[i].setImageResource(buttonInfo[i].inactiveIconID);
+			buttons[i].setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					setActiveButton(index);
+					getActivity().startActivity(new Intent(getActivity(), buttonInfo[index].targetActivity));
 				}
 			});
 		}
 		activeButton = -1;
-		setActiveButton(0);
+		setActiveButton(getActivity());
 		
 		return view;
 	}
 	
-	public void setActiveButton(int index) {
+	private void setActiveButton(FragmentActivity activity) {
+		for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+			if (activity.getClass().equals(buttonInfo[i].targetActivity)) {
+				setActiveButton(i);
+				break;
+			}
+		}
+	}
+	
+	private void setActiveButton(int index) {
 		if (index != activeButton) {
 			if (activeButton != -1) {
-				buttons[activeButton].setImageResource(inactive[activeButton]);
+				buttons[activeButton].setImageResource(buttonInfo[index].inactiveIconID);
 			}
-			buttons[index].setImageResource(active[index]);
+			buttons[index].setImageResource(buttonInfo[index].activeIconID);
 			activeButton = index;
+		}
+	}
+	
+	private static class NavigationButtonInfo {
+		int buttonID, activeIconID, inactiveIconID;
+		Class<?> targetActivity;
+		public NavigationButtonInfo(int buttonID, int activeIconID, int inactiveIconID, Class<?> targetActivity) {
+			this.buttonID = buttonID;
+			this.activeIconID = activeIconID;
+			this.inactiveIconID = inactiveIconID;
+			this.targetActivity = targetActivity;
 		}
 	}
 }
