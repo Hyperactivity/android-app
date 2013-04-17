@@ -15,8 +15,8 @@ public class NavigationMenuFragment extends Fragment {
 	
 	public static final int NUMBER_OF_BUTTONS = 5;
 	
-	private static int[] active = new int[] {R.drawable.active_house, R.drawable.active_bubble, R.drawable.active_star, R.drawable.active_search, R.drawable.active_search};
-	private static int[] inactive = new int[] {R.drawable.non_active_house, R.drawable.non_active_bubble, R.drawable.non_active_star, R.drawable.non_active_search, R.drawable.non_active_search};
+	private static int[] active = new int[] {R.drawable.active_house, R.drawable.active_bubble, R.drawable.active_diary, R.drawable.active_pen, R.drawable.active_search};
+	private static int[] inactive = new int[] {R.drawable.non_active_house, R.drawable.non_active_bubble, R.drawable.non_active_diary, R.drawable.non_active_pen, R.drawable.non_active_search};
 	
 	private ImageView[] buttons;
 	private int activeButton;
