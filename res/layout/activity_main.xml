@@ -9,7 +9,7 @@
     <com.hyperactivity.android_app.core.ScrollPicker
             android:id="@+id/forum_categories_surface_view"
             android:layout_width="fill_parent"
-            android:layout_height="60dp"/>
+            android:layout_height="100dp"/>
 
         <fragment android:id="@+id/thread_list"
         	android:name="com.hyperactivity.android_app.activities.ThreadListFragment"
