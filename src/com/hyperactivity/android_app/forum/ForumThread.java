@@ -9,17 +9,17 @@ import com.hyperactivity.android_app.core.Color;
 import com.hyperactivity.android_app.core.Post;
 import com.hyperactivity.android_app.core.Sort;
 
-public class Thread extends Post {
+public class ForumThread extends Post {
 	String		headline;
 	List<Reply>	replies;
 	Sort		sort;
 	Color		color;
 
-	public Thread(Account author, String headline, String text) {
+	public ForumThread(Account author, String headline, String text) {
 		this(author, headline, text, Sort.TIME, null, new Date());
 	}
 	
-	public Thread(Account author, String headline, String text, Sort sort, Color color, Date date) {
+	public ForumThread(Account author, String headline, String text, Sort sort, Color color, Date date) {
 		super(author, text, date);
 		this.headline = headline;
 		this.sort = sort;

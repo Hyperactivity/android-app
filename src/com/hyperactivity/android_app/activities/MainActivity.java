@@ -1,8 +1,8 @@
 package com.hyperactivity.android_app.activities;
 
+import java.util.ArrayList;
+
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,16 +10,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import java.util.ArrayList;
-import android.widget.TextView;
+
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.ScrollPicker;
 import com.hyperactivity.android_app.forum.ForumThread;
-import com.hyperactivity.android_app.activities.ThreadListFragment;
-
-;
 
 public class MainActivity extends FragmentActivity {
 
@@ -45,7 +39,6 @@ public class MainActivity extends FragmentActivity {
                 .findFragmentById(R.id.thread_list);
 
         threadListFragment.updateThreadList(forumList);
-
     }
 
     @Override

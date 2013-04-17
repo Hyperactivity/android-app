@@ -10,7 +10,7 @@ import com.hyperactivity.android_app.core.RemoteObject;
 public class Category extends RemoteObject {
     String subject;
     List<Category> categories;
-    List<Thread> threads;
+    List<ForumThread> threads;
     Color color;
 
     public Category(String id, String subject) {
@@ -22,14 +22,14 @@ public class Category extends RemoteObject {
         this.subject = subject;
         this.color = color;
         this.categories = new LinkedList<Category>();
-        this.threads = new LinkedList<Thread>();
+        this.threads = new LinkedList<ForumThread>();
     }
 
     public List<Category> getCategories() {
         return categories;
     }
 
-    public List<Thread> getThreads() {
+    public List<ForumThread> getThreads() {
         return threads;
     }
 
@@ -45,13 +45,13 @@ public class Category extends RemoteObject {
         return subject;
     }
 
-    public void addThread(Thread thread) {
+    public void addThread(ForumThread thread) {
         if (!threads.contains(thread)) {
             threads.add(thread);
         }
     }
 
     public void createThread(Account author, String headline, String text) {
-        addThread(new Thread(author, headline, text));
+        addThread(new ForumThread(author, headline, text));
     }
 }

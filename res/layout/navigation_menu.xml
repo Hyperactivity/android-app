@@ -5,52 +5,48 @@
     android:background="#d9d9d9"
     android:gravity="bottom">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/navigation_menu_button_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/active_house"
+        android:src="@drawable/active_house"
         android:contentDescription="@string/home_desc"
         android:scaleType="centerInside"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/navigation_menu_button_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:adjustViewBounds="false"
-        android:background="@drawable/non_active_bubble"
+        android:src="@drawable/non_active_bubble"
         android:contentDescription="@string/home_desc"
         android:scaleType="centerInside"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/navigation_menu_button_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:adjustViewBounds="false"
-        android:background="@drawable/non_active_star"
+        android:src="@drawable/non_active_star"
         android:contentDescription="@string/home_desc"
         android:scaleType="centerInside"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/navigation_menu_button_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:adjustViewBounds="false"
-        android:background="@drawable/non_active_search"
+        android:src="@drawable/non_active_search"
         android:contentDescription="@string/home_desc"
         android:scaleType="centerInside"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/navigation_menu_button_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:adjustViewBounds="false"
-        android:background="@drawable/non_active_search"
+        android:src="@drawable/non_active_search"
         android:contentDescription="@string/home_desc"
         android:scaleType="centerInside"/>
 
