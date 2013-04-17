@@ -11,11 +11,14 @@ public class ScrollPickerItem {
     private float radius;
     private Paint circlePaint;
     private Paint textPaint;
+    private float textMargin;
 
     public ScrollPickerItem(String text, int circleColor, int textColor) {
         this.text = text;
-        circlePaint = new Paint(circleColor);
-        textPaint = new Paint(textColor);
+        circlePaint = new Paint();
+        circlePaint.setColor(circleColor);
+        textPaint = new Paint();
+        textPaint.setColor(textColor);
 
         visible = false;
         centerX = 0f;
@@ -33,7 +36,7 @@ public class ScrollPickerItem {
 
             if(text.length() > 0) {
                 //draw text.
-                canvas.drawText(text, centerX, centerY, textPaint);
+                canvas.drawText(text, centerX - textPaint.measureText(text)/2f, centerY + radius + textMargin + textPaint.getTextSize()/1.25f, textPaint);
             }
         }
     }
@@ -84,5 +87,26 @@ public class ScrollPickerItem {
 
     public Paint getCirclePaint() {
         return circlePaint;
+    }
+
+    public void setTextMargin(float textMargin) {
+        this.textMargin = textMargin;
+    }
+
+    public void setTextSize(float textSize) {
+        textPaint.setTextSize(textSize);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof ScrollPickerItem) {
+            ScrollPickerItem obj = (ScrollPickerItem)o;
+
+            if(getText().equals(obj.getText()) && isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY() && getCirclePaint().equals(obj.getCirclePaint())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
