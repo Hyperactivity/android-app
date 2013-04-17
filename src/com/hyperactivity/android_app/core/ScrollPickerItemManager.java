@@ -7,6 +7,7 @@ import com.hyperactivity.android_app.Constants;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,9 +25,7 @@ public class ScrollPickerItemManager {
     private LinkedList<ScrollPickerItem> items;
 
     private float movingSpeed;
-    private float movingFriction;
     private ScrollPickerItem nextSelectedItem;
-    private float moveTargetX;
     private int moveDirection;
 
     public ScrollPickerItemManager(float canvasWidth, float canvasHeight, float itemPercentSize, float textSize) {
@@ -35,59 +34,57 @@ public class ScrollPickerItemManager {
         this.itemPercentSize = itemPercentSize;
         this.textSize = textSize;
         this.movingSpeed = 0f;
-        this.movingFriction = 5f;
         this.nextSelectedItem = null;
-        this.moveTargetX = 0f;
         this.moveDirection = 0;
 
         items = new LinkedList<ScrollPickerItem>();
     }
 
     public void move(float x) {
-        float limit = 50f;
+        float limit = 150f;
         float speed = 5f;
 
         if (moveDirection == 0) {
-            if (x > limit) {
-                moveDirection = 1;
-                movingSpeed = x*speed;
-                nextSelectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
-                moveTargetX = selectedItem.getCenterX();
-            } else if (x < -limit) {
-                moveDirection = -1;
-                movingSpeed = -x*speed;
-                nextSelectedItem = getItemsRight().get(0);
-                moveTargetX = selectedItem.getCenterX();
-            } else {
-                Log.d(Constants.Log.TAG, "move x: " + x);
+            try {
+                if (x > limit) {
+                    nextSelectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
+                    moveDirection = 1;
+                } else if (x < -limit) {
+                    nextSelectedItem = ((LinkedList<ScrollPickerItem>) getItemsRight()).getFirst();
+                    moveDirection = -1;
+                }
+                movingSpeed = moveDirection * x * speed;
+
+            } catch (NoSuchElementException e) {
+                moveDirection = 0;
+                nextSelectedItem = null;
             }
         }
     }
 
     public void doUpdate(float delta) {
         if (moveDirection != 0) {
-            if (moveDirection * nextSelectedItem.getCenterX() < moveDirection * moveTargetX) {
+            if (moveDirection * nextSelectedItem.getCenterX() < moveDirection * canvasWidth / 2f) {
                 float move = moveDirection * movingSpeed * delta;
-                float diff = moveDirection*moveTargetX - moveDirection*(nextSelectedItem.getCenterX() + move);
+                float diff = moveDirection * (moveDirection * canvasWidth / 2f - moveDirection * (nextSelectedItem.getCenterX() + move));
 
-                if (diff > 0f) {
+                if (moveDirection * diff > 0f) {
                     diff = 0f;
                 } else if (diff < 0f) {
                     Log.d("hej", "hej");
                 }
 
-                Log.d(Constants.Log.TAG, "x: " + nextSelectedItem.getCenterX() + " tx: " + moveTargetX + " move: " + move + " diff: " + moveDirection*diff);
+                Log.d(Constants.Log.TAG, "x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f + " move: " + move + " diff: " + diff);
 
                 for (ScrollPickerItem item : items) {
-                    item.setCenterX(item.getCenterX() + moveDirection*diff + move);
+                    item.setCenterX(item.getCenterX() + move + diff);
                 }
             } else {
-                Log.d(Constants.Log.TAG, "Done: x: " + nextSelectedItem.getCenterX() + " tx: " + moveTargetX);
+                Log.d(Constants.Log.TAG, "Done: x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f);
                 moveDirection = 0;
                 movingSpeed = 0f;
                 selectedItem = nextSelectedItem;
                 nextSelectedItem = null;
-                moveTargetX = 0f;
             }
         }
 
