@@ -199,16 +199,34 @@ public class ScrollPickerItemManager {
     private void updateItemFrame(ScrollPickerItem item, int pos) {
         float diameter = itemPercentSize * canvasHeight;
         float margin = (canvasHeight - diameter) / 2f;
-        float centerX = canvasWidth / 2f;
 
         if (margin < 0f) {
             Log.w(Constants.Log.TAG, "Margin of scroll picker is negative.");
         }
 
-        item.setRadius(diameter / 2f);
-        item.setCenterX(centerX + pos * item.getRadius());
-        item.setCenterY(item.getRadius() + margin);
+        item.setRadius(computeRadiusByPos(pos));
+        item.setCenterX(computeXByPos(pos));
+        item.setCenterY(diameter/2f + margin);
 
         item.setVisible(true);
+    }
+
+    private float computeRadiusByPos(int pos) {
+        float diameter = itemPercentSize * canvasHeight;
+        float radius = (diameter / 2f) / (1f + Math.abs(pos) * 0.5f);
+
+        return radius;
+    }
+
+    private float computeXByPos(int pos) {
+        float centerX = canvasWidth/2f;
+
+        float result = centerX;
+
+        for(int i = 0; i < Math.abs(pos); i++) {
+            result += Math.signum(pos)*computeRadiusByPos(i);
+        }
+
+        return result;
     }
 }
