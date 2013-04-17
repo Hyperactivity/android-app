@@ -19,7 +19,6 @@ public class ScrollPickerItemManager {
     private float canvasHeight;
     private float canvasWidth;
     private float itemPercentSize;
-    private float textSize;
 
     private ScrollPickerItem selectedItem;
     private LinkedList<ScrollPickerItem> items;
@@ -28,11 +27,10 @@ public class ScrollPickerItemManager {
     private ScrollPickerItem nextSelectedItem;
     private int moveDirection;
 
-    public ScrollPickerItemManager(float canvasWidth, float canvasHeight, float itemPercentSize, float textSize) {
+    public ScrollPickerItemManager(float canvasWidth, float canvasHeight, float itemPercentSize) {
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
         this.itemPercentSize = itemPercentSize;
-        this.textSize = textSize;
         this.movingSpeed = 0f;
         this.nextSelectedItem = null;
         this.moveDirection = 0;
@@ -101,16 +99,16 @@ public class ScrollPickerItemManager {
         }
     }
 
-    public void addItem(String text, int itemColor, int textColor) {
-        addItem(text, itemColor, textColor, false, false);
+    public void addItem(int itemColor) {
+        addItem(itemColor, false, false);
     }
 
-    public void addItem(String text, int itemColor, int textColor, boolean selected) {
-        addItem(text, itemColor, textColor, selected, false);
+    public void addItem(int itemColor, boolean selected) {
+        addItem(itemColor, selected, false);
     }
 
-    public void addItem(String text, int itemColor, int textColor, boolean selected, boolean calculate) {
-        ScrollPickerItem item = new ScrollPickerItem(text, itemColor, textColor);
+    public void addItem(int itemColor, boolean selected, boolean calculate) {
+        ScrollPickerItem item = new ScrollPickerItem(itemColor);
 
         if (selected) {
             selectedItem = item;
@@ -184,7 +182,7 @@ public class ScrollPickerItemManager {
 
     private void updateItemFrame(ScrollPickerItem item, int pos) {
         float diameter = itemPercentSize * canvasHeight;
-        float margin = (canvasHeight - diameter - textSize) / 3f;
+        float margin = (canvasHeight - diameter) / 2f;
         float centerX = canvasWidth / 2f;
 
         if (margin < 0f) {
@@ -194,8 +192,6 @@ public class ScrollPickerItemManager {
         item.setRadius(diameter / 2f);
         item.setCenterX(centerX + pos * diameter);
         item.setCenterY(item.getRadius() + margin);
-        item.setTextSize(textSize);
-        item.setTextMargin(margin);
 
         item.setVisible(true);
     }
