@@ -2,6 +2,7 @@ package com.hyperactivity.android_app.core;
 
 import android.content.Context;
 import android.graphics.*;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -149,11 +150,11 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
             int categoryColor = context.getResources().getColor(R.color.scroll_picker_categories);
 
-            itemManager.addItem(android.graphics.Color.BLUE);
-            itemManager.addItem(android.graphics.Color.YELLOW);
-            itemManager.addItem(android.graphics.Color.CYAN, true);
-            itemManager.addItem(android.graphics.Color.RED);
-            itemManager.addItem(android.graphics.Color.MAGENTA);
+            itemManager.addItem(android.graphics.Color.BLUE, "flek", Color.BLACK);
+            itemManager.addItem(android.graphics.Color.YELLOW, "fluk", Color.BLACK);
+            itemManager.addItem(android.graphics.Color.CYAN, "flik", Color.BLACK, true);
+            itemManager.addItem(android.graphics.Color.RED, "fläk", Color.BLACK);
+            itemManager.addItem(android.graphics.Color.MAGENTA, "flyk", Color.BLACK);
 
             itemManager.recalculateItems();
         }
@@ -180,10 +181,6 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                 canvas.drawColor(context.getResources().getColor(R.color.background));
 
                 itemManager.doDraw(canvas);
-
-                Paint paint = new Paint();
-                paint.setColor(android.graphics.Color.BLUE);
-                canvas.drawRect((int)canvasWidth/2 -1, 0, (int)canvasWidth/2 + 1, (int)canvasHeight, paint);
             }
         }
 

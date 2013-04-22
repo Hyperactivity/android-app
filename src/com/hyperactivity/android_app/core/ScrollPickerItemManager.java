@@ -44,6 +44,8 @@ public class ScrollPickerItemManager {
 
         if (moveDirection == 0) {
             try {
+                selectedItem.setShowText(false);
+
                 if (x > limit) {
                     selectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
                     moveDirection = 1;
@@ -73,7 +75,7 @@ public class ScrollPickerItemManager {
                 float currMove = Math.abs((selectedItem.getCenterX() + move + diff - canvasWidth / 2f));
                 float progress = (totalMove - currMove) / totalMove;
 
-                int pos = -getItemsLeft().size() - moveDirection * 1;
+                int pos = -getItemsLeft().size() - moveDirection;
                 for (ScrollPickerItem item : items) {
                     item.setCenterX(item.getCenterX() + move + diff);
 
@@ -101,6 +103,7 @@ public class ScrollPickerItemManager {
             } else {
                 moveDirection = 0;
                 movingSpeed = 0f;
+                selectedItem.setShowText(true);
             }
         }
 
@@ -136,19 +139,20 @@ public class ScrollPickerItemManager {
         selectedItem.doDraw(canvas);
     }
 
-    public void addItem(int itemColor) {
-        addItem(itemColor, false, false);
+    public void addItem(int itemColor, String text, int textColor) {
+        addItem(itemColor, text, textColor, false, false);
     }
 
-    public void addItem(int itemColor, boolean selected) {
-        addItem(itemColor, selected, false);
+    public void addItem(int itemColor, String text, int textColor, boolean selected) {
+        addItem(itemColor, text, textColor, selected, false);
     }
 
-    public void addItem(int itemColor, boolean selected, boolean calculate) {
-        ScrollPickerItem item = new ScrollPickerItem(itemColor);
+    public void addItem(int itemColor, String text, int textColor, boolean selected, boolean calculate) {
+        ScrollPickerItem item = new ScrollPickerItem(itemColor, text, textColor);
 
         if (selected) {
             selectedItem = item;
+            item.setShowText(true);
         }
 
         items.add(item);
@@ -210,7 +214,7 @@ public class ScrollPickerItemManager {
 
     private void updateItemFrame(ScrollPickerItem item, int pos) {
         float diameter = itemPercentSize * canvasHeight;
-        float margin = (canvasHeight - diameter) / 2f;
+        float margin = (canvasHeight - diameter) / 3f;
 
         if (margin < 0f) {
             Log.w(Constants.Log.TAG, "Margin of scroll picker is negative.");
@@ -220,6 +224,7 @@ public class ScrollPickerItemManager {
         item.setCenterX(computeXByPos(pos));
         item.setCenterY(diameter / 2f + margin);
 
+        item.setTextMargin(margin);
         item.setVisible(true);
     }
 

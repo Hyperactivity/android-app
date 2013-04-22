@@ -8,8 +8,12 @@ public class ScrollPickerItem {
     private float centerY;
     private float radius;
     private Paint circlePaint;
+    private String text;
+    private boolean showText;
+    private float textMargin;
+    private Paint textPaint;
 
-    public ScrollPickerItem(int circleColor) {
+    public ScrollPickerItem(int circleColor, String text, int textColor) {
         circlePaint = new Paint();
         circlePaint.setColor(circleColor);
 
@@ -17,6 +21,13 @@ public class ScrollPickerItem {
         centerX = 0f;
         centerY = 0f;
         radius = 0f;
+
+        this.text = text;
+        this.showText = false;
+        this.textMargin = 0f;
+        textPaint = new Paint();
+        textPaint.setTextSize(24f);
+        textPaint.setColor(textColor);
     }
 
     public void doUpdate(float delta) {
@@ -24,11 +35,17 @@ public class ScrollPickerItem {
     }
 
     public void doDraw(Canvas canvas) {
-        if(visible) {
+        if (visible) {
             canvas.drawCircle(centerX, centerY, radius, circlePaint);
             Paint paint = new Paint();
             paint.setColor(android.graphics.Color.BLACK);
-            canvas.drawRect(centerX - 1, centerY - radius, centerX +1, centerY + radius, paint);
+            canvas.drawRect(centerX - 1, centerY - radius, centerX + 1, centerY + radius, paint);
+
+            if (showText) {
+                Rect bounds = new Rect();
+                paint.getTextBounds(text, 0, text.length(), bounds);
+                canvas.drawText(text, centerX - bounds.width(), centerY + radius + textMargin + bounds.height(), textPaint);
+            }
         }
     }
 
@@ -72,12 +89,20 @@ public class ScrollPickerItem {
         return circlePaint;
     }
 
+    public void setShowText(boolean show) {
+        this.showText = show;
+    }
+
+    public void setTextMargin(float margin) {
+        this.textMargin = margin;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if(o instanceof ScrollPickerItem) {
-            ScrollPickerItem obj = (ScrollPickerItem)o;
+        if (o instanceof ScrollPickerItem) {
+            ScrollPickerItem obj = (ScrollPickerItem) o;
 
-            if(isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY() && getCirclePaint().equals(obj.getCirclePaint())) {
+            if (isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY() && getCirclePaint().equals(obj.getCirclePaint())) {
                 return true;
             }
         }
