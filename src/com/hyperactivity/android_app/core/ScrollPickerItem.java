@@ -104,12 +104,16 @@ public class ScrollPickerItem {
         renderImage = Bitmap.createScaledBitmap(image, (int)radius*2, (int)radius*2, true);
     }
 
+    public Bitmap getImage() {
+        return image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof ScrollPickerItem) {
             ScrollPickerItem obj = (ScrollPickerItem) o;
 
-            if (isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY()) {
+            if (isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY() && image.equals(((ScrollPickerItem) o).getImage())) {
                 return true;
             }
         }
