@@ -7,15 +7,15 @@ public class ScrollPickerItem {
     private float centerX;
     private float centerY;
     private float radius;
-    private Paint circlePaint;
     private String text;
     private boolean showText;
     private float textMargin;
     private Paint textPaint;
+    private Bitmap image;
+    private Bitmap renderImage;
 
-    public ScrollPickerItem(int circleColor, String text, int textColor) {
-        circlePaint = new Paint();
-        circlePaint.setColor(circleColor);
+    public ScrollPickerItem(Bitmap image, String text, int textColor) {
+        this.image = image;
 
         visible = false;
         centerX = 0f;
@@ -28,6 +28,8 @@ public class ScrollPickerItem {
         textPaint = new Paint();
         textPaint.setTextSize(24f);
         textPaint.setColor(textColor);
+
+        renderImage = image;
     }
 
     public void doUpdate(float delta) {
@@ -36,7 +38,7 @@ public class ScrollPickerItem {
 
     public void doDraw(Canvas canvas) {
         if (visible) {
-            canvas.drawCircle(centerX, centerY, radius, circlePaint);
+            canvas.drawBitmap(renderImage, centerX - radius, centerY - radius, null);
             Paint paint = new Paint();
             paint.setColor(android.graphics.Color.BLACK);
             canvas.drawRect(centerX - 1, centerY - radius, centerX + 1, centerY + radius, paint);
@@ -63,11 +65,12 @@ public class ScrollPickerItem {
 
     public void setRadius(float radius) {
         this.radius = radius;
+        resizeImage();
     }
 
-    public void setCirclePaint(Paint circlePaint) {
+    /*public void setCirclePaint(Paint circlePaint) {
         this.circlePaint = circlePaint;
-    }
+    }*/
 
     public boolean isVisible() {
         return visible;
@@ -85,9 +88,9 @@ public class ScrollPickerItem {
         return radius;
     }
 
-    public Paint getCirclePaint() {
-        return circlePaint;
-    }
+//    public Paint getCirclePaint() {
+//        return circlePaint;
+//    }
 
     public void setShowText(boolean show) {
         this.showText = show;
@@ -97,12 +100,16 @@ public class ScrollPickerItem {
         this.textMargin = margin;
     }
 
+    public void resizeImage() {
+        renderImage = Bitmap.createScaledBitmap(image, (int)radius*2, (int)radius*2, true);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof ScrollPickerItem) {
             ScrollPickerItem obj = (ScrollPickerItem) o;
 
-            if (isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY() && getCirclePaint().equals(obj.getCirclePaint())) {
+            if (isVisible() == obj.isVisible() && getRadius() == obj.getRadius() && getCenterX() == obj.getCenterX() && getCenterY() == obj.getCenterY()) {
                 return true;
             }
         }

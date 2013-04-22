@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.core;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 import com.hyperactivity.android_app.Constants;
@@ -139,16 +140,16 @@ public class ScrollPickerItemManager {
         selectedItem.doDraw(canvas);
     }
 
-    public void addItem(int itemColor, String text, int textColor) {
-        addItem(itemColor, text, textColor, false, false);
+    public void addItem(Bitmap image, String text, int textColor) {
+        addItem(image, text, textColor, false, false);
     }
 
-    public void addItem(int itemColor, String text, int textColor, boolean selected) {
-        addItem(itemColor, text, textColor, selected, false);
+    public void addItem(Bitmap image, String text, int textColor, boolean selected) {
+        addItem(image, text, textColor, selected, false);
     }
 
-    public void addItem(int itemColor, String text, int textColor, boolean selected, boolean calculate) {
-        ScrollPickerItem item = new ScrollPickerItem(itemColor, text, textColor);
+    public void addItem(Bitmap image, String text, int textColor, boolean selected, boolean calculate) {
+        ScrollPickerItem item = new ScrollPickerItem(image, text, textColor);
 
         if (selected) {
             selectedItem = item;

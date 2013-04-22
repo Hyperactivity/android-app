@@ -1,7 +1,9 @@
 package com.hyperactivity.android_app.core;
 
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -11,9 +13,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback {
     private ScrollPickerThread thread;          //The thread that actually draws the animation
@@ -150,11 +149,18 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
             int categoryColor = context.getResources().getColor(R.color.scroll_picker_categories);
 
-            itemManager.addItem(android.graphics.Color.BLUE, "flek", Color.BLACK);
-            itemManager.addItem(android.graphics.Color.YELLOW, "fluk", Color.BLACK);
-            itemManager.addItem(android.graphics.Color.CYAN, "flik", Color.BLACK, true);
-            itemManager.addItem(android.graphics.Color.RED, "fläk", Color.BLACK);
-            itemManager.addItem(android.graphics.Color.MAGENTA, "flyk", Color.BLACK);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
+            options.inDither = false;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_contact, options), "Kontakt", Color.BLACK);
+            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_creativity, options), "Krativitet", Color.BLACK);
+            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_general, options), "Generellt", Color.BLACK, true);
+            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_hobby, options), "Hobby", Color.BLACK);
+            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_medicine, options), "Medicin", Color.BLACK);
+            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_school, options), "Skola", Color.BLACK);
+            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_tips, options), "Tips", Color.BLACK);
 
             itemManager.recalculateItems();
         }
