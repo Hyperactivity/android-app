@@ -16,6 +16,8 @@ import java.util.NoSuchElementException;
  * Time: 4:12 PM
  */
 public class ScrollPickerItemManager {
+    private final static float RADIUS_SCALE = 0.5f;
+
     private float canvasHeight;
     private float canvasWidth;
     private float itemPercentSize;
@@ -24,18 +26,13 @@ public class ScrollPickerItemManager {
     private LinkedList<ScrollPickerItem> items;
 
     private float movingSpeed;
-    private ScrollPickerItem nextSelectedItem;
     private int moveDirection;
-
-    private float sideX1;
-    private float sideX2;
 
     public ScrollPickerItemManager(float canvasWidth, float canvasHeight, float itemPercentSize) {
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
         this.itemPercentSize = itemPercentSize;
         this.movingSpeed = 0f;
-        this.nextSelectedItem = null;
         this.moveDirection = 0;
 
         items = new LinkedList<ScrollPickerItem>();
@@ -48,51 +45,79 @@ public class ScrollPickerItemManager {
         if (moveDirection == 0) {
             try {
                 if (x > limit) {
-                    nextSelectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
+                    selectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
                     moveDirection = 1;
                 } else if (x < -limit) {
-                    nextSelectedItem = ((LinkedList<ScrollPickerItem>) getItemsRight()).getFirst();
+                    selectedItem = ((LinkedList<ScrollPickerItem>) getItemsRight()).getFirst();
                     moveDirection = -1;
                 }
                 movingSpeed = moveDirection * x * speed;
 
             } catch (NoSuchElementException e) {
                 moveDirection = 0;
-                nextSelectedItem = null;
             }
         }
     }
 
     public void doUpdate(float delta) {
         if (moveDirection != 0) {
-            if (moveDirection * nextSelectedItem.getCenterX() < moveDirection * canvasWidth / 2f) {
+            if (moveDirection * selectedItem.getCenterX() < moveDirection * canvasWidth / 2f) {
                 float move = moveDirection * movingSpeed * delta;
-                float diff = moveDirection * (moveDirection * canvasWidth / 2f - moveDirection * (nextSelectedItem.getCenterX() + move));
+                float diff = moveDirection * (moveDirection * canvasWidth / 2f - moveDirection * (selectedItem.getCenterX() + move));
 
                 if (moveDirection * diff > 0f) {
                     diff = 0f;
-                } else if (diff < 0f) {
-                    Log.d("hej", "hej");
                 }
 
-                Log.d(Constants.Log.TAG, "x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f + " move: " + move + " diff: " + diff);
+                float totalMove = computeRadiusByPos(0);
+                float currMove = Math.abs((selectedItem.getCenterX() + move + diff - canvasWidth / 2f));
+                float progress = (totalMove - currMove) / totalMove;
 
+                int pos = -getItemsLeft().size() - moveDirection * 1;
                 for (ScrollPickerItem item : items) {
                     item.setCenterX(item.getCenterX() + move + diff);
 
+                    float nr;
+
+                    if (moveDirection < 0) {
+                        float r = computeRadiusByPos(Math.abs(pos));
+                        float rd = signum(pos, -1) * (computeRadiusByPos(pos) - computeRadiusByPos(Math.abs(pos) + 1));
+                        nr = r + progress * rd;
+
+                    } else {
+                        float r = computeRadiusByPos(Math.abs(pos));
+                        float rd = -signum(pos, 1) * (computeRadiusByPos(pos) - computeRadiusByPos(Math.abs(pos) + 1));
+                        nr = r + progress * rd;
+                    }
+
+                    item.setRadius(nr);
+                    pos++;
                 }
+
+                //realign items since their radiuses have changed.
+                realignItems(((LinkedList<ScrollPickerItem>) getItemsLeft()).descendingIterator(), -1);
+                realignItems(getItemsRight().iterator(), 1);
+
             } else {
-                Log.d(Constants.Log.TAG, "Done: x: " + nextSelectedItem.getCenterX() + " tx: " + canvasWidth / 2f);
                 moveDirection = 0;
                 movingSpeed = 0f;
-                selectedItem = nextSelectedItem;
-                nextSelectedItem = null;
             }
         }
 
         Iterator<ScrollPickerItem> it = items.iterator();
         while (it.hasNext()) {
             it.next().doUpdate(delta);
+        }
+    }
+
+    private void realignItems(Iterator<ScrollPickerItem> it, int dir) {
+        float prevX = selectedItem.getCenterX();
+        float prevR = selectedItem.getRadius();
+        while (it.hasNext()) {
+            ScrollPickerItem item = it.next();
+            item.setCenterX(prevX + dir * prevR);
+            prevX = item.getCenterX();
+            prevR = item.getRadius();
         }
     }
 
@@ -141,24 +166,11 @@ public class ScrollPickerItemManager {
     }
 
     public void recalculateItems() {
-        float radius = itemPercentSize * canvasHeight / 2f;
-        sideX1 = canvasWidth / 2f + radius;
-        sideX2 = sideX1 + radius;
+        int position = -getItemsLeft().size();
 
-        List<ScrollPickerItem> listLeft = getItemsLeft();
-        List<ScrollPickerItem> listRight = getItemsRight();
-
-        int position = -listLeft.size();
-        for (ScrollPickerItem item : listLeft) {
+        for (ScrollPickerItem item : items) {
             updateItemFrame(item, position);
             position++;
-        }
-
-        updateItemFrame(selectedItem, position);
-
-        for (ScrollPickerItem item : listRight) {
-            position++;
-            updateItemFrame(item, position);
         }
     }
 
@@ -199,16 +211,47 @@ public class ScrollPickerItemManager {
     private void updateItemFrame(ScrollPickerItem item, int pos) {
         float diameter = itemPercentSize * canvasHeight;
         float margin = (canvasHeight - diameter) / 2f;
-        float centerX = canvasWidth / 2f;
 
         if (margin < 0f) {
             Log.w(Constants.Log.TAG, "Margin of scroll picker is negative.");
         }
 
-        item.setRadius(diameter / 2f);
-        item.setCenterX(centerX + pos * item.getRadius());
-        item.setCenterY(item.getRadius() + margin);
+        item.setRadius(computeRadiusByPos(pos));
+        item.setCenterX(computeXByPos(pos));
+        item.setCenterY(diameter / 2f + margin);
 
         item.setVisible(true);
+    }
+
+    private float computeRadiusByPos(int pos) {
+        float diameter = itemPercentSize * canvasHeight;
+        float radius = (diameter / 2f) / (1f + Math.abs(pos) * RADIUS_SCALE);
+
+        return radius;
+    }
+
+    private float computeXByPos(int pos) {
+        float centerX = canvasWidth / 2f;
+
+        float result = centerX;
+
+        for (int i = 0; i < Math.abs(pos); i++) {
+            result += Math.signum(pos) * computeRadiusByPos(i);
+        }
+
+        return result;
+    }
+
+    /**
+     * @return -1 if value < 0. 1 if value > 0. resultOnZero if value = 0
+     */
+    private int signum(int value, int resultOnZero) {
+        if (value < 0) {
+            return -1;
+        } else if (value > 0) {
+            return 1;
+        } else {
+            return resultOnZero;
+        }
     }
 }

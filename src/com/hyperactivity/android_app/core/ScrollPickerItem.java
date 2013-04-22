@@ -1,7 +1,6 @@
 package com.hyperactivity.android_app.core;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.*;
 
 public class ScrollPickerItem {
     private boolean visible;
@@ -27,6 +26,9 @@ public class ScrollPickerItem {
     public void doDraw(Canvas canvas) {
         if(visible) {
             canvas.drawCircle(centerX, centerY, radius, circlePaint);
+            Paint paint = new Paint();
+            paint.setColor(android.graphics.Color.BLACK);
+            canvas.drawRect(centerX - 1, centerY - radius, centerX +1, centerY + radius, paint);
         }
     }
 
