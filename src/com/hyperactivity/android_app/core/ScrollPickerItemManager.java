@@ -58,6 +58,7 @@ public class ScrollPickerItemManager {
 
             } catch (NoSuchElementException e) {
                 moveDirection = 0;
+                selectedItem.setShowText(true);
             }
         }
     }
@@ -81,7 +82,7 @@ public class ScrollPickerItemManager {
                     item.setCenterX(item.getCenterX() + move + diff);
 
                     float r = computeRadiusByPos(Math.abs(pos));
-                    float rd = -moveDirection*signum(pos, moveDirection*1) * Math.abs(computeRadiusByPos(pos + moveDirection) - computeRadiusByPos(pos));
+                    float rd = -moveDirection * signum(pos, moveDirection * 1) * Math.abs(computeRadiusByPos(pos + moveDirection) - computeRadiusByPos(pos));
                     float nr = r + progress * rd;
 
                     item.setRadius(nr);
