@@ -80,18 +80,9 @@ public class ScrollPickerItemManager {
                 for (ScrollPickerItem item : items) {
                     item.setCenterX(item.getCenterX() + move + diff);
 
-                    float nr;
-
-                    if (moveDirection < 0) {
-                        float r = computeRadiusByPos(Math.abs(pos));
-                        float rd = signum(pos, -1) * (computeRadiusByPos(pos) - computeRadiusByPos(Math.abs(pos) + 1));
-                        nr = r + progress * rd;
-
-                    } else {
-                        float r = computeRadiusByPos(Math.abs(pos));
-                        float rd = -signum(pos, 1) * (computeRadiusByPos(pos) - computeRadiusByPos(Math.abs(pos) + 1));
-                        nr = r + progress * rd;
-                    }
+                    float r = computeRadiusByPos(Math.abs(pos));
+                    float rd = -moveDirection*signum(pos, moveDirection*1) * Math.abs(computeRadiusByPos(pos + moveDirection) - computeRadiusByPos(pos));
+                    float nr = r + progress * rd;
 
                     item.setRadius(nr);
                     pos++;
@@ -256,8 +247,8 @@ public class ScrollPickerItemManager {
             return -1;
         } else if (value > 0) {
             return 1;
-        } else {
-            return resultOnZero;
         }
+
+        return resultOnZero;
     }
 }
