@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
 
         engine.getServerLink().login(new TestNetworkCallback() {
             @Override
-            public void onSuccess(Object result, String userId) throws Exception {
+            public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
 
                 Log.i(Constants.Log.TAG, "hej");
@@ -83,7 +83,7 @@ public class LoginActivity extends Activity {
              */
             @Override
             public void createResponse(JSONObject response) {
-                response.put(Constants.Transfer.VALUE, Constants.Transfer.SUCCESS);
+                response.put(Constants.Transfer.STATUS, Constants.Transfer.SUCCESS);
             }
         });
     }

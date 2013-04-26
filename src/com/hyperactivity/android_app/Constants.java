@@ -12,8 +12,8 @@ public class Constants {
     }
 
     public class Server {
-        public static final String IP = "TODO";
-        public static final String PORT = "TODO";
+        public static final String IP = "achtungonline.com";
+        public static final String PORT = "12345";
         public static final int TIMEOUT = 10000;
     }
 
@@ -22,16 +22,15 @@ public class Constants {
         public static final String REGISTER = "register";
         public static final String GET_PROFILE = "get_profile";
         public static final String UPDATE_PROFILE = "update_profile";
-        public static final String GET_FORUM = "get_forum";
         public static final String GET_CATEGORY_CONTENT = "get_category_content";
         public static final String GET_THREAD = "get_thread";
         public static final String CREATE_THREAD = "create_thread";
         public static final String CREATE_REPLY = "create_reply";
+        public static final String GET_FORUM_CONTENT = "get_forum_content";
     }
 
     public class Transfer {
         public static final String TOKEN = "token";
-        public static final String VALUE = "value";
         public static final String FAILED = "failed";
         public static final String ACCOUNT = "account";
         public static final String ACCOUNT_ID = "account_id";
@@ -58,5 +57,6 @@ public class Constants {
         public static final String TEXT = "text";
         public static final String PARENT_CATEGORY = "parent_category";
         public static final String PARENT_THREAD = "parent_thread";
+        public static final String STATUS = "status";
     }
 }

@@ -1,8 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,10 +9,18 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
+import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.ScrollPicker;
 import com.hyperactivity.android_app.forum.ForumThread;
+import com.hyperactivity.android_app.network.NetworkCallback;
+import models.Category;
+import net.minidev.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity {
 
@@ -39,6 +46,24 @@ public class MainActivity extends FragmentActivity {
                 .findFragmentById(R.id.thread_list);
 
         threadListFragment.updateThreadList(forumList);
+
+        final Activity self = this;
+
+        ((Engine)getApplication()).getServerLink().getForumContent("public", new NetworkCallback() {
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);
+
+                List<Category> categories = new ArrayList<Category>();
+                categories = deSerialize(ArrayList.class, (String)result.get(Constants.Transfer.CATEGORIES));
+
+
+            }
+
+            @Override
+            public Activity getActivity() {
+                return self;
+            }
+        });
     }
 
     @Override

@@ -8,6 +8,8 @@
             android:minSdkVersion="7"
             android:targetSdkVersion="17"/>
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:name="com.hyperactivity.android_app.core.Engine"
             android:allowBackup="true"
@@ -28,17 +30,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        
+
         <activity
-        		android:name="com.hyperactivity.android_app.activities.ForumActivity"
-        		android:label="testlabel">
+                android:name="com.hyperactivity.android_app.activities.ForumActivity"
+                android:label="testlabel">
         </activity>
-        
+
         <activity
-        		android:name="com.hyperactivity.android_app.activities.DiaryActivity"
-        		android:label="testlabel">
+                android:name="com.hyperactivity.android_app.activities.DiaryActivity"
+                android:label="testlabel">
         </activity>
-        
+
         <activity
                 android:name="com.hyperactivity.android_app.activities.SettingsActivity"
                 android:label="@string/app_settings_name">

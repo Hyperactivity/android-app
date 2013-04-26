@@ -13,11 +13,11 @@ public class Category extends RemoteObject {
     List<ForumThread> threads;
     Color color;
 
-    public Category(String id, String subject) {
+    public Category(int id, String subject) {
         this(id, subject, null);
     }
 
-    public Category(String id, String subject, Color color) {
+    public Category(int id, String subject, Color color) {
         super(id);
         this.subject = subject;
         this.color = color;

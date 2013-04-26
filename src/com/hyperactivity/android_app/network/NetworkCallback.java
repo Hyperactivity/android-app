@@ -3,15 +3,21 @@ package com.hyperactivity.android_app.network;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.hardware.usb.UsbDevice;
+import android.util.Base64;
 import android.util.Log;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import net.minidev.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 public abstract class NetworkCallback {
 
-    public void onNetworkTaskComplete(Boolean successful, Object result, String userId) {
+    public void onNetworkTaskComplete(Boolean successful, Object result, int userId) {
         try {
             if (result != null) {
                 Log.d(Constants.Log.TAG, "response: " + result.toString());
@@ -19,16 +25,24 @@ public abstract class NetworkCallback {
 
             if (!successful) {
                 if (result != null) {
-                    onError((JSONRPC2Error)result, userId);
+                    onError((JSONRPC2Error) result, userId);
                 } else {
                     onError(userId);
                 }
             } else {
 
-                if (result == null || ((JSONObject) result).get(Constants.Transfer.VALUE).equals(Constants.Transfer.FAILED)) {
-                    onError((JSONObject) result, userId);
+                if (result instanceof JSONObject) {
+
+                    JSONObject resultObject = (JSONObject) result;
+                    if (resultObject.containsKey(Constants.Transfer.STATUS) && resultObject.get(Constants.Transfer.STATUS).equals(Constants.Transfer.SUCCESS)) {
+                        onSuccess(resultObject, userId);
+                    } else {
+                        onError(resultObject, userId);
+                    }
+                } else if (result instanceof JSONRPC2Error) {
+                    onError((JSONRPC2Error) result, userId);
                 } else {
-                    onSuccess(result, userId);
+                    onError(userId);
                 }
             }
         } catch (Exception e) {
@@ -36,18 +50,18 @@ public abstract class NetworkCallback {
         }
     }
 
-    public void onSuccess(Object result, String userId) throws Exception {
+    public void onSuccess(JSONObject result, int userId) throws Exception {
     }
 
-    public void onError(JSONRPC2Error error, String userId) throws Exception {
+    public void onError(JSONRPC2Error error, int userId) throws Exception {
         showDialog();
     }
 
-    public void onError(JSONObject error, String userId) throws Exception {
+    public void onError(JSONObject error, int userId) throws Exception {
         showDialog();
     }
 
-    public void onError(String userId) throws Exception {
+    public void onError(int userId) throws Exception {
         showDialog();
     }
 
@@ -69,4 +83,23 @@ public abstract class NetworkCallback {
     }
 
     public abstract Activity getActivity();
+
+    /**
+     * Used to deSerialize an object
+     *
+     * @param classType
+     * @param serializedObject
+     * @param <T>              Returns the object as the given class type.
+     * @return
+     * @throws ClassNotFoundException
+     */
+    //TODO Check if classType is not needed to be used in some way
+    public static final <T> T deSerialize(java.lang.Class<T> classType, String serializedObject) throws ClassNotFoundException, IOException {
+        byte[] data = Base64.decode(serializedObject, Base64.DEFAULT);
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        Object o = ois.readObject();
+        ois.close();
+
+        return (T) o;
+    }
 }

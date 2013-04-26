@@ -17,10 +17,10 @@ public class Settings extends RemoteObject {
 	private boolean				autoLogin;
 
 	public Settings(Context context) {
-		this(context, "");
+		this(context, -1);
 	}
 
-	public Settings(Context context, String id) {
+	public Settings(Context context, int id) {
 		super(id);
 		this.context = context;
 		changed = false;
@@ -49,7 +49,7 @@ public class Settings extends RemoteObject {
 	public void loadRemote() {
 		setLoaded(false); // TODO: how does android handle synchronization? This will do for now.
 
-		if (getId().length() > 0) {
+		if (getId() > 0) {
 			// Load from server
 			super.load();
 		}

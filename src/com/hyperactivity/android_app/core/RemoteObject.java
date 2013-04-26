@@ -1,10 +1,10 @@
 package com.hyperactivity.android_app.core;
 
 public class RemoteObject {
-	private String id; 			//Can be changed to UUID/GUID later depending on how we store this on server.
+	private int id; 			//Can be changed to UUID/GUID later depending on how we store this on server.
 	private boolean loaded; 	//Tells if information have been loaded from server (only username for now).
 	
-	public RemoteObject(String id) {
+	public RemoteObject(int id) {
 		this.id = id;
 		loaded = false;
 	}
@@ -21,7 +21,7 @@ public class RemoteObject {
 		this.loaded = loaded;
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 }
