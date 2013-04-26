@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity {
         scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_school, options), "Skola", Color.BLACK);
         scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_tips, options), "Tips", Color.BLACK);
 
-        scrollPicker.getItemManager().recalculateItems();
+        //scrollPicker.getItemManager().recalculateItems();  // MAKES PROGRAM CRASH
 
         ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
         forumList.add(new ForumThread(null, "test1", "test12"));
