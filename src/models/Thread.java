@@ -46,6 +46,4 @@ public class Thread implements Serializable {
     public Category getParentCategory() {
         return parentCategory;
     }
-
-
 }
