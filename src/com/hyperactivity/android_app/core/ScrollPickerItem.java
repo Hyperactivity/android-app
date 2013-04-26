@@ -98,7 +98,11 @@ public class ScrollPickerItem {
     }
 
     public void resizeImage() {
-        renderImage = Bitmap.createScaledBitmap(image, (int)radius*2, (int)radius*2, true);
+        try {
+            renderImage = Bitmap.createScaledBitmap(image, (int)radius*2, (int)radius*2, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Bitmap getImage() {
