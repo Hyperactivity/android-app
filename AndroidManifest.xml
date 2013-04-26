@@ -24,7 +24,7 @@
         <activity
                 android:name="com.hyperactivity.android_app.activities.MainActivity"
                 android:label="@string/title_activity_login"
-                android:windowSoftInputMode="adjustResize|stateVisible">
+                android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
