@@ -39,14 +39,11 @@ public class ScrollPickerItem {
     public void doDraw(Canvas canvas) {
         if (visible) {
             canvas.drawBitmap(renderImage, centerX - radius, centerY - radius, null);
-            Paint paint = new Paint();
-            paint.setColor(android.graphics.Color.BLACK);
-            canvas.drawRect(centerX - 1, centerY - radius, centerX + 1, centerY + radius, paint);
 
             if (showText) {
                 Rect bounds = new Rect();
-                paint.getTextBounds(text, 0, text.length(), bounds);
-                canvas.drawText(text, centerX - bounds.width(), centerY + radius + textMargin + bounds.height(), textPaint);
+                textPaint.getTextBounds(text, 0, text.length(), bounds);
+                canvas.drawText(text, centerX - bounds.width()/2f, centerY + radius + textMargin + bounds.height()/3f, textPaint);
             }
         }
     }
