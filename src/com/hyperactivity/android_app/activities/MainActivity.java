@@ -1,7 +1,5 @@
 package com.hyperactivity.android_app.activities;
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,10 +11,11 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.ScrollPicker;
 import com.hyperactivity.android_app.forum.ForumThread;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity {
     private ScrollPicker scrollPicker;
@@ -43,8 +42,6 @@ public class MainActivity extends FragmentActivity {
         scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_medicine, options), "Medicin", Color.BLACK);
         scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_school, options), "Skola", Color.BLACK);
         scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_tips, options), "Tips", Color.BLACK);
-
-        //scrollPicker.getItemManager().recalculateItems();  // MAKES PROGRAM CRASH
 
         ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
         forumList.add(new ForumThread(null, "test1", "test12"));

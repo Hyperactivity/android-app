@@ -151,7 +151,10 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
          */
         private void doUpdate(float delta) {
             if (state == STATE_READY) {
-                setState(STATE_RUNNING);
+                //The thread should not start until setCanvasSize have been called.
+                if(canvasWidth != 1 && canvasHeight != 1) {
+                    setState(STATE_RUNNING);
+                }
             } else if (state == STATE_RUNNING) {
                 itemManager.doUpdate(delta);
             }
@@ -302,6 +305,10 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                     itemManager.onCanvasChanged(canvasWidth, canvasHeight);
                 }
             }
+        }
+
+        public boolean isRunning() {
+            return state == STATE_RUNNING;
         }
 
         public ScrollPickerItemManager getItemManager() {
