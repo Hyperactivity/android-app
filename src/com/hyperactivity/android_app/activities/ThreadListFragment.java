@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.annotation.TargetApi;
 import android.support.v4.app.ListFragment;
 import android.widget.SimpleAdapter;
 
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.forum.ForumThread;
 
-@TargetApi(16)
 public class ThreadListFragment extends ListFragment {
 	
 	private String[] from = new String[] {"thread_headline", "thread_text"};
