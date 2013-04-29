@@ -11,9 +11,7 @@ import com.hyperactivity.android_app.R;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import net.minidev.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 public abstract class NetworkCallback {
 
@@ -96,10 +94,37 @@ public abstract class NetworkCallback {
     //TODO Check if classType is not needed to be used in some way
     public static final <T> T deSerialize(java.lang.Class<T> classType, String serializedObject) throws ClassNotFoundException, IOException {
         byte[] data = Base64.decode(serializedObject, Base64.DEFAULT);
-        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        HackedObjectInputStream ois = new HackedObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();
         ois.close();
 
         return (T) o;
+    }
+
+    private static class HackedObjectInputStream extends ObjectInputStream {
+
+        public HackedObjectInputStream(InputStream in) throws IOException {
+            super(in);
+        }
+
+
+        /**
+         * Use this to override package name for all or some classes.
+         * @return
+         * @throws IOException
+         * @throws ClassNotFoundException
+         */
+        @Override
+        protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
+            ObjectStreamClass resultClassDescriptor = super.readClassDescriptor();
+//            String className = resultClassDescriptor.getName();
+//            String models = "models";
+//            String replaceString = "new_package_name";
+//            if (className.contains(models)){
+//                resultClassDescriptor = ObjectStreamClass.lookup(Class.forName(className.replaceFirst(models, replaceString)));
+//            }
+
+            return resultClassDescriptor;
+        }
     }
 }
