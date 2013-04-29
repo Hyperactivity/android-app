@@ -1,25 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               tools:context=".MainActivity"
-              android:orientation="vertical">
-              
-    <com.hyperactivity.android_app.core.ScrollPicker
-            android:id="@+id/forum_categories_surface_view"
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"/>
+              android:orientation="vertical"
+              android:background="#d9d9d9"
+        >
 
-        <fragment android:id="@+id/thread_list"
-        	android:name="com.hyperactivity.android_app.activities.ThreadListFragment"
-        	android:layout_width="fill_parent"
-        	android:layout_height="0dp"
-        	android:layout_weight="1"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  tools:context=".MainActivity"
+                  android:orientation="vertical"
+                  android:background="@drawable/main_background"
 
-	<fragment android:id="@+id/navigation_menu_fragment"
-	    android:name="com.hyperactivity.android_app.activities.NavigationMenuFragment"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"/>
+                  android:layout_marginTop="10dp"
+                  android:layout_marginBottom="10dp"
+                  android:layout_marginLeft="10dp"
+                  android:layout_marginRight="10dp"
+
+                  android:padding="20dp"
+                  >
+
+        <com.hyperactivity.android_app.core.ScrollPicker
+                android:id="@+id/forum_categories_surface_view"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+
+                />
+
+        <FrameLayout android:id="@+id/main_fragment_container"
+                     android:layout_width="fill_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <fragment android:id="@+id/navigation_menu_fragment"
+              android:name="com.hyperactivity.android_app.activities.NavigationMenuFragment"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"/>
 
 </LinearLayout>

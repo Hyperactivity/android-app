@@ -1,9 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +20,14 @@ public class NavigationMenuFragment extends Fragment {
 	
 	static {
 		buttonInfo = new NavigationButtonInfo[NUMBER_OF_BUTTONS];
-		buttonInfo[0] = new NavigationButtonInfo(R.id.navigation_menu_button_1, R.drawable.active_house, R.drawable.non_active_house, MainActivity.class);
-		buttonInfo[1] = new NavigationButtonInfo(R.id.navigation_menu_button_2, R.drawable.active_bubble, R.drawable.non_active_bubble, ForumActivity.class);
-		buttonInfo[2] = new NavigationButtonInfo(R.id.navigation_menu_button_3, R.drawable.active_diary, R.drawable.non_active_diary, DiaryActivity.class);
-		buttonInfo[3] = new NavigationButtonInfo(R.id.navigation_menu_button_4, R.drawable.active_pen, R.drawable.non_active_pen, ForumActivity.class);
-		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, ForumActivity.class);
-		
+		buttonInfo[0] = new NavigationButtonInfo(R.id.navigation_menu_button_1, R.drawable.active_house, R.drawable.non_active_house, MainActivity.HOME_FRAGMENT);
+		buttonInfo[1] = new NavigationButtonInfo(R.id.navigation_menu_button_2, R.drawable.active_bubble, R.drawable.non_active_bubble, MainActivity.FORUM_FRAGMENT);
+		buttonInfo[2] = new NavigationButtonInfo(R.id.navigation_menu_button_3, R.drawable.active_diary, R.drawable.non_active_diary, MainActivity.DIARY_FRAGMENT);
+		buttonInfo[3] = new NavigationButtonInfo(R.id.navigation_menu_button_4, R.drawable.active_pen, R.drawable.non_active_pen, MainActivity.FORUM_FRAGMENT);
+		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, MainActivity.FORUM_FRAGMENT);
 	}
 
-	
+	private MainActivity parentActivity;
 	private ImageView[] buttons;
 	private int activeButton;
 	
@@ -53,29 +50,25 @@ public class NavigationMenuFragment extends Fragment {
 				
 				@Override
 				public void onClick(View v) {
-					getActivity().startActivity(new Intent(getActivity(), buttonInfo[index].targetActivity));
+					parentActivity.changeFragment(buttonInfo[index].targetFragment);
+					setActiveButton(index);
 				}
 			});
 		}
 		activeButton = -1;
-		setActiveButton(getActivity());
+		setActiveButton(0);
 		
 		return view;
 	}
 	
-	private void setActiveButton(FragmentActivity activity) {
-		for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-			if (activity.getClass().equals(buttonInfo[i].targetActivity)) {
-				setActiveButton(i);
-				break;
-			}
-		}
+	public void setParentActivity(MainActivity parent) {
+		parentActivity = parent;
 	}
 	
 	private void setActiveButton(int index) {
 		if (index != activeButton) {
 			if (activeButton != -1) {
-				buttons[activeButton].setImageResource(buttonInfo[index].inactiveIconID);
+				buttons[activeButton].setImageResource(buttonInfo[activeButton].inactiveIconID);
 			}
 			buttons[index].setImageResource(buttonInfo[index].activeIconID);
 			activeButton = index;
@@ -83,13 +76,12 @@ public class NavigationMenuFragment extends Fragment {
 	}
 	
 	private static class NavigationButtonInfo {
-		int buttonID, activeIconID, inactiveIconID;
-		Class<?> targetActivity;
-		public NavigationButtonInfo(int buttonID, int activeIconID, int inactiveIconID, Class<?> targetActivity) {
+		int buttonID, activeIconID, inactiveIconID, targetFragment;
+		public NavigationButtonInfo(int buttonID, int activeIconID, int inactiveIconID, int targetFragment) {
 			this.buttonID = buttonID;
 			this.activeIconID = activeIconID;
 			this.inactiveIconID = inactiveIconID;
-			this.targetActivity = targetActivity;
+			this.targetFragment = targetFragment;
 		}
 	}
 }

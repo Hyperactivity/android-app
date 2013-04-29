@@ -28,8 +28,10 @@
     <integer name="scroll_picker_categories_size">70</integer> <!-- in percent -->
 
     <color name="fps">#000000</color>
-    <color name="background">#d9d9d9</color>
+    <color name="background">#ffffff</color> <!-- d9d9d9 -->
     <color name="scroll_picker_categories">#ff0000</color>
     <color name="scroll_picker_categories_text">#000000</color>
+
+    <color name="gray_background">#ff0000</color>
 
 </resources>
