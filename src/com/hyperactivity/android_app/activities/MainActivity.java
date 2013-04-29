@@ -41,6 +41,10 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         NavigationMenuFragment navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_menu_fragment);
         navigationMenu.setParentActivity(this);
+
+        Engine engine = (Engine) getApplication();
+        engine.getPublicForum().setCallback(this);
+        engine.getPublicForum().loadCategories(this);
     }
 
     private void initializeFragments() {
@@ -80,10 +84,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
      */
     @Override
     public void loadingFinished() {
-        Engine engine = (Engine) getApplication();
-        engine.getPublicForum().setCallback(this);
-        engine.getPublicForum().loadCategories(this);
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         options.inDither = false;
