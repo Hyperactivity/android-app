@@ -1,4 +1,5 @@
-package models;
+package com.hyperactivity.android_app.forum.models;
+
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -11,23 +12,13 @@ import java.io.ObjectOutput;
  * Date: 2013-04-16
  * Time: 13:10
  */
-public class LinkedThread implements Externalizable {
-    static final long serialVersionUID = 4L;
-    private int id;
-    private String headLine;
-    private Category parentPrivateCategory;
+public class ThumbsUp implements Externalizable {
+    static final long serialVersionUID = 10L;
+    private Reply reply;
     private Account account;
 
-    public int getId() {
-        return id;
-    }
-
-    public String getHeadLine() {
-        return headLine;
-    }
-
-    public Category getParentPrivateCategory() {
-        return parentPrivateCategory;
+    public Reply getReply() {
+        return reply;
     }
 
     public Account getAccount() {
@@ -67,9 +58,7 @@ public class LinkedThread implements Externalizable {
      */
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        id = in.readInt();
-        headLine = in.readUTF();
-        parentPrivateCategory = (Category) in.readObject();
+        reply = (Reply) in.readObject();
         account = (Account) in.readObject();
     }
 }

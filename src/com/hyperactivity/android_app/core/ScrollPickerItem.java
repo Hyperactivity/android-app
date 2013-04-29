@@ -1,6 +1,7 @@
 package com.hyperactivity.android_app.core;
 
 import android.graphics.*;
+import com.hyperactivity.android_app.forum.models.Category;
 
 public class ScrollPickerItem {
     private boolean visible;
@@ -13,9 +14,11 @@ public class ScrollPickerItem {
     private Paint textPaint;
     private Bitmap image;
     private Bitmap renderImage;
+    private Category category;
 
-    public ScrollPickerItem(Bitmap image, String text, int textColor) {
+    public ScrollPickerItem(Bitmap image, String text, int textColor, Category category) {
         this.image = image;
+        this.category = category;
 
         visible = false;
         centerX = 0f;
@@ -120,5 +123,9 @@ public class ScrollPickerItem {
         }
 
         return false;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 }

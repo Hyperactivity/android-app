@@ -1,4 +1,4 @@
-package models;
+package com.hyperactivity.android_app.forum.models;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -8,28 +8,15 @@ import java.io.ObjectOutput;
 /**
  * Created with IntelliJ IDEA.
  * User: OMMatte
- * Date: 2013-04-16
- * Time: 13:10
+ * Date: 2013-04-22
+ * Time: 11:05
  */
-
-public class CustomCategoryColor implements Externalizable {
-    static final long serialVersionUID = 3L;
+public class Category implements Externalizable {
+    static final long serialVersionUID = 2L;
+    private int id;
+    private String headLine;
     private int colorCode;
-    private Account account;
-    private Category category;
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public int getColorCode() {
-        return colorCode;
-    }
-
+    private Category parentCategory;
     /**
      * The object implements the writeExternal method to save its contents
      * by calling the methods of DataOutput for its primitive values or
@@ -63,8 +50,21 @@ public class CustomCategoryColor implements Externalizable {
      */
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        id = in.readInt();
+        headLine = in.readUTF();
         colorCode = in.readInt();
-        account = (Account) in.readObject();
-        category = (Category) in.readObject();
+        parentCategory= (Category) in.readObject();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getHeadLine() {
+        return headLine;
+    }
+
+    public int getColorCode() {
+        return colorCode;
     }
 }

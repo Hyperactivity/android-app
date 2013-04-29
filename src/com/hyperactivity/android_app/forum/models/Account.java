@@ -1,10 +1,10 @@
-package models;
-
+package com.hyperactivity.android_app.forum.models;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.sql.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,32 +12,47 @@ import java.io.ObjectOutput;
  * Date: 2013-04-16
  * Time: 13:10
  */
-public class PrivateCategory implements Externalizable {
-    static final long serialVersionUID = 6L;
+public class Account implements Externalizable {
+    static final long serialVersionUID = 1L;
+    private String profileDescription;
     private int id;
-    private int colorCode;
-    private Category parentPrivateCategory;
-    private Account account;
-    private String headLine;
-
-    public String getHeadLine() {
-        return headLine;
-    }
+    private Date birthDate;
+    private int limitPerDay;
+    private boolean useDefaultColors;
+    private int facebookId;
+    private String username;
+    private boolean showBirthDate;
 
     public int getId() {
         return id;
     }
 
-    public int getColorCode() {
-        return colorCode;
+    public String getProfileDescription() {
+        return profileDescription;
     }
 
-    public Category getParentPrivateCategory() {
-        return parentPrivateCategory;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public Account getAccount() {
-        return account;
+    public int getLimitPerDay() {
+        return limitPerDay;
+    }
+
+    public boolean isUseDefaultColors() {
+        return useDefaultColors;
+    }
+
+    public int getFacebookId() {
+        return facebookId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public boolean isShowBirthDate() {
+        return showBirthDate;
     }
 
     /**
@@ -74,9 +89,12 @@ public class PrivateCategory implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         id = in.readInt();
-        colorCode = in.readInt();
-        parentPrivateCategory = (Category) in.readObject();
-        account = (Account) in.readObject();
-        headLine = in.readUTF();
+        profileDescription = in.readUTF();
+        birthDate = (Date) in.readObject();
+        limitPerDay = in.readInt();
+        useDefaultColors = in.readBoolean();
+        facebookId = in.readInt();
+        username = in.readUTF();
+        showBirthDate = in.readBoolean();
     }
 }

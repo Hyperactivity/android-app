@@ -1,26 +1,23 @@
-package models;
-
+package com.hyperactivity.android_app.forum.models;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.sql.Timestamp;
 
 /**
  * Created with IntelliJ IDEA.
  * User: OMMatte
  * Date: 2013-04-16
- * Time: 13:14
+ * Time: 13:10
  */
-public class Thread implements Externalizable {
-    static final long serialVersionUID = 9L;
+public class Note implements Externalizable {
+    static final long serialVersionUID = 5L;
     private int id;
     private String headLine;
     private String text;
     private Account account;
-    private Category parentCategory;
-    private Timestamp time;
+    private Category parentPrivateCategory;
 
     public int getId() {
         return id;
@@ -38,12 +35,8 @@ public class Thread implements Externalizable {
         return account;
     }
 
-    public Category getParentCategory() {
-        return parentCategory;
-    }
-
-    public Timestamp getTime() {
-        return time;
+    public Category getParentPrivateCategory() {
+        return parentPrivateCategory;
     }
 
     /**
@@ -79,11 +72,10 @@ public class Thread implements Externalizable {
      */
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        id = in.readInt();
+        id = in.read();
         headLine = in.readUTF();
         text = in.readUTF();
         account = (Account) in.readObject();
-        parentCategory = (Category) in.readObject();
-        time = (Timestamp) in.readObject();
+        parentPrivateCategory = (Category) in.readObject();
     }
 }

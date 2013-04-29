@@ -126,6 +126,12 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         return thread.getItemManager();
     }
 
+    public void reset() {
+        getItemManager().reset();
+
+        //TODO: show loading spinner in place instead.
+    }
+
     public class ScrollPickerThread extends Thread {
         //State-tracking constants
         public static final int STATE_READY = 1;

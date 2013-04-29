@@ -1,10 +1,9 @@
-package models;
+package com.hyperactivity.android_app.forum.models;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.sql.Timestamp;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,27 +11,27 @@ import java.sql.Timestamp;
  * Date: 2013-04-16
  * Time: 13:10
  */
-public class PrivateMessage implements Externalizable {
-    static final long serialVersionUID = 7L;
-    private String text;
-    private Account senderAccount;
-    private Account recieverAccount;
-    private Timestamp time;
+public class LinkedThread implements Externalizable {
+    static final long serialVersionUID = 4L;
+    private int id;
+    private String headLine;
+    private Category parentPrivateCategory;
+    private Account account;
 
-    public Account getSenderAccount() {
-        return senderAccount;
+    public int getId() {
+        return id;
     }
 
-    public Account getRecieverAccount() {
-        return recieverAccount;
+    public String getHeadLine() {
+        return headLine;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Category getParentPrivateCategory() {
+        return parentPrivateCategory;
     }
 
-    public String getText() {
-        return text;
+    public Account getAccount() {
+        return account;
     }
 
     /**
@@ -68,9 +67,9 @@ public class PrivateMessage implements Externalizable {
      */
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        senderAccount = (Account) in.readObject();
-        recieverAccount = (Account) in.readObject();
-        text = in.readUTF();
-        time = (Timestamp) in.readObject();
+        id = in.readInt();
+        headLine = in.readUTF();
+        parentPrivateCategory = (Category) in.readObject();
+        account = (Account) in.readObject();
     }
 }

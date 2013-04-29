@@ -1,59 +1,27 @@
-package models;
+package com.hyperactivity.android_app.forum.models;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.sql.Date;
+import java.lang.*;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: OMMatte
  * Date: 2013-04-16
- * Time: 13:10
+ * Time: 13:14
  */
-public class Account implements Externalizable {
-    static final long serialVersionUID = 1L;
-    private String profileDescription;
+public class Reply implements Externalizable {
+    static final long serialVersionUID = 8L;
     private int id;
-    private Date birthDate;
-    private int limitPerDay;
-    private boolean useDefaultColors;
-    private int facebookId;
-    private String username;
-    private boolean showBirthDate;
-
-    public int getId() {
-        return id;
-    }
-
-    public String getProfileDescription() {
-        return profileDescription;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public int getLimitPerDay() {
-        return limitPerDay;
-    }
-
-    public boolean isUseDefaultColors() {
-        return useDefaultColors;
-    }
-
-    public int getFacebookId() {
-        return facebookId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public boolean isShowBirthDate() {
-        return showBirthDate;
-    }
+    private Timestamp time;
+    private String text;
+    private com.hyperactivity.android_app.forum.models.Thread parentThread;
+    private Account account;
+    private List<ThumbsUp> thumbsUp;
 
     /**
      * The object implements the writeExternal method to save its contents
@@ -88,13 +56,11 @@ public class Account implements Externalizable {
      */
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        parentThread = (com.hyperactivity.android_app.forum.models.Thread) in.readObject();
+        account = (Account) in.readObject();
         id = in.readInt();
-        profileDescription = in.readUTF();
-        birthDate = (Date) in.readObject();
-        limitPerDay = in.readInt();
-        useDefaultColors = in.readBoolean();
-        facebookId = in.readInt();
-        username = in.readUTF();
-        showBirthDate = in.readBoolean();
+        time = (Timestamp) in.readObject();
+        text = in.readUTF();
+        thumbsUp = (List<ThumbsUp>) in.readObject();
     }
 }

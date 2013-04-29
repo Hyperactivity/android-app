@@ -1,26 +1,44 @@
-package models;
+package com.hyperactivity.android_app.forum.models;
+
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: OMMatte
  * Date: 2013-04-16
- * Time: 13:14
+ * Time: 13:10
  */
-public class Reply implements Externalizable {
-    static final long serialVersionUID = 8L;
+public class PrivateCategory implements Externalizable {
+    static final long serialVersionUID = 6L;
     private int id;
-    private Timestamp time;
-    private String text;
-    private Thread parentThread;
+    private int colorCode;
+    private Category parentPrivateCategory;
     private Account account;
-    private List<ThumbsUp> thumbsUp;
+    private String headLine;
+
+    public String getHeadLine() {
+        return headLine;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getColorCode() {
+        return colorCode;
+    }
+
+    public Category getParentPrivateCategory() {
+        return parentPrivateCategory;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
 
     /**
      * The object implements the writeExternal method to save its contents
@@ -55,11 +73,10 @@ public class Reply implements Externalizable {
      */
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        parentThread = (Thread) in.readObject();
-        account = (Account) in.readObject();
         id = in.readInt();
-        time = (Timestamp) in.readObject();
-        text = in.readUTF();
-        thumbsUp = (List<ThumbsUp>) in.readObject();
+        colorCode = in.readInt();
+        parentPrivateCategory = (Category) in.readObject();
+        account = (Account) in.readObject();
+        headLine = in.readUTF();
     }
 }

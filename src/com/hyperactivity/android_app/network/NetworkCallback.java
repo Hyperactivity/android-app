@@ -91,7 +91,7 @@ public abstract class NetworkCallback {
      * @return
      * @throws ClassNotFoundException
      */
-    //TODO Check if classType is not needed to be used in some way
+    @SuppressWarnings("unchecked")
     public static final <T> T deSerialize(java.lang.Class<T> classType, String serializedObject) throws ClassNotFoundException, IOException {
         byte[] data = Base64.decode(serializedObject, Base64.DEFAULT);
         HackedObjectInputStream ois = new HackedObjectInputStream(new ByteArrayInputStream(data));
@@ -117,12 +117,12 @@ public abstract class NetworkCallback {
         @Override
         protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
             ObjectStreamClass resultClassDescriptor = super.readClassDescriptor();
-//            String className = resultClassDescriptor.getName();
-//            String models = "models";
-//            String replaceString = "new_package_name";
-//            if (className.contains(models)){
-//                resultClassDescriptor = ObjectStreamClass.lookup(Class.forName(className.replaceFirst(models, replaceString)));
-//            }
+            String className = resultClassDescriptor.getName();
+            String models = "models";
+            String replaceString = "com.hyperactivity.android_app.forum.models";
+            if (className.contains(models)){
+                resultClassDescriptor = ObjectStreamClass.lookup(Class.forName(className.replaceFirst(models, replaceString)));
+            }
 
             return resultClassDescriptor;
         }
