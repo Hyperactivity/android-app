@@ -5,11 +5,11 @@ public class Account extends RemoteObject{
 	private Profile profile;
 	private Settings settings;
 	
-	public Account(String id) {
+	public Account(int id) {
 		this(id, "");
 	}
 	
-	public Account(String id, String username) {
+	public Account(int id, String username) {
 		super(id);
 		this.username = username;
 		profile = new Profile(id);

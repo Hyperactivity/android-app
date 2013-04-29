@@ -27,7 +27,7 @@ public class ServerLink {
     public void login(final NetworkCallback callback) {
         java.util.Map<String, Object> params = new HashMap<String, Object>();
         String email = "TODO";
-        String facebookID = "TODO";
+        int facebookID = 1337;
 
         /*
         TODO: fix fb stuff
@@ -43,7 +43,7 @@ public class ServerLink {
     public void register(String username, final NetworkCallback callback) {
         java.util.Map<String, Object> params = new HashMap<String, Object>();
         String email = "TODO";
-        String facebookID = "TODO";
+        int facebookID = 1337;
 
         //TODO: should this method method auth with fb-email or fid (facebook id)?
 
@@ -60,6 +60,15 @@ public class ServerLink {
         sendRequest(Constants.Methods.REGISTER, facebookID, params, callback, true);
     }
 
+    public void getForumContent(String type, final NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        params.put(Constants.Transfer.TYPE, type);
+
+        sendRequest(Constants.Methods.GET_FORUM_CONTENT, params, callback, true);
+    }
+
+    //---------------------------- HELPER METHODS ----------------------------
+
     private void sendRequest(String method, String id, List<Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
         final JSONRPC2Request reqOut = new JSONRPC2Request(method, params, id);
         sendRequest(reqOut, activityCallback, lockWithLoadingScreen);
@@ -69,7 +78,7 @@ public class ServerLink {
         sendRequest(method, engine.getAccount().getId(), params, activityCallback, lockWithLoadingScreen);
     }
 
-    private void sendRequest(String method, String id, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+    private void sendRequest(String method, int id, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
         final JSONRPC2Request reqOut = new JSONRPC2Request(method, params, id);
         sendRequest(reqOut, activityCallback, lockWithLoadingScreen);
     }

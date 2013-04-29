@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 import com.hyperactivity.android_app.Constants;
+import com.hyperactivity.android_app.forum.models.Category;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -129,19 +130,21 @@ public class ScrollPickerItemManager {
             it.next().doDraw(canvas);
         }
 
-        selectedItem.doDraw(canvas);
+        if(selectedItem != null) {
+            selectedItem.doDraw(canvas);
+        }
     }
 
-    public void addItem(Bitmap image, String text, int textColor) {
-        addItem(image, text, textColor, false, false);
+    public void addItem(Bitmap image, String text, int textColor, Category category) {
+        addItem(image, text, textColor, category, false, false);
     }
 
-    public void addItem(Bitmap image, String text, int textColor, boolean selected) {
-        addItem(image, text, textColor, selected, false);
+    public void addItem(Bitmap image, String text, int textColor, Category category, boolean selected) {
+        addItem(image, text, textColor, category, selected, false);
     }
 
-    public void addItem(Bitmap image, String text, int textColor, boolean selected, boolean calculate) {
-        ScrollPickerItem item = new ScrollPickerItem(image, text, textColor);
+    public void addItem(Bitmap image, String text, int textColor, Category category, boolean selected, boolean calculate) {
+        ScrollPickerItem item = new ScrollPickerItem(image, text, textColor, category);
 
         if (selected) {
             selectedItem = item;
@@ -163,6 +166,12 @@ public class ScrollPickerItemManager {
     }
 
     public void recalculateItems() {
+        if(selectedItem == null && items.size() > 0) {
+            selectedItem = items.get(items.size()/2);
+            selectedItem.setShowText(true);
+            selectedItem.setVisible(true);
+        }
+
         int position = -getItemsLeft().size();
 
         for (ScrollPickerItem item : items) {
@@ -251,5 +260,12 @@ public class ScrollPickerItemManager {
         }
 
         return resultOnZero;
+    }
+
+    public void reset() {
+        items.clear();
+        selectedItem = null;
+        moveDirection = 0;
+        movingSpeed = 0f;
     }
 }
