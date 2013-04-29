@@ -27,11 +27,13 @@ public class ThreadListFragment extends ListFragment {
 			ForumThread thread = threadList.get(i);
 			data.add(threadToMap(thread));
 		}
-		
+
         SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), data, R.layout.thread_list_item, from, to);
-        
+
+
         /** Setting the list adapter for the ListFragment */
         setListAdapter(adapter);
+
  
     }
 	

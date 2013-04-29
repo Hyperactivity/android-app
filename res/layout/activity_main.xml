@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               tools:context=".MainActivity"
-              android:orientation="vertical">
-              
+              android:orientation="vertical"
+              android:background="@drawable/main_background">
+
     <com.hyperactivity.android_app.core.ScrollPicker
             android:id="@+id/forum_categories_surface_view"
             android:layout_width="fill_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="100dp"
 
-        <fragment android:id="@+id/thread_list"
-        	android:name="com.hyperactivity.android_app.activities.ThreadListFragment"
-        	android:layout_width="fill_parent"
-        	android:layout_height="0dp"
-        	android:layout_weight="1"/>
+            />
 
-	<fragment android:id="@+id/navigation_menu_fragment"
-	    android:name="com.hyperactivity.android_app.activities.NavigationMenuFragment"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"/>
+    <fragment android:id="@+id/thread_list"
+              android:name="com.hyperactivity.android_app.activities.ThreadListFragment"
+              android:layout_width="fill_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+
+            />
+
+    <fragment android:id="@+id/navigation_menu_fragment"
+              android:name="com.hyperactivity.android_app.activities.NavigationMenuFragment"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"/>
 
 </LinearLayout>
