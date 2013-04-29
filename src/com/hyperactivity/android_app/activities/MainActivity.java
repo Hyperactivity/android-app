@@ -1,5 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
+import java.util.ArrayList;
+
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +18,7 @@ import android.view.View;
 
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.ScrollPicker;
+import com.hyperactivity.android_app.forum.ForumThread;
 
 
 public class MainActivity extends FragmentActivity {
@@ -75,13 +78,13 @@ public class MainActivity extends FragmentActivity {
         	transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);
         	transaction.commit();
         	
-//        	if (currentFragment == HOME_FRAGMENT) { // Update thread list
-//                ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
-//                forumList.add(new ForumThread(null, "test1", "test12"));
-//                forumList.add(new ForumThread(null, "test2", "test22"));
-//                forumList.add(new ForumThread(null, "test3", "test32"));
-//                ((ThreadListFragment)fragments[HOME_FRAGMENT]).updateThreadList(forumList);
-//        	}
+        	if (currentFragment == HOME_FRAGMENT) { // Update thread list
+                ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
+                forumList.add(new ForumThread(null, "test1", "test12"));
+                forumList.add(new ForumThread(null, "test2", "test22"));
+                forumList.add(new ForumThread(null, "test3", "test32"));
+                ((ThreadListFragment)fragments[HOME_FRAGMENT]).updateThreadList(forumList);
+        	}
     	}
     }
 

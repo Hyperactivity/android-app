@@ -167,7 +167,8 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
             if (state == STATE_RUNNING) {
                 //TODO: do me
 
-                canvas.drawColor(context.getResources().getColor(R.color.background));
+
+                 canvas.drawColor(context.getResources().getColor(R.color.background));
 
                 itemManager.doDraw(canvas);
             }
