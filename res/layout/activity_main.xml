@@ -15,13 +15,10 @@
 
             />
 
-    <fragment android:id="@+id/thread_list"
-              android:name="com.hyperactivity.android_app.activities.ThreadListFragment"
-              android:layout_width="fill_parent"
-              android:layout_height="0dp"
-              android:layout_weight="1"
-
-            />
+	<FrameLayout android:id="@+id/main_fragment_container"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"/>
 
     <fragment android:id="@+id/navigation_menu_fragment"
               android:name="com.hyperactivity.android_app.activities.NavigationMenuFragment"

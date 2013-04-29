@@ -7,29 +7,41 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.ScrollPicker;
-import com.hyperactivity.android_app.forum.ForumThread;
 
-import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity {
+	
+	public static final int HOME_FRAGMENT = 0,
+							FORUM_FRAGMENT = 1,
+							DIARY_FRAGMENT = 2;
+	
     private ScrollPicker scrollPicker;
+    private Fragment[] fragments;
+    private int currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        initializeFragments();
+        currentFragment = -1;
+        changeFragment(HOME_FRAGMENT);
 
         View view = findViewById(R.id.forum_categories_surface_view);
         scrollPicker = (ScrollPicker) view;
         scrollPicker.getThread().setState(
                 ScrollPicker.ScrollPickerThread.STATE_READY);
-
+        
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         options.inDither = false;
@@ -43,14 +55,34 @@ public class MainActivity extends FragmentActivity {
         scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_school, options), "Skola", Color.BLACK);
         scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_tips, options), "Tips", Color.BLACK);
 
-        ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
-        forumList.add(new ForumThread(null, "test1", "test12"));
-        forumList.add(new ForumThread(null, "test2", "test22"));
-        forumList.add(new ForumThread(null, "test3", "test32"));
-
-        ThreadListFragment threadListFragment = (ThreadListFragment) getSupportFragmentManager().findFragmentById(R.id.thread_list);
-
-        threadListFragment.updateThreadList(forumList);
+        // Make a link from the navigation menu to this activity
+        NavigationMenuFragment navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
+        .findFragmentById(R.id.navigation_menu_fragment);
+        navigationMenu.setParentActivity(this);
+    }
+    
+    private void initializeFragments() {
+    	fragments = new Fragment[3];
+    	fragments[HOME_FRAGMENT] = new ThreadListFragment();
+    	fragments[FORUM_FRAGMENT] = new ForumFragment();
+    	fragments[DIARY_FRAGMENT] = new DiaryFragment();
+    }
+    
+    public void changeFragment(int fragmentID) {
+    	if (currentFragment != fragmentID) {
+    		currentFragment = fragmentID;
+        	FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        	transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);
+        	transaction.commit();
+        	
+//        	if (currentFragment == HOME_FRAGMENT) { // Update thread list
+//                ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
+//                forumList.add(new ForumThread(null, "test1", "test12"));
+//                forumList.add(new ForumThread(null, "test2", "test22"));
+//                forumList.add(new ForumThread(null, "test3", "test32"));
+//                ((ThreadListFragment)fragments[HOME_FRAGMENT]).updateThreadList(forumList);
+//        	}
+    	}
     }
 
     @Override
