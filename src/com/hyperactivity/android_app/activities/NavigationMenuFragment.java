@@ -68,7 +68,7 @@ public class NavigationMenuFragment extends Fragment {
 	private void setActiveButton(int index) {
 		if (index != activeButton) {
 			if (activeButton != -1) {
-				buttons[activeButton].setImageResource(buttonInfo[index].inactiveIconID);
+				buttons[activeButton].setImageResource(buttonInfo[activeButton].inactiveIconID);
 			}
 			buttons[index].setImageResource(buttonInfo[index].activeIconID);
 			activeButton = index;

@@ -45,12 +45,12 @@ public class ScrollPickerItemManager {
 
         if (moveDirection == 0) {
             try {
-                selectedItem.setShowText(false);
-
                 if (x > limit) {
+                    selectedItem.setShowText(false);
                     selectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
                     moveDirection = 1;
                 } else if (x < -limit) {
+                    selectedItem.setShowText(false);
                     selectedItem = ((LinkedList<ScrollPickerItem>) getItemsRight()).getFirst();
                     moveDirection = -1;
                 }

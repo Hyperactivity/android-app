@@ -122,6 +122,10 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         return thread;
     }
 
+    public ScrollPickerItemManager getItemManager() {
+        return thread.getItemManager();
+    }
+
     public class ScrollPickerThread extends Thread {
         //State-tracking constants
         public static final int STATE_READY = 1;
@@ -139,30 +143,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         public ScrollPickerThread(SurfaceHolder surfaceHolder, Context context) {
             this.surfaceHolder = surfaceHolder;
             this.context = context;
-        }
-
-        /**
-         * Initializes the thread
-         */
-        private void doInit() {
-            itemManager = new ScrollPickerItemManager(canvasWidth, canvasHeight, context.getResources().getInteger(R.integer.scroll_picker_categories_size)/100f);
-
-            int categoryColor = context.getResources().getColor(R.color.scroll_picker_categories);
-
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;
-            options.inDither = false;
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_contact, options), "Kontakt", Color.BLACK);
-            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_creativity, options), "Krativitet", Color.BLACK);
-            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_general, options), "Generellt", Color.BLACK, true);
-            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_hobby, options), "Hobby", Color.BLACK);
-            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_medicine, options), "Medicin", Color.BLACK);
-            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_school, options), "Skola", Color.BLACK);
-            itemManager.addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_tips, options), "Tips", Color.BLACK);
-
-            itemManager.recalculateItems();
+            this.itemManager = new ScrollPickerItemManager(canvasWidth, canvasHeight, context.getResources().getInteger(R.integer.scroll_picker_categories_size)/100f);
         }
 
         /**
@@ -170,8 +151,10 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
          */
         private void doUpdate(float delta) {
             if (state == STATE_READY) {
-                doInit();
-                setState(STATE_RUNNING);
+                //The thread should not start until setCanvasSize have been called.
+                if(canvasWidth != 1 && canvasHeight != 1) {
+                    setState(STATE_RUNNING);
+                }
             } else if (state == STATE_RUNNING) {
                 itemManager.doUpdate(delta);
             }
@@ -322,6 +305,14 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                     itemManager.onCanvasChanged(canvasWidth, canvasHeight);
                 }
             }
+        }
+
+        public boolean isRunning() {
+            return state == STATE_RUNNING;
+        }
+
+        public ScrollPickerItemManager getItemManager() {
+            return itemManager;
         }
     }
 }

@@ -1,9 +1,10 @@
 package com.hyperactivity.android_app.activities;
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,15 +16,14 @@ import android.view.View;
 
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.ScrollPicker;
-import com.hyperactivity.android_app.forum.ForumThread;
+
 
 public class MainActivity extends FragmentActivity {
 	
 	public static final int HOME_FRAGMENT = 0,
 							FORUM_FRAGMENT = 1,
 							DIARY_FRAGMENT = 2;
-
-    private Boolean isLocked;
+	
     private ScrollPicker scrollPicker;
     private Fragment[] fragments;
     private int currentFragment;
@@ -41,6 +41,19 @@ public class MainActivity extends FragmentActivity {
         scrollPicker = (ScrollPicker) view;
         scrollPicker.getThread().setState(
                 ScrollPicker.ScrollPickerThread.STATE_READY);
+        
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        options.inDither = false;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_contact, options), "Kontakt", Color.BLACK);
+        scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_creativity, options), "Krativitet", Color.BLACK);
+        scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_general, options), "Generellt", Color.BLACK, true);
+        scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_hobby, options), "Hobby", Color.BLACK);
+        scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_medicine, options), "Medicin", Color.BLACK);
+        scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_school, options), "Skola", Color.BLACK);
+        scrollPicker.getItemManager().addItem(BitmapFactory.decodeResource(getResources(), R.drawable.c_tips, options), "Tips", Color.BLACK);
 
         // Make a link from the navigation menu to this activity
         NavigationMenuFragment navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
