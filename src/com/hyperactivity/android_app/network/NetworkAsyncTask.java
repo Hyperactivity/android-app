@@ -32,13 +32,14 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
         }
 
         JSONRPC2Request jsonrpc2Request = (JSONRPC2Request) jsonrpc2Requests[0];
-        String id = jsonrpc2Request.getID().toString();
+        int id = (Integer)jsonrpc2Request.getID();
         URL serverURL = null;
 
         try {
             serverURL = new URL("http://" + Constants.Server.IP + ":" + Constants.Server.PORT + "/");
         } catch (MalformedURLException e) {
-            Log.d(Constants.Log.TAG, "exception: ", e);
+            Log.e(Constants.Log.TAG, "exception: ", e);
+            return new JSONRPC2Response(JSONRPC2Error.PARSE_ERROR.appendMessage(e.getMessage()), null);
         }
         JSONRPC2Session mySession = new JSONRPC2Session(serverURL);
         JSONRPC2SessionOptions options = new JSONRPC2SessionOptions();
@@ -111,16 +112,18 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
             result = jsonrpc2Response.getError();
         }
 
-        networkCallback.onNetworkTaskComplete(jsonrpc2Response.indicatesSuccess(), result, (String) jsonrpc2Response.getID());
+        networkCallback.onNetworkTaskComplete(jsonrpc2Response.indicatesSuccess(), result, (int)(long)(Long)jsonrpc2Response.getID());
     }
 
-    private JSONRPC2Response validateResponse(String id, JSONRPC2Response response) {
+    private JSONRPC2Response validateResponse(int id, JSONRPC2Response response) {
         //
 
         if (response.indicatesSuccess()) {
             net.minidev.json.JSONObject jsonResponse = response.toJSONObject();
 
-            if (jsonResponse.get(Constants.Transfer.ID).equals(id) && jsonResponse.get(Constants.Transfer.RESULT) != null) {
+            int responseID = (int)(long)(Long)jsonResponse.get(Constants.Transfer.ID); // ಠ_ಠ
+
+            if (responseID == id && jsonResponse.get(Constants.Transfer.RESULT) != null) {
                 // Everything is ok!
             } else {
                 return new JSONRPC2Response(JSONRPC2Error.PARSE_ERROR.appendMessage(response.toJSONString()), null);

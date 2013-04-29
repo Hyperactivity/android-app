@@ -9,7 +9,7 @@ public class Profile extends RemoteObject{
 	private String description;
 	private Date birthdate;
 
-	public Profile(String id) {
+	public Profile(int id) {
 		super(id);
 	}
 
