@@ -5,6 +5,7 @@ import android.util.Log;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.core.Engine;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
+import com.thoughtworks.xstream.XStream;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +19,12 @@ import com.facebook.model.GraphUser;
 */
 
 public class ServerLink {
+
     Engine engine;
 
     public ServerLink(Engine engine) {
         this.engine = engine;
+
     }
 
     public void login(final NetworkCallback callback) {

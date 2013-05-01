@@ -15,7 +15,6 @@ import net.minidev.json.JSONObject;
 import java.io.*;
 
 public abstract class NetworkCallback {
-    private static final XStream X_STREAM = new XStream();
 
     public void onNetworkTaskComplete(Boolean successful, Object result, int userId) {
         try {
@@ -95,6 +94,9 @@ public abstract class NetworkCallback {
      */
     @SuppressWarnings("unchecked")
     public static final <T> T deSerialize(java.lang.Class<T> classType, String serializedObject) throws ClassNotFoundException, IOException {
-        return (T) X_STREAM.fromXML(serializedObject);
+        //TODO Detta ska göras en gång, inte vid varje deSerialize, visste inte vart jag skulle sätta den /Mathias
+        XStream xStream = new XStream();
+        xStream.aliasPackage("models", "com.hyperactivity.android_app.forum.models");
+        return (T) xStream.fromXML(serializedObject);
     }
 }
