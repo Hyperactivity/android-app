@@ -7,6 +7,7 @@ import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.network.NetworkCallback;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
+import com.thoughtworks.xstream.XStream;
 import net.minidev.json.JSONObject;
 
 import java.util.LinkedList;
@@ -46,6 +47,7 @@ public class Forum {
 
                 try {
                     //TODO: this should be rewritten when we get linkedlists from server.
+
                     categories = new LinkedList<Category>(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.CATEGORIES)));
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
