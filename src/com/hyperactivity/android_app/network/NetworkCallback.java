@@ -9,6 +9,7 @@ import android.util.Log;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
+import com.thoughtworks.xstream.XStream;
 import net.minidev.json.JSONObject;
 
 import java.io.*;
@@ -93,38 +94,28 @@ public abstract class NetworkCallback {
      */
     @SuppressWarnings("unchecked")
     public static final <T> T deSerialize(java.lang.Class<T> classType, String serializedObject) throws ClassNotFoundException, IOException {
+        //TODO Detta ska göras en gång, inte vid varje deSerialize, visste inte vart jag skulle sätta den /Mathias
+        XStream xStream = new XStream();
+        xStream.aliasPackage("models", "com.hyperactivity.android_app.forum.models");
+        return (T) xStream.fromXML(deSerializeObject(String.class, serializedObject));
+    }
+
+    /**
+     * Used to deSerialize an object
+     *
+     * @param classType
+     * @param serializedObject
+     * @param <T>              Returns the object as the given class type.
+     * @return
+     * @throws ClassNotFoundException
+     */
+    @SuppressWarnings("unchecked")
+    private static final <T> T deSerializeObject(java.lang.Class<T> classType, String serializedObject) throws ClassNotFoundException, IOException {
         byte[] data = Base64.decode(serializedObject, Base64.DEFAULT);
-        HackedObjectInputStream ois = new HackedObjectInputStream(new ByteArrayInputStream(data));
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();
         ois.close();
 
         return (T) o;
-    }
-
-    private static class HackedObjectInputStream extends ObjectInputStream {
-
-        public HackedObjectInputStream(InputStream in) throws IOException {
-            super(in);
-        }
-
-
-        /**
-         * Use this to override package name for all or some classes.
-         * @return
-         * @throws IOException
-         * @throws ClassNotFoundException
-         */
-        @Override
-        protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
-            ObjectStreamClass resultClassDescriptor = super.readClassDescriptor();
-            String className = resultClassDescriptor.getName();
-            String models = "models";
-            String replaceString = "com.hyperactivity.android_app.forum.models";
-            if (className.contains(models)){
-                resultClassDescriptor = ObjectStreamClass.lookup(Class.forName(className.replaceFirst(models, replaceString)));
-            }
-
-            return resultClassDescriptor;
-        }
     }
 }
