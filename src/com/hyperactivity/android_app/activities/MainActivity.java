@@ -11,25 +11,29 @@ import com.hyperactivity.android_app.forum.ForumEventCallback;
 
 public class MainActivity extends FragmentActivity implements ForumEventCallback {
     public static final int HOME_FRAGMENT = 0,
-            FORUM_FRAGMENT = 1,
-            DIARY_FRAGMENT = 2;
+            				FORUM_FRAGMENT = 1,
+        					DIARY_FRAGMENT = 2,
+        					CREATE_THREAD_FRAGMENT = 3,
+        					SEARCH_FRAGMENT = 4;
+    		
 
     private Fragment[] fragments;
     private int currentFragment;
+    private NavigationMenuFragment navigationMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Make a link from the navigation menu to this activity
+        navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.navigation_menu_fragment);
+        navigationMenu.setParentActivity(this);
+        
         initializeFragments();
         currentFragment = -1;
         changeFragment(HOME_FRAGMENT);
-
-        // Make a link from the navigation menu to this activity
-        NavigationMenuFragment navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_menu_fragment);
-        navigationMenu.setParentActivity(this);
 
         Engine engine = (Engine) getApplication();
         engine.getPublicForum().setCallback(this);
@@ -37,10 +41,12 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private void initializeFragments() {
-        fragments = new Fragment[3];
+        fragments = new Fragment[5];
         fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
+        fragments[CREATE_THREAD_FRAGMENT] = new CreateThreadFragment();
+        fragments[SEARCH_FRAGMENT] = new SearchFragment();
     }
 
     public void changeFragment(int fragmentID) {
@@ -49,6 +55,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);
             transaction.commit();
+            navigationMenu.updateNavigationMenu(currentFragment);
         }
     }
 
