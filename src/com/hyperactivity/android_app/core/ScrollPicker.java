@@ -255,11 +255,13 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                         delta = (now - lastTime) / 1000.0f;
                         lastTime = now;
 
+                        if(state != STATE_PAUSE) {
+                            doDraw(c);
+                        }
+
                         if (state == STATE_RUNNING || state == STATE_READY) {
                             doUpdate(delta);
                         }
-
-                        doDraw(c);
                     }
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, "exception", e);

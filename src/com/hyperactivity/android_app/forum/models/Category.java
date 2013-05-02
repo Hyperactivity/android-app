@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.forum.models;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -32,6 +33,10 @@ public class Category {
     }
 
     public List<Thread> getThreads() {
+        if(threads == null) {
+            threads = new LinkedList<Thread>();
+        }
+
         return threads;
     }
 }
