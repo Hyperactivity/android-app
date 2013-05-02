@@ -23,9 +23,6 @@ public class HomeFragment extends Fragment {
 	}
 	
 	public void updateThreadList(ArrayList<ForumThread> forumList) {
-		for (ForumThread thread : forumList) {
-			System.out.println("Thread: " + thread.getHeadline());
-		}
         threadList.updateThreadList(forumList);
 	}
 }
