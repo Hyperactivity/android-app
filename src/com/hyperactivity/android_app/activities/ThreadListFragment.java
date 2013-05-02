@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.support.v4.app.ListFragment;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.hyperactivity.android_app.R;
@@ -15,6 +17,7 @@ public class ThreadListFragment extends ListFragment {
 	private String[] from = new String[] {"thread_headline", "thread_text"};
 	private int[] to = new int[] {R.id.thread_headline, R.id.thread_text};
 	
+	private List<Thread> currentThreads;
 	private List<HashMap<String, String>> data;
 
 	public void updateThreadList(List<Thread> threadList) {
@@ -30,7 +33,17 @@ public class ThreadListFragment extends ListFragment {
 	        setListAdapter(adapter);
 	        data = null;
 		}
+		currentThreads = threadList;
     }
+	
+	@Override
+	public void onListItemClick (ListView l, View v, int position, long id) {
+		if (position >= 0 && position < currentThreads.size()) {
+			if (getActivity() != null) {
+				((MainActivity)getActivity()).visitThread(currentThreads.get(position));
+			}
+		}
+	}
 	
 	@Override
 	public void onResume() {

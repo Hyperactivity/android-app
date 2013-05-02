@@ -32,6 +32,7 @@ public class NavigationMenuFragment extends Fragment {
 		activeButtonFragmentMapping = new HashMap<Integer, Integer>();
 		activeButtonFragmentMapping.put(MainActivity.HOME_FRAGMENT, 0);
 		activeButtonFragmentMapping.put(MainActivity.FORUM_FRAGMENT, 1);
+		activeButtonFragmentMapping.put(MainActivity.VIEW_THREAD_FRAGMENT, 1);
 		activeButtonFragmentMapping.put(MainActivity.DIARY_FRAGMENT, 2);
 		activeButtonFragmentMapping.put(MainActivity.CREATE_THREAD_FRAGMENT, 3);
 		activeButtonFragmentMapping.put(MainActivity.SEARCH_FRAGMENT, 4);

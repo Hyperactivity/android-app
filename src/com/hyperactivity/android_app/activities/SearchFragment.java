@@ -1,6 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,13 +11,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
-import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.forum.models.Category;
+import com.hyperactivity.android_app.forum.models.Thread;
 
 public class SearchFragment extends Fragment {
 	
@@ -45,12 +45,13 @@ public class SearchFragment extends Fragment {
 	}
 	
 	private void querySearchString(String text) {
+		text = text.toLowerCase(Locale.ENGLISH);
 		ArrayList<Thread> result = new ArrayList<Thread>();
 		
 		for (Category category : ((Engine) getActivity().getApplication()).getPublicForum().getCategories()) {
 			if (category.getThreads() == null) continue;
 			for (Thread thread : category.getThreads()) {
-				if (thread.getText().contains(text) || thread.getHeadLine().contains(text)) {
+				if (thread.getText().toLowerCase(Locale.ENGLISH).contains(text) || thread.getHeadLine().toLowerCase(Locale.ENGLISH).contains(text)) {
 					result.add(thread);
 				}
 			}
