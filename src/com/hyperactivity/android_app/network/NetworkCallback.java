@@ -3,7 +3,6 @@ package com.hyperactivity.android_app.network;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.hardware.usb.UsbDevice;
 import android.util.Base64;
 import android.util.Log;
 import com.hyperactivity.android_app.Constants;
@@ -12,7 +11,9 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thoughtworks.xstream.XStream;
 import net.minidev.json.JSONObject;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public abstract class NetworkCallback {
 

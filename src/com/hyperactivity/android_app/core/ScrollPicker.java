@@ -147,11 +147,12 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         private float canvasWidth = 1;          //width of the drawable area, will be updated by function below.
         private float canvasHeight = 1;         //height of the drawable area, will be update by function below.
         private ScrollPickerItemManager itemManager;
+        private ScrollPickerEventCallback callback;
 
         public ScrollPickerThread(SurfaceHolder surfaceHolder, Context context) {
             this.surfaceHolder = surfaceHolder;
             this.context = context;
-            this.itemManager = new ScrollPickerItemManager(canvasWidth, canvasHeight, context.getResources().getInteger(R.integer.scroll_picker_categories_size)/100f);
+            this.itemManager = new ScrollPickerItemManager(canvasWidth, canvasHeight, context.getResources().getInteger(R.integer.scroll_picker_categories_size) / 100f);
         }
 
         /**
@@ -160,8 +161,12 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         private void doUpdate(float delta) {
             if (state == STATE_READY) {
                 //The thread should not start until setCanvasSize have been called.
-                if(canvasWidth != 1 && canvasHeight != 1) {
+                if (canvasWidth != 1 && canvasHeight != 1) {
                     setState(STATE_RUNNING);
+
+                    if (callback != null) {
+                        callback.scrollPickerReady();
+                    }
                 }
             } else if (state == STATE_RUNNING) {
                 itemManager.doUpdate(delta);
@@ -176,7 +181,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
                 //TODO: do me
 
 
-                 canvas.drawColor(context.getResources().getColor(R.color.background));
+                canvas.drawColor(context.getResources().getColor(R.color.background));
 
                 itemManager.doDraw(canvas);
             }
@@ -310,7 +315,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
                 Log.i(this.getClass().getName(), "Canvas width: " + canvasWidth + " height: " + canvasHeight + " ratio: " + canvasRatio);
 
-                if(itemManager != null) {
+                if (itemManager != null) {
                     itemManager.onCanvasChanged(canvasWidth, canvasHeight);
                 }
             }
@@ -322,6 +327,19 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
 
         public ScrollPickerItemManager getItemManager() {
             return itemManager;
+        }
+
+        public void setCallback(ScrollPickerEventCallback callback) {
+            this.callback = callback;
+            itemManager.setCallback(callback);
+
+            if(isReady()) {
+                callback.scrollPickerReady();
+            }
+        }
+
+        public boolean isReady() {
+            return canvasWidth != 1 && canvasHeight != 1 && state == STATE_RUNNING;
         }
     }
 }
