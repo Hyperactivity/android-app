@@ -9,14 +9,17 @@ import android.view.View;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.ScrollPicker;
+import com.hyperactivity.android_app.core.ScrollPickerEventCallback;
+import com.hyperactivity.android_app.core.ScrollPickerItem;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.ForumThread;
 import com.hyperactivity.android_app.forum.models.Category;
+import com.hyperactivity.android_app.forum.models.Thread;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MainActivity extends FragmentActivity implements ForumEventCallback {
+public class MainActivity extends FragmentActivity implements ForumEventCallback, ScrollPickerEventCallback {
     public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
             DIARY_FRAGMENT = 2;
@@ -36,6 +39,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         View view = findViewById(R.id.forum_categories_surface_view);
         scrollPicker = (ScrollPicker) view;
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
+        scrollPicker.getThread().getItemManager().setCallback(this);
 
         // Make a link from the navigation menu to this activity
         NavigationMenuFragment navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
@@ -84,6 +88,10 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
      */
     @Override
     public void loadingFinished() {
+    }
+
+    @Override
+    public void categoriesLoaded() {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         options.inDither = false;
@@ -111,15 +119,32 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         }
 
         scrollPicker.getItemManager().recalculateItems();
+    }
 
-        //TODO: this is dummy data.
+    @Override
+    public void threadsLoaded() {
         ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
-        forumList.add(new ForumThread(null, "test1", "test12"));
-        forumList.add(new ForumThread(null, "test2", "test22"));
-        forumList.add(new ForumThread(null, "test3", "test32"));
+        Iterator<Thread> it = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads().iterator();
 
-        ThreadListFragment threadListFragment = (ThreadListFragment)fragments[HOME_FRAGMENT];
+        while (it.hasNext()) {
+            Thread thread = it.next();
 
+            forumList.add(new ForumThread(null, thread.getHeadLine(), thread.getText()));
+        }
+
+        ThreadListFragment threadListFragment = (ThreadListFragment) fragments[HOME_FRAGMENT];
         threadListFragment.updateThreadList(forumList);
+    }
+
+    @Override
+    public void repliesLoaded() {
+    }
+
+
+    @Override
+    public void selectedItemChanged(ScrollPickerItem selected) {
+        if(selected != null) {
+            ((Engine) getApplication()).getPublicForum().loadThreads(this, selected.getCategory());
+        }
     }
 }

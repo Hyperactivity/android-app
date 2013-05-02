@@ -60,7 +60,7 @@ public class Reply implements Externalizable {
         account = (Account) in.readObject();
         id = in.readInt();
         time = (Timestamp) in.readObject();
-        text = in.readUTF();
+        text = (String)in.readObject();
         thumbsUp = (List<ThumbsUp>) in.readObject();
     }
 }

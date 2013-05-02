@@ -1,7 +1,11 @@
 package com.hyperactivity.android_app.forum;
 
 public interface ForumEventCallback {
-    public abstract void loadingFinished();
-    public abstract void loadingStarted();
-    public abstract void loadingFailed();
+    public void loadingFinished();
+    public void loadingStarted();
+    public void loadingFailed();
+
+    public void categoriesLoaded();
+    public void threadsLoaded();
+    public void repliesLoaded();
 }

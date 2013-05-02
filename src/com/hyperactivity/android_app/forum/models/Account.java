@@ -89,12 +89,12 @@ public class Account implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         id = in.readInt();
-        profileDescription = in.readUTF();
+        profileDescription = (String)in.readObject();
         birthDate = (Date) in.readObject();
         limitPerDay = in.readInt();
         useDefaultColors = in.readBoolean();
         facebookId = in.readInt();
-        username = in.readUTF();
+        username = (String)in.readObject();
         showBirthDate = in.readBoolean();
     }
 }

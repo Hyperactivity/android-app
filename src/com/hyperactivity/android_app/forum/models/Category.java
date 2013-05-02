@@ -4,6 +4,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +18,8 @@ public class Category implements Externalizable {
     private String headLine;
     private int colorCode;
     private Category parentCategory;
+    private List<Thread> threads;
+
     /**
      * The object implements the writeExternal method to save its contents
      * by calling the methods of DataOutput for its primitive values or
@@ -51,7 +54,7 @@ public class Category implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         id = in.readInt();
-        headLine = in.readUTF();
+        headLine = (String)in.readObject();
         colorCode = in.readInt();
         parentCategory= (Category) in.readObject();
     }
@@ -66,5 +69,13 @@ public class Category implements Externalizable {
 
     public int getColorCode() {
         return colorCode;
+    }
+
+    public void setThreads(List<Thread> threads) {
+        this.threads = threads;
+    }
+
+    public List<Thread> getThreads() {
+        return threads;
     }
 }

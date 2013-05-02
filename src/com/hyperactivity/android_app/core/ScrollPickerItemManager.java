@@ -30,6 +30,8 @@ public class ScrollPickerItemManager {
     private float movingSpeed;
     private int moveDirection;
 
+    private ScrollPickerEventCallback callback;
+
     public ScrollPickerItemManager(float canvasWidth, float canvasHeight, float itemPercentSize) {
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
@@ -48,11 +50,11 @@ public class ScrollPickerItemManager {
             try {
                 if (x > limit) {
                     selectedItem.setShowText(false);
-                    selectedItem = ((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast();
+                    setSelectedItem(((LinkedList<ScrollPickerItem>) getItemsLeft()).getLast());
                     moveDirection = 1;
                 } else if (x < -limit) {
                     selectedItem.setShowText(false);
-                    selectedItem = ((LinkedList<ScrollPickerItem>) getItemsRight()).getFirst();
+                    setSelectedItem(((LinkedList<ScrollPickerItem>) getItemsRight()).getFirst());
                     moveDirection = -1;
                 }
                 movingSpeed = moveDirection * x * speed;
@@ -130,7 +132,7 @@ public class ScrollPickerItemManager {
             it.next().doDraw(canvas);
         }
 
-        if(selectedItem != null) {
+        if (selectedItem != null) {
             selectedItem.doDraw(canvas);
         }
     }
@@ -147,7 +149,7 @@ public class ScrollPickerItemManager {
         ScrollPickerItem item = new ScrollPickerItem(image, text, textColor, category);
 
         if (selected) {
-            selectedItem = item;
+            setSelectedItem(item);
             item.setShowText(true);
         }
 
@@ -166,8 +168,8 @@ public class ScrollPickerItemManager {
     }
 
     public void recalculateItems() {
-        if(selectedItem == null && items.size() > 0) {
-            selectedItem = items.get(items.size()/2);
+        if (selectedItem == null && items.size() > 0) {
+            setSelectedItem(items.get(items.size() / 2));
             selectedItem.setShowText(true);
             selectedItem.setVisible(true);
         }
@@ -183,7 +185,7 @@ public class ScrollPickerItemManager {
     public List<ScrollPickerItem> getItemsLeft() {
         List<ScrollPickerItem> list = new LinkedList<ScrollPickerItem>();
 
-        Iterator<ScrollPickerItem> it = items.iterator();
+        Iterator<ScrollPickerItem> it = ((LinkedList<ScrollPickerItem>)items.clone()).iterator();
         while (it.hasNext()) {
             ScrollPickerItem item = it.next();
 
@@ -200,7 +202,7 @@ public class ScrollPickerItemManager {
     public List<ScrollPickerItem> getItemsRight() {
         List<ScrollPickerItem> list = new LinkedList<ScrollPickerItem>();
 
-        Iterator<ScrollPickerItem> it = items.descendingIterator();
+        Iterator<ScrollPickerItem> it = ((LinkedList<ScrollPickerItem>)items.clone()).descendingIterator();
         while (it.hasNext()) {
             ScrollPickerItem item = it.next();
 
@@ -264,8 +266,24 @@ public class ScrollPickerItemManager {
 
     public void reset() {
         items.clear();
-        selectedItem = null;
+        setSelectedItem(null);
         moveDirection = 0;
         movingSpeed = 0f;
+    }
+
+    private void setSelectedItem(ScrollPickerItem item) {
+        selectedItem = item;
+
+        if (callback != null) {
+            callback.selectedItemChanged(selectedItem);
+        }
+    }
+
+    public ScrollPickerItem getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setCallback(ScrollPickerEventCallback callback) {
+        this.callback = callback;
     }
 }

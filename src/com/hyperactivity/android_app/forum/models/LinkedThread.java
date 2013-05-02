@@ -68,7 +68,7 @@ public class LinkedThread implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         id = in.readInt();
-        headLine = in.readUTF();
+        headLine = (String)in.readObject();
         parentPrivateCategory = (Category) in.readObject();
         account = (Account) in.readObject();
     }

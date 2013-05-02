@@ -70,7 +70,7 @@ public class PrivateMessage implements Externalizable {
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         senderAccount = (Account) in.readObject();
         recieverAccount = (Account) in.readObject();
-        text = in.readUTF();
+        text = (String)in.readObject();
         time = (Timestamp) in.readObject();
     }
 }

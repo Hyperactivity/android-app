@@ -77,6 +77,6 @@ public class PrivateCategory implements Externalizable {
         colorCode = in.readInt();
         parentPrivateCategory = (Category) in.readObject();
         account = (Account) in.readObject();
-        headLine = in.readUTF();
+        headLine = (String)in.readObject();
     }
 }

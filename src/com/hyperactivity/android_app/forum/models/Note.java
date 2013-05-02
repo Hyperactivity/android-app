@@ -73,8 +73,8 @@ public class Note implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         id = in.read();
-        headLine = in.readUTF();
-        text = in.readUTF();
+        headLine = (String)in.readObject();
+        text = (String)in.readObject();
         account = (Account) in.readObject();
         parentPrivateCategory = (Category) in.readObject();
     }

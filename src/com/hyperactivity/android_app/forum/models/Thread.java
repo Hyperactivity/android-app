@@ -80,8 +80,8 @@ public class Thread implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         id = in.readInt();
-        headLine = in.readUTF();
-        text = in.readUTF();
+        headLine = (String)in.readObject();
+        text = (String)in.readObject();
         account = (Account) in.readObject();
         parentCategory = (Category) in.readObject();
         time = (Timestamp) in.readObject();
