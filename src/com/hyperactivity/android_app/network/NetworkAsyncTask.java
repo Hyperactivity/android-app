@@ -112,7 +112,13 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
             result = jsonrpc2Response.getError();
         }
 
-        networkCallback.onNetworkTaskComplete(jsonrpc2Response.indicatesSuccess(), result, (int)(long)(Long)jsonrpc2Response.getID());
+        int id = 0;
+
+        if(jsonrpc2Response.getID() != null) {
+            id = (int)(long)(Long)jsonrpc2Response.getID();
+        }
+
+        networkCallback.onNetworkTaskComplete(jsonrpc2Response.indicatesSuccess(), result, id);
     }
 
     private JSONRPC2Response validateResponse(int id, JSONRPC2Response response) {
