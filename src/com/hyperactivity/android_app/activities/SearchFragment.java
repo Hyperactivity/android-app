@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
-import com.hyperactivity.android_app.forum.ForumThread;
+import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.forum.models.Category;
 
 public class SearchFragment extends Fragment {
@@ -27,7 +27,7 @@ public class SearchFragment extends Fragment {
 		View view = inflater.inflate(R.layout.search_fragment, null);
 		
 		searchResultList = new ThreadListFragment();
-		searchResultList.updateThreadList(new ArrayList<ForumThread>());
+		searchResultList.updateThreadList(new ArrayList<Thread>());
 		getFragmentManager().beginTransaction().replace(R.id.search_thread_list_container, searchResultList).commit();
 		
 		final EditText editText = (EditText)view.findViewById(R.id.search_text_field);
@@ -45,13 +45,13 @@ public class SearchFragment extends Fragment {
 	}
 	
 	private void querySearchString(String text) {
-		ArrayList<ForumThread> result = new ArrayList<ForumThread>();
+		ArrayList<Thread> result = new ArrayList<Thread>();
 		
 		for (Category category : ((Engine) getActivity().getApplication()).getPublicForum().getCategories()) {
 			if (category.getThreads() == null) continue;
-			for (com.hyperactivity.android_app.forum.models.Thread thread : category.getThreads()) {
+			for (Thread thread : category.getThreads()) {
 				if (thread.getText().contains(text) || thread.getHeadLine().contains(text)) {
-					result.add(new ForumThread(null, thread.getHeadLine(), thread.getText()));
+					result.add(thread);
 				}
 			}
 		}
