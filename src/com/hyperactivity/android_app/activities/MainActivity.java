@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     private void initializeFragments() {
         fragments = new Fragment[3];
-        fragments[HOME_FRAGMENT] = new ThreadListFragment();
+        fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
     }
@@ -60,14 +60,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);
             transaction.commit();
-
-            if (currentFragment == HOME_FRAGMENT) { // Update thread list
-                ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
-                forumList.add(new ForumThread(null, "test1", "test12"));
-                forumList.add(new ForumThread(null, "test2", "test22"));
-                forumList.add(new ForumThread(null, "test3", "test32"));
-                ((ThreadListFragment) fragments[HOME_FRAGMENT]).updateThreadList(forumList);
-            }
         }
     }
 
@@ -113,13 +105,13 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         scrollPicker.getItemManager().recalculateItems();
 
         //TODO: this is dummy data.
-        ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
-        forumList.add(new ForumThread(null, "test1", "test12"));
-        forumList.add(new ForumThread(null, "test2", "test22"));
-        forumList.add(new ForumThread(null, "test3", "test32"));
-
-        ThreadListFragment threadListFragment = (ThreadListFragment)fragments[HOME_FRAGMENT];
-
-        threadListFragment.updateThreadList(forumList);
+//        ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
+//        forumList.add(new ForumThread(null, "test1", "test12"));
+//        forumList.add(new ForumThread(null, "test2", "test22"));
+//        forumList.add(new ForumThread(null, "test3", "test32"));
+//
+//        ThreadListFragment threadListFragment = (ThreadListFragment)fragments[HOME_FRAGMENT];
+//
+//        threadListFragment.updateThreadList(forumList);
     }
 }
