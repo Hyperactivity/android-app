@@ -1,5 +1,7 @@
 package com.hyperactivity.android_app;
 
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
+
 /**
  * Created with IntelliJ IDEA.
  * User: lucas
@@ -28,6 +30,15 @@ public class Constants {
         public static final String CREATE_REPLY = "create_reply";
         public static final String GET_FORUM_CONTENT = "get_forum_content";
         public static final String GET_LATEST_THREADS = "get_latest_threads";
+        public static final String GET_ACCOUNT = "get_account";
+        public static final String CREATE_CATEGORY = "create_category";
+        public static final String MODIFY_CATEGORY = "modify_category";
+        public static final String DELETE_CATEGORY = "delete_category";
+        public static final String GET_THREAD_CONTENT = "get_thread_content";
+        public static final String MODIFY_THREAD = "modify_thread";
+        public static final String DELETE_THREAD = "delete_thread";
+        public static final String MODIFY_REPLY = "modify_reply";
+        public static final String DELETE_REPLY = "delete_reply";
     }
 
     public class Transfer {
@@ -60,5 +71,9 @@ public class Constants {
         public static final String PARENT_THREAD = "parent_thread";
         public static final String STATUS = "status";
         public static final String LIMIT = "limit";
+        public static final String COLOR_CODE = "color_code";
+        public static final String SORT_TYPE = "sort_type";
+        public static final String REPLY_ID = "reply_id";
+        public static final String THUMB_UP = "thumb_up";
     }
 }
