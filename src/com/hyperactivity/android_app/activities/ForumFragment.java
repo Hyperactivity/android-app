@@ -24,82 +24,87 @@ import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 public class ForumFragment extends Fragment implements ScrollPickerEventCallback {
-	
+
     private ScrollPicker scrollPicker;
-	private ThreadListFragment threadList;
-	private boolean categoriesLoaded;
-	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.forum_fragment, null);
-		threadList = new ThreadListFragment();
+    private ThreadListFragment threadList;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.forum_fragment, null);
+        threadList = new ThreadListFragment();
         getFragmentManager().beginTransaction().replace(R.id.forum_thread_list_container, threadList).commit();
         scrollPicker = (ScrollPicker) view.findViewById(R.id.forum_categories_surface_view);
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
-        scrollPicker.getThread().getItemManager().setCallback(this);
-        if (categoriesLoaded) {
-        	updateCategories();
-        }
+        scrollPicker.getThread().setCallback(this);
+
         return view;
-	}
-	
-	public void updateCategories() {
-		// TODO callback when scrollpicker is properly created?
-		if (scrollPicker != null) {
-	        BitmapFactory.Options options = new BitmapFactory.Options();
-	        options.inScaled = false;
-	        options.inDither = false;
-	        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    }
 
-	        scrollPicker.reset();
-
-	        Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
-
-	        while (it.hasNext()) {
-	            Category category = it.next();
-
-	            //TODO: try do load the image somehow.
-	            Bitmap image = null;
-
-	            if (image == null) {
-	                image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
-	                Canvas c = new Canvas(image);
-	                Paint paint = new Paint();
-	                paint.setColor(-category.getColorCode());
-	                c.drawCircle(300 / 2, 300 / 2, 300 / 2, paint);
-	            }
-
-	            scrollPicker.getItemManager().addItem(image, category.getHeadLine(), Color.BLACK, category);
-	        }
-
-	        scrollPicker.getItemManager().recalculateItems();
-	        categoriesLoaded = false;
-		} else {
-			categoriesLoaded = true;
-		}
-	}
-	
-	public void updateThreadList() {
+    public void updateThreadList() {
         ArrayList<ForumThread> chosenThreads = new ArrayList<ForumThread>();
         Iterator<Thread> it = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads().iterator();
 
         while (it.hasNext()) {
             Thread thread = it.next();
 
-            chosenThreads .add(new ForumThread(null, thread.getHeadLine(), thread.getText()));
+            chosenThreads.add(new ForumThread(null, thread.getHeadLine(), thread.getText()));
         }
         updateThreadList(chosenThreads);
-	}
-	
-	public void updateThreadList(ArrayList<ForumThread> forumList) {
+    }
+
+    public void updateThreadList(ArrayList<ForumThread> forumList) {
         threadList.updateThreadList(forumList);
-	}
+    }
 
     @Override
     public void selectedItemChanged(ScrollPickerItem selected) {
-        updateThreadList( new ArrayList<ForumThread>());
+        //TODO: This cannot be done since this is not running on UI thread. Must be done in some other way.
+        //updateThreadList(new ArrayList<ForumThread>());
 
-        if(selected != null) {
+        if (selected != null) {
             ((Engine) getActivity().getApplication()).getPublicForum().loadThreads(getActivity(), selected.getCategory(), false);
+        }
+    }
+
+    @Override
+    public void scrollPickerReady() {
+        //This callback will be executed as the scrollpicker thread. Change to UI because UI stuff is gonna be done.
+        this.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                updateCategories();
+            }
+        });
+
+    }
+
+    public void updateCategories() {
+        if (scrollPicker != null && scrollPicker.getThread().isReady()) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
+            options.inDither = false;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+            scrollPicker.reset();
+
+            Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
+
+            while (it.hasNext()) {
+                Category category = it.next();
+
+                //TODO: try do load the image somehow.
+                Bitmap image = null;
+
+                if (image == null) {
+                    image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+                    Canvas c = new Canvas(image);
+                    Paint paint = new Paint();
+                    paint.setColor(-category.getColorCode());
+                    c.drawCircle(300 / 2, 300 / 2, 300 / 2, paint);
+                }
+
+                scrollPicker.getItemManager().addItem(image, category.getHeadLine(), Color.BLACK, category);
+            }
+
+            scrollPicker.getItemManager().recalculateItems();
         }
     }
 }
