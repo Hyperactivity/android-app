@@ -97,6 +97,25 @@ public abstract class NetworkCallback {
         //TODO Detta ska göras en gång, inte vid varje deSerialize, visste inte vart jag skulle sätta den /Mathias
         XStream xStream = new XStream();
         xStream.aliasPackage("models", "com.hyperactivity.android_app.forum.models");
-        return (T) xStream.fromXML(serializedObject);
+        return (T) xStream.fromXML(deSerializeObject(String.class, serializedObject));
+    }
+
+    /**
+     * Used to deSerialize an object
+     *
+     * @param classType
+     * @param serializedObject
+     * @param <T>              Returns the object as the given class type.
+     * @return
+     * @throws ClassNotFoundException
+     */
+    @SuppressWarnings("unchecked")
+    private static final <T> T deSerializeObject(java.lang.Class<T> classType, String serializedObject) throws ClassNotFoundException, IOException {
+        byte[] data = Base64.decode(serializedObject, Base64.DEFAULT);
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        Object o = ois.readObject();
+        ois.close();
+
+        return (T) o;
     }
 }
