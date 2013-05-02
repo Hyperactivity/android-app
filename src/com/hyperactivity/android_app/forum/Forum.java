@@ -39,10 +39,10 @@ public class Forum {
     }
 
     @SuppressWarnings("unchecked")
-    public void loadCategories(final Activity activity) {
+    public void loadCategories(final Activity activity, boolean lockWithLoadingScreen) {
         callback.loadingStarted();
 
-        ((Engine) activity.getApplicationContext()).getServerLink().getForumContent(type.toString(), new NetworkCallback() {
+        ((Engine) activity.getApplicationContext()).getServerLink().getForumContent(type.toString(), lockWithLoadingScreen, new NetworkCallback() {
             @Override
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
@@ -100,7 +100,7 @@ public class Forum {
 
                 try {
                     //TODO: this should be rewritten when we get linkedlists from server.
-                    category.setThreads(new LinkedList<Thread>(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS))));
+                    category.setThreads((LinkedList<Thread>)(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS))));
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
                     callback.loadingFailed();
@@ -151,7 +151,7 @@ public class Forum {
                 super.onSuccess(result, userId);
 
                 try {
-                    latestThreads = new LinkedList<Thread>(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS)));
+                    latestThreads = (LinkedList<Thread>)(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS)));
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
                     callback.loadingFailed();

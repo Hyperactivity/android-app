@@ -15,6 +15,7 @@ import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ForumFragment extends Fragment implements ScrollPickerEventCallback {
@@ -43,23 +44,21 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
 
     @Override
     public void selectedItemChanged(ScrollPickerItem selected) {
-        //TODO: This cannot be done since this is not running on UI thread. Must be done in some other way.
-        //updateThreadList(new ArrayList<Thread>());
-
         if (selected != null) {
             ((Engine) getActivity().getApplication()).getPublicForum().loadThreads(getActivity(), selected.getCategory(), false);
         }
+
+        //This callback will be executed as the scrollpicker thread. Change to UI because UI stuff is gonna be done.
+        this.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                updateThreadList(new LinkedList<Thread>());
+            }
+        });
     }
 
     @Override
     public void scrollPickerReady() {
-        //This callback will be executed as the scrollpicker thread. Change to UI because UI stuff is gonna be done.
-        this.getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                updateCategories();
-            }
-        });
-
+        updateCategories();
     }
 
     public void updateCategories() {

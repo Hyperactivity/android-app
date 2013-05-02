@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
         Engine engine = (Engine) getApplication();
         engine.getPublicForum().setCallback(this);
-        engine.getPublicForum().loadCategories(this);
+        engine.getPublicForum().loadCategories(this, false);
     }
 
     private void initializeFragments() {
