@@ -1,30 +1,19 @@
 package com.hyperactivity.android_app.activities;
 
-import android.graphics.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
+
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
-import com.hyperactivity.android_app.core.ScrollPicker;
-import com.hyperactivity.android_app.core.ScrollPickerEventCallback;
-import com.hyperactivity.android_app.core.ScrollPickerItem;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
-import com.hyperactivity.android_app.forum.ForumThread;
-import com.hyperactivity.android_app.forum.models.Category;
-import com.hyperactivity.android_app.forum.models.Thread;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-
-public class MainActivity extends FragmentActivity implements ForumEventCallback, ScrollPickerEventCallback {
+public class MainActivity extends FragmentActivity implements ForumEventCallback {
     public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
             DIARY_FRAGMENT = 2;
-    private ScrollPicker scrollPicker;
+
     private Fragment[] fragments;
     private int currentFragment;
 
@@ -36,11 +25,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         initializeFragments();
         currentFragment = -1;
         changeFragment(HOME_FRAGMENT);
-
-        View view = findViewById(R.id.forum_categories_surface_view);
-        scrollPicker = (ScrollPicker) view;
-        scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
-        scrollPicker.getThread().getItemManager().setCallback(this);
 
         // Make a link from the navigation menu to this activity
         NavigationMenuFragment navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
@@ -85,60 +69,20 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void categoriesLoaded() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = false;
-        options.inDither = false;
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        scrollPicker.reset();
-
-        Iterator<Category> it = ((Engine) getApplication()).getPublicForum().getCategories().iterator();
-
-        while (it.hasNext()) {
-            Category category = it.next();
-
-            //TODO: try do load the image somehow.
-            Bitmap image = null;
-
-            if (image == null) {
-                image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
-                Canvas c = new Canvas(image);
-                Paint paint = new Paint();
-                paint.setColor(-category.getColorCode());
-                c.drawCircle(300 / 2, 300 / 2, 300 / 2, paint);
-            }
-
-            scrollPicker.getItemManager().addItem(image, category.getHeadLine(), Color.BLACK, category);
-        }
-
-        scrollPicker.getItemManager().recalculateItems();
+		((ForumFragment)fragments[FORUM_FRAGMENT]).updateCategories();
     }
 
     @Override
     public void threadsLoaded() {
-        ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
-        Iterator<Thread> it = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads().iterator();
-
-        while (it.hasNext()) {
-            Thread thread = it.next();
-
-            forumList.add(new ForumThread(null, thread.getHeadLine(), thread.getText()));
-        }
-
-        ((HomeFragment)fragments[HOME_FRAGMENT]).updateThreadList(forumList);
+    	if (currentFragment == FORUM_FRAGMENT) {
+            ((ForumFragment)fragments[FORUM_FRAGMENT]).updateThreadList();
+    	} else if (currentFragment == HOME_FRAGMENT) {
+    		// Get latest threads
+    		
+    	}
     }
 
     @Override
     public void repliesLoaded() {
-    }
-
-
-    @Override
-    public void selectedItemChanged(ScrollPickerItem selected) {
-        ((HomeFragment)fragments[HOME_FRAGMENT]).updateThreadList( new ArrayList<ForumThread>());
-
-        if(selected != null) {
-            ((Engine) getApplication()).getPublicForum().loadThreads(this, selected.getCategory(), false);
-        }
     }
 }
