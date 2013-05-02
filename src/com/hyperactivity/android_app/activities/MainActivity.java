@@ -136,7 +136,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     @Override
     public void selectedItemChanged(ScrollPickerItem selected) {
         if(selected != null) {
-            ((Engine) getApplication()).getPublicForum().loadThreads(this, selected.getCategory());
+            ((Engine) getApplication()).getPublicForum().loadThreads(this, selected.getCategory(), false);
         }
     }
 }

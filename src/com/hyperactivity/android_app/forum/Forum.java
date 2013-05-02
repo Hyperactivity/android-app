@@ -87,10 +87,10 @@ public class Forum {
     }
 
     @SuppressWarnings("unchecked")
-    public void loadThreads(final Activity activity, final Category category) {
+    public void loadThreads(final Activity activity, final Category category, boolean lockWithLoadingScreen) {
         callback.loadingStarted();
 
-        ((Engine) activity.getApplicationContext()).getServerLink().getCategoryContent(category.getId(), new NetworkCallback() {
+        ((Engine) activity.getApplicationContext()).getServerLink().getCategoryContent(category.getId(), lockWithLoadingScreen, new NetworkCallback() {
             @Override
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
