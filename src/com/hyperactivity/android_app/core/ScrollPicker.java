@@ -43,6 +43,8 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         if (!hasWindowFocus) {
             thread.pause();
+        } else {
+            thread.unpause();
         }
     }
 
