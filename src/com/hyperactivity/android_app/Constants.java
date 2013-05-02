@@ -27,6 +27,7 @@ public class Constants {
         public static final String CREATE_THREAD = "create_thread";
         public static final String CREATE_REPLY = "create_reply";
         public static final String GET_FORUM_CONTENT = "get_forum_content";
+        public static final String GET_LATEST_THREADS = "get_latest_threads";
     }
 
     public class Transfer {
@@ -58,5 +59,6 @@ public class Constants {
         public static final String PARENT_CATEGORY = "parent_category";
         public static final String PARENT_THREAD = "parent_thread";
         public static final String STATUS = "status";
+        public static final String LIMIT = "limit";
     }
 }

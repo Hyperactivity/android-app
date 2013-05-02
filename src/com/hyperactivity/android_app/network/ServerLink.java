@@ -77,6 +77,13 @@ public class ServerLink {
         sendRequest(Constants.Methods.GET_CATEGORY_CONTENT, params, callback, lockWithLoadingScreen);
     }
 
+    public void getLatestThreads(int limit, boolean lockWithLoadingScreen, final NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        params.put(Constants.Transfer.LIMIT, limit);
+
+        sendRequest(Constants.Methods.GET_LATEST_THREADS, params, callback, lockWithLoadingScreen);
+    }
+
     //---------------------------- HELPER METHODS ----------------------------
 
     private void sendRequest(String method, String id, List<Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
