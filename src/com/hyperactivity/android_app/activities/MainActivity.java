@@ -124,8 +124,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             forumList.add(new ForumThread(null, thread.getHeadLine(), thread.getText()));
         }
 
-        ThreadListFragment threadListFragment = (ThreadListFragment) fragments[HOME_FRAGMENT];
-        threadListFragment.updateThreadList(forumList);
+        ((HomeFragment)fragments[HOME_FRAGMENT]).updateThreadList(forumList);
     }
 
     @Override

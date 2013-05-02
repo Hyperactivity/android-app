@@ -18,21 +18,14 @@ public class HomeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.home_fragment, null);
 		threadList = new ThreadListFragment();
-		updateForumThreads();
         getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
 		return view;
 	}
 	
-	public void onResume() {
-		super.onResume();
-		updateForumThreads();
-	}
-	
-	public void updateForumThreads() {
-		ArrayList<ForumThread> forumList = new ArrayList<ForumThread>();
-        forumList.add(new ForumThread(null, "forumtest1", "test12"));
-        forumList.add(new ForumThread(null, "forumtest2", "test22"));
-        forumList.add(new ForumThread(null, "forumtest3", "test32"));
+	public void updateThreadList(ArrayList<ForumThread> forumList) {
+		for (ForumThread thread : forumList) {
+			System.out.println("Thread: " + thread.getHeadline());
+		}
         threadList.updateThreadList(forumList);
 	}
 }
