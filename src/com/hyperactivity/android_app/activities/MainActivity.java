@@ -18,6 +18,7 @@ import com.hyperactivity.android_app.forum.models.Thread;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class MainActivity extends FragmentActivity implements ForumEventCallback, ScrollPickerEventCallback {
     public static final int HOME_FRAGMENT = 0,
@@ -134,6 +135,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void selectedItemChanged(ScrollPickerItem selected) {
+        ((HomeFragment)fragments[HOME_FRAGMENT]).updateThreadList( new ArrayList<ForumThread>());
+
         if(selected != null) {
             ((Engine) getApplication()).getPublicForum().loadThreads(this, selected.getCategory(), false);
         }

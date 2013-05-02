@@ -5,6 +5,7 @@ import android.util.Log;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.Category;
+import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import net.minidev.json.JSONObject;
@@ -97,7 +98,7 @@ public class Forum {
 
                 try {
                     //TODO: this should be rewritten when we get linkedlists from server.
-                    categories = new LinkedList<Category>(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.CATEGORIES)));
+                    category.setThreads(new LinkedList<Thread>(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS))));
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
                     callback.loadingFailed();
