@@ -1,27 +1,21 @@
 package com.hyperactivity.android_app.activities;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.ScrollPicker;
 import com.hyperactivity.android_app.core.ScrollPickerEventCallback;
 import com.hyperactivity.android_app.core.ScrollPickerItem;
-import com.hyperactivity.android_app.forum.ForumThread;
 import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.forum.models.Thread;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class ForumFragment extends Fragment implements ScrollPickerEventCallback {
 
@@ -40,25 +34,17 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
     }
 
     public void updateThreadList() {
-        ArrayList<ForumThread> chosenThreads = new ArrayList<ForumThread>();
-        Iterator<Thread> it = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads().iterator();
-
-        while (it.hasNext()) {
-            Thread thread = it.next();
-
-            chosenThreads.add(new ForumThread(null, thread.getHeadLine(), thread.getText()));
-        }
-        updateThreadList(chosenThreads);
+        updateThreadList(scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads());
     }
 
-    public void updateThreadList(ArrayList<ForumThread> forumList) {
-        threadList.updateThreadList(forumList);
+    public void updateThreadList(List<Thread> threads) {
+        threadList.updateThreadList(threads);
     }
 
     @Override
     public void selectedItemChanged(ScrollPickerItem selected) {
         //TODO: This cannot be done since this is not running on UI thread. Must be done in some other way.
-        //updateThreadList(new ArrayList<ForumThread>());
+        //updateThreadList(new ArrayList<Thread>());
 
         if (selected != null) {
             ((Engine) getActivity().getApplication()).getPublicForum().loadThreads(getActivity(), selected.getCategory(), false);

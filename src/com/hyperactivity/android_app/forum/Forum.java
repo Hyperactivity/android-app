@@ -192,6 +192,10 @@ public class Forum {
         });
     }
 
+    public List<Thread> getLatestThreads() {
+        return latestThreads;
+    }
+
     public enum ForumType {
         PUBLIC(Constants.Transfer.PUBLIC),
         PRIVATE(Constants.Transfer.PRIVATE);

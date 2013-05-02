@@ -78,7 +78,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             ((ForumFragment)fragments[FORUM_FRAGMENT]).updateThreadList();
     	} else if (currentFragment == HOME_FRAGMENT) {
     		// Get latest threads
-    		
+            ((HomeFragment)fragments[HOME_FRAGMENT]).updateThreadList();
     	}
     }
 

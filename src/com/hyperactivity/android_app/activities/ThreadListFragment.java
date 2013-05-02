@@ -8,7 +8,7 @@ import android.support.v4.app.ListFragment;
 import android.widget.SimpleAdapter;
 
 import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.forum.ForumThread;
+import com.hyperactivity.android_app.forum.models.Thread;
 
 public class ThreadListFragment extends ListFragment {
 	
@@ -17,11 +17,11 @@ public class ThreadListFragment extends ListFragment {
 	
 	private List<HashMap<String, String>> data;
 
-	public void updateThreadList(List<ForumThread> threadList) {
+	public void updateThreadList(List<Thread> threadList) {
 		data = new ArrayList<HashMap<String, String>>();
 				
 		for(int i = 0; i < threadList.size(); i++) {
-			ForumThread thread = threadList.get(i);
+			Thread thread = threadList.get(i);
 			data.add(threadToMap(thread));
 		}
 		
@@ -42,8 +42,8 @@ public class ThreadListFragment extends ListFragment {
 		}
 	}
 	
-	private HashMap<String, String> threadToMap(ForumThread thread) {
-		String headline = thread.getHeadline();
+	private HashMap<String, String> threadToMap(Thread thread) {
+		String headline = thread.getHeadLine();
 		String text = thread.getText();
 		HashMap<String, String> row = new HashMap<String, String>();
 		row.put("thread_headline", headline);

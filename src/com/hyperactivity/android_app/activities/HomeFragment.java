@@ -1,9 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
-import java.util.ArrayList;
-
 import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.forum.ForumThread;
+import com.hyperactivity.android_app.core.Engine;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,8 +19,15 @@ public class HomeFragment extends Fragment {
         getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
 		return view;
 	}
-	
-	public void updateThreadList(ArrayList<ForumThread> forumList) {
-        threadList.updateThreadList(forumList);
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((Engine)getActivity().getApplication()).getPublicForum().loadLatestThreads(getActivity(), 10, false);
+    }
+
+    public void updateThreadList() {
+        threadList.updateThreadList(((Engine)getActivity().getApplication()).getPublicForum().getLatestThreads());
 	}
 }
