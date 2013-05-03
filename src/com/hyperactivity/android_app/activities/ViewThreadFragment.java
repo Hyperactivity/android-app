@@ -27,7 +27,7 @@ public class ViewThreadFragment extends Fragment {
 		textField = (TextView)view.findViewById(R.id.thread_text_field);
 		
 		replyList = new ReplyListFragment();
-		getFragmentManager().beginTransaction().replace(R.id.reply_list_container, replyList);
+		getFragmentManager().beginTransaction().replace(R.id.reply_list_container, replyList).commit();
 		
 		return view;
 	}

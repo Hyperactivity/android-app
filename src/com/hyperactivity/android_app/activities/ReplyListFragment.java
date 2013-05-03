@@ -26,6 +26,7 @@ public class ReplyListFragment extends ListFragment {
 		}
 		
 		if (getActivity() != null) {
+			System.out.println("Making reply list");
 	        SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), data, R.layout.reply_list_item, from, to);
 	        setListAdapter(adapter);
 	        data = null;
@@ -36,6 +37,7 @@ public class ReplyListFragment extends ListFragment {
 	public void onResume() {
 		super.onResume();
 		if (data != null) {
+			System.out.println("Making reply list");
 			SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), data, R.layout.reply_list_item, from, to);
 	        setListAdapter(adapter);
 	        data = null;
@@ -46,7 +48,7 @@ public class ReplyListFragment extends ListFragment {
 		String author = reply.getAccount() != null ? reply.getAccount().getUsername() : null;
 		String text = reply.getText();
 		HashMap<String, String> row = new HashMap<String, String>();
-		if (author != null) row.put("reply_author", author);
+		row.put("reply_author", author == null ? "<Anonymous>" : author);
 		row.put("reply_text", text);
 		return row;
 	}
