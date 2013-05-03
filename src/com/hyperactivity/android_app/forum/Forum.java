@@ -94,7 +94,7 @@ public class Forum {
     public void loadThreads(final Activity activity, final Category category, boolean lockWithLoadingScreen) {
         callback.loadingStarted();
 
-        ((Engine) activity.getApplicationContext()).getServerLink().getCategoryContent(category.getId(), lockWithLoadingScreen, new NetworkCallback() {
+        ((Engine) activity.getApplicationContext()).getServerLink().getCategoryContent(category.getId(), type.toString(), lockWithLoadingScreen, new NetworkCallback() {
             @Override
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
