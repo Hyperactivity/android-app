@@ -94,14 +94,14 @@ public class Forum {
     public void loadThreads(final Activity activity, final Category category, boolean lockWithLoadingScreen) {
         callback.loadingStarted();
 
-        ((Engine) activity.getApplicationContext()).getServerLink().getCategoryContent(category.getId(), lockWithLoadingScreen, new NetworkCallback() {
+        ((Engine) activity.getApplicationContext()).getServerLink().getCategoryContent(category.getId(), type.toString(), lockWithLoadingScreen, new NetworkCallback() {
             @Override
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
 
                 try {
                     //TODO: this should be rewritten when we get linkedlists from server.
-                    category.setThreads((LinkedList<Thread>)(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS))));
+                    category.setThreads((LinkedList<Thread>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS))));
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
                     callback.loadingFailed();
@@ -152,7 +152,7 @@ public class Forum {
                 super.onSuccess(result, userId);
 
                 try {
-                    latestThreads = (LinkedList<Thread>)(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS)));
+                    latestThreads = (LinkedList<Thread>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS)));
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
                     callback.loadingFailed();
@@ -203,7 +203,7 @@ public class Forum {
                 super.onSuccess(result, userId);
 
                 try {
-                    thread.setReplies((LinkedList<Reply>)(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.REPLIES))));
+                    thread.setReplies((LinkedList<Reply>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.REPLIES))));
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
                     callback.loadingFailed();
@@ -212,6 +212,50 @@ public class Forum {
 
                 callback.loadingFinished();
                 callback.repliesLoaded();
+            }
+
+            @Override
+            public void onError(JSONRPC2Error error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(JSONObject error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(int userId) throws Exception {
+                super.onError(userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onErrorDismissed() {
+                super.onErrorDismissed();
+            }
+
+            @Override
+            public Activity getActivity() {
+                return activity;
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public void createThread(final Activity activity, int categoryID, String headline, String text, boolean lockWithLoadingScreen) {
+        callback.loadingStarted();
+
+        ((Engine) activity.getApplicationContext()).getServerLink().createThread(categoryID, headline, text, lockWithLoadingScreen, new NetworkCallback() {
+            @Override
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);
+
+
+
+                callback.threadCreated((Thread)(deSerialize(Thread.class, (String) result.get(Constants.Transfer.THREAD))));
             }
 
             @Override

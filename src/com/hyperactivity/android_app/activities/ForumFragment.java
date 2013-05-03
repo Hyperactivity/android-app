@@ -64,11 +64,6 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
 
     public void updateCategories() {
         if (scrollPicker != null && scrollPicker.getThread().isReady()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;
-            options.inDither = false;
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
             scrollPicker.reset();
 
             Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
@@ -76,23 +71,7 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
             while (it.hasNext()) {
                 Category category = it.next();
 
-                Bitmap image = null;
-
-                String filename = category.getImageName();
-
-                if (filename != null) {
-                    image = Utils.getBitmapFromAsset(getActivity(), filename);
-                }
-
-                if (image == null) {
-                    image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
-                    Canvas c = new Canvas(image);
-                    Paint paint = new Paint();
-                    paint.setColor(-category.getColorCode());
-                    c.drawCircle(300 / 2, 300 / 2, 300 / 2, paint);
-                }
-
-                scrollPicker.getItemManager().addItem(image, category.getHeadLine(), Color.BLACK, category);
+                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.BLACK, category);
             }
 
             scrollPicker.getItemManager().recalculateItems();
