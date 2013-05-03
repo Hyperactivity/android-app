@@ -29,6 +29,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         // Make a link from the navigation menu to this activity
         navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_menu_fragment);
