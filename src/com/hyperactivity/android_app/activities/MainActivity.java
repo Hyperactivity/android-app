@@ -1,10 +1,11 @@
 package com.hyperactivity.android_app.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-
+import android.view.inputmethod.InputMethodManager;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
@@ -61,6 +62,9 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     public void changeFragment(int fragmentID) {
         if (currentFragment != fragmentID) {
+            if(currentFragment == FORUM_FRAGMENT) {
+                ((ForumFragment)fragments[FORUM_FRAGMENT]).test();
+            }
             currentFragment = fragmentID;
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);

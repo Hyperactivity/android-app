@@ -5,6 +5,7 @@ import android.util.Log;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.Category;
+import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
@@ -160,6 +161,57 @@ public class Forum {
 
                 callback.loadingFinished();
                 callback.threadsLoaded();
+            }
+
+            @Override
+            public void onError(JSONRPC2Error error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(JSONObject error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(int userId) throws Exception {
+                super.onError(userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onErrorDismissed() {
+                super.onErrorDismissed();
+            }
+
+            @Override
+            public Activity getActivity() {
+                return activity;
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadReplies(final Activity activity, final Thread thread, SortType sortType, boolean lockWithLoadingScreen) {
+        callback.loadingStarted();
+
+        ((Engine) activity.getApplicationContext()).getServerLink().getThreadContent(thread.getId(), sortType.getValue(), lockWithLoadingScreen, new NetworkCallback() {
+            @Override
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);
+
+                try {
+                    thread.setReplies((LinkedList<Reply>)(deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.REPLIES))));
+                } catch (Exception e) {
+                    Log.e(Constants.Log.TAG, e.toString());
+                    callback.loadingFailed();
+                    return;
+                }
+
+                callback.loadingFinished();
+                callback.repliesLoaded();
             }
 
             @Override

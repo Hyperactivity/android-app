@@ -3,12 +3,14 @@ package com.hyperactivity.android_app.activities;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ public class SearchFragment extends Fragment {
 	
 	ThreadListFragment searchResultList;
 	TextView noResultsText;
+    EditText searchEditText;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.search_fragment, null);
@@ -29,8 +32,10 @@ public class SearchFragment extends Fragment {
 		searchResultList = new ThreadListFragment();
 		searchResultList.updateThreadList(new ArrayList<Thread>());
 		getFragmentManager().beginTransaction().replace(R.id.search_thread_list_container, searchResultList).commit();
-		
-		final EditText editText = (EditText)view.findViewById(R.id.search_text_field);
+
+        searchEditText = (EditText)view.findViewById(R.id.search_text_field);
+
+		final EditText editText = searchEditText;
 		final Button button = (Button)view.findViewById(R.id.search_button);
 		button.setOnClickListener(new OnClickListener() {
 			
@@ -59,5 +64,13 @@ public class SearchFragment extends Fragment {
 		
 		searchResultList.updateThreadList(result);
 	}
-	
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+
+    }
 }

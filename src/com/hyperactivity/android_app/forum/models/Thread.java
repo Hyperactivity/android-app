@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +22,7 @@ public class Thread {
     private Account account;
     private Category parentCategory;
     private Timestamp time;
+    private List<Reply> replies;
 
     public int getId() {
         return id;
@@ -43,5 +46,17 @@ public class Thread {
 
     public Timestamp getTime() {
         return time;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
+    }
+
+    public List<Reply> getReplies() {
+        if(replies == null) {
+            replies = new LinkedList<Reply>();
+        }
+
+        return replies;
     }
 }

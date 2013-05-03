@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.Utils;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.ScrollPicker;
 import com.hyperactivity.android_app.core.ScrollPickerEventCallback;
@@ -75,8 +76,13 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
             while (it.hasNext()) {
                 Category category = it.next();
 
-                //TODO: try do load the image somehow.
                 Bitmap image = null;
+
+                String filename = category.getImageName();
+
+                if (filename != null) {
+                    image = Utils.getBitmapFromAsset(getActivity(), filename);
+                }
 
                 if (image == null) {
                     image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
@@ -91,5 +97,9 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
 
             scrollPicker.getItemManager().recalculateItems();
         }
+    }
+
+    public void test() {
+        scrollPicker.getThread().pause();
     }
 }
