@@ -6,8 +6,7 @@
               android:layout_height="fill_parent"
               tools:context=".MainActivity"
               android:orientation="vertical"
-              android:background="#d9d9d9"
-        >
+              android:background="#d9d9d9">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
@@ -25,17 +24,14 @@
                   android:layout_marginRight="10dp"
 
                   android:paddingLeft="10dp"
-                  android:paddingRight="10dp"
-
-                  >
+                  android:paddingRight="10dp">
 
         <FrameLayout android:id="@+id/main_fragment_container"
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
-					
+                     android:layout_margin="10dp"
 
                      />
-
     </LinearLayout>
 
     <fragment android:id="@+id/navigation_menu_fragment"
