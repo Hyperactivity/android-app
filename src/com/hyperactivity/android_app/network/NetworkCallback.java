@@ -1,19 +1,21 @@
 package com.hyperactivity.android_app.network;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.LinkedList;
+
+import net.minidev.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Base64;
 import android.util.Log;
+
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thoughtworks.xstream.XStream;
-import net.minidev.json.JSONObject;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 public abstract class NetworkCallback {
 
@@ -98,6 +100,7 @@ public abstract class NetworkCallback {
         //TODO Detta ska göras en gång, inte vid varje deSerialize, visste inte vart jag skulle sätta den /Mathias
         XStream xStream = new XStream();
         xStream.aliasPackage("models", "com.hyperactivity.android_app.forum.models");
+        xStream.alias("list", LinkedList.class);
         return (T) xStream.fromXML(deSerializeObject(String.class, serializedObject));
     }
 
