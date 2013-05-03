@@ -52,7 +52,9 @@ public class SearchFragment extends Fragment {
 	private void querySearchString(String text) {
 		text = text.toLowerCase(Locale.ENGLISH);
 		ArrayList<Thread> result = new ArrayList<Thread>();
-		
+
+        //TODO: if no categories loaded, load them.
+
 		for (Category category : ((Engine) getActivity().getApplication()).getPublicForum().getCategories()) {
 			if (category.getThreads() == null) continue;
 			for (Thread thread : category.getThreads()) {
@@ -71,6 +73,5 @@ public class SearchFragment extends Fragment {
 
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
-
     }
 }

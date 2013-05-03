@@ -1,5 +1,12 @@
 package com.hyperactivity.android_app.forum.models;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import com.hyperactivity.android_app.Utils;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +22,7 @@ public class Category {
     private int colorCode;
     private Category parentCategory;
     private List<Thread> threads;
-    private String image;
+    private Bitmap image;
 
     public int getId() {
         return id;
@@ -63,5 +70,31 @@ public class Category {
             default:
                 return null;
         }
+    }
+
+    public Bitmap getImage(Context context) {
+        if(image == null) {
+            String filename = getImageName();
+
+//            TODO: not needed any more?
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inScaled = false;
+//            options.inDither = false;
+//            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+            if (filename != null) {
+                image = Utils.getBitmapFromAsset(context, filename);
+            }
+
+            if (image == null) {
+                image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+                Canvas c = new Canvas(image);
+                Paint paint = new Paint();
+                paint.setColor(-getColorCode());
+                c.drawCircle(300 / 2, 300 / 2, 300 / 2, paint);
+            }
+        }
+
+        return image;
     }
 }
