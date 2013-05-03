@@ -1,5 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
+import java.util.HashMap;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -17,14 +19,23 @@ public class NavigationMenuFragment extends Fragment {
 	
 
 	private static NavigationButtonInfo[] buttonInfo;
+	private static HashMap<Integer, Integer> activeButtonFragmentMapping;
 	
 	static {
 		buttonInfo = new NavigationButtonInfo[NUMBER_OF_BUTTONS];
 		buttonInfo[0] = new NavigationButtonInfo(R.id.navigation_menu_button_1, R.drawable.active_house, R.drawable.non_active_house, MainActivity.HOME_FRAGMENT);
 		buttonInfo[1] = new NavigationButtonInfo(R.id.navigation_menu_button_2, R.drawable.active_bubble, R.drawable.non_active_bubble, MainActivity.FORUM_FRAGMENT);
 		buttonInfo[2] = new NavigationButtonInfo(R.id.navigation_menu_button_3, R.drawable.active_diary, R.drawable.non_active_diary, MainActivity.DIARY_FRAGMENT);
-		buttonInfo[3] = new NavigationButtonInfo(R.id.navigation_menu_button_4, R.drawable.active_pen, R.drawable.non_active_pen, MainActivity.FORUM_FRAGMENT);
-		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, MainActivity.FORUM_FRAGMENT);
+		buttonInfo[3] = new NavigationButtonInfo(R.id.navigation_menu_button_4, R.drawable.active_pen, R.drawable.non_active_pen, MainActivity.CREATE_THREAD_FRAGMENT);
+		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, MainActivity.SEARCH_FRAGMENT);
+		
+		activeButtonFragmentMapping = new HashMap<Integer, Integer>();
+		activeButtonFragmentMapping.put(MainActivity.HOME_FRAGMENT, 0);
+		activeButtonFragmentMapping.put(MainActivity.FORUM_FRAGMENT, 1);
+		activeButtonFragmentMapping.put(MainActivity.VIEW_THREAD_FRAGMENT, 1);
+		activeButtonFragmentMapping.put(MainActivity.DIARY_FRAGMENT, 2);
+		activeButtonFragmentMapping.put(MainActivity.CREATE_THREAD_FRAGMENT, 3);
+		activeButtonFragmentMapping.put(MainActivity.SEARCH_FRAGMENT, 4);
 	}
 
 	private MainActivity parentActivity;
@@ -51,12 +62,10 @@ public class NavigationMenuFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					parentActivity.changeFragment(buttonInfo[index].targetFragment);
-					setActiveButton(index);
 				}
 			});
 		}
 		activeButton = -1;
-		setActiveButton(0);
 		
 		return view;
 	}
@@ -65,13 +74,17 @@ public class NavigationMenuFragment extends Fragment {
 		parentActivity = parent;
 	}
 	
-	private void setActiveButton(int index) {
-		if (index != activeButton) {
-			if (activeButton != -1) {
-				buttons[activeButton].setImageResource(buttonInfo[activeButton].inactiveIconID);
-			}
-			buttons[index].setImageResource(buttonInfo[index].activeIconID);
-			activeButton = index;
+	public void updateNavigationMenu(int fragmentID) {
+		if (activeButton >= 0 && activeButton < NUMBER_OF_BUTTONS) {
+			buttons[activeButton].setImageResource(buttonInfo[activeButton].inactiveIconID);
+		}
+		if (activeButtonFragmentMapping.containsKey(fragmentID)) {
+			activeButton = activeButtonFragmentMapping.get(fragmentID);
+		} else {
+			activeButton = -1;
+		}
+		if (activeButton >= 0 && activeButton < NUMBER_OF_BUTTONS) {
+			buttons[activeButton].setImageResource(buttonInfo[activeButton].activeIconID);
 		}
 	}
 	
