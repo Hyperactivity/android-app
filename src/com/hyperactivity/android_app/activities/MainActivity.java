@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
+import com.hyperactivity.android_app.forum.SortType;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 public class MainActivity extends FragmentActivity implements ForumEventCallback {
@@ -53,6 +54,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
     
     public void visitThread(Thread thread) {
+    	((Engine)getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
     	((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
     	changeFragment(VIEW_THREAD_FRAGMENT);
     }
@@ -102,5 +104,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void repliesLoaded() {
+    	if (currentFragment == VIEW_THREAD_FRAGMENT) {
+    		((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
+    	}
     }
 }

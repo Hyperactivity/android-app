@@ -15,10 +15,29 @@ import java.util.List;
  * Time: 13:14
  */
 public class Reply {
-    private int id;
+	private int id;
     private Timestamp time;
     private String text;
     private com.hyperactivity.android_app.forum.models.Thread parentThread;
     private Account account;
     private List<ThumbsUp> thumbsUp;
+    
+    public int getId() {
+		return id;
+	}
+	public Timestamp getTime() {
+		return time;
+	}
+	public String getText() {
+		return text;
+	}
+	public com.hyperactivity.android_app.forum.models.Thread getParentThread() {
+		return parentThread;
+	}
+	public Account getAccount() {
+		return account;
+	}
+	public List<ThumbsUp> getThumbsUp() {
+		return thumbsUp;
+	}
 }
