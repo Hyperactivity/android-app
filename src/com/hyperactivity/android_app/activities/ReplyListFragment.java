@@ -12,8 +12,8 @@ import com.hyperactivity.android_app.forum.models.Reply;
 
 public class ReplyListFragment extends ListFragment {
 	
-	private String[] from = new String[] {"reply_author", "reply_text"};
-	private int[] to = new int[] {R.id.reply_author, R.id.reply_text};
+	private String[] from = new String[] {"reply_author", "reply_text", "reply_timestamp"};
+	private int[] to = new int[] {R.id.reply_author, R.id.reply_text, R.id.reply_timestamp};
 	
 	private List<HashMap<String, String>> data;
 
@@ -50,6 +50,7 @@ public class ReplyListFragment extends ListFragment {
 		HashMap<String, String> row = new HashMap<String, String>();
 		row.put("reply_author", author == null ? "<Anonymous>" : author);
 		row.put("reply_text", text);
+		row.put("reply_timestamp", reply.getTime().toString());
 		return row;
 	}
 }
