@@ -71,9 +71,10 @@ public class ServerLink {
         sendRequest(Constants.Methods.GET_FORUM_CONTENT, params, callback, lockWithLoadingScreen);
     }
 
-    public void getCategoryContent(int categoryID, boolean lockWithLoadingScreen, final NetworkCallback callback) {
+    public void getCategoryContent(int categoryID, String type, boolean lockWithLoadingScreen, final NetworkCallback callback) {
         java.util.Map<String, Object> params = new HashMap<String, Object>();
         params.put(Constants.Transfer.CATEGORY_ID, categoryID);
+        params.put(Constants.Transfer.TYPE, type);
 
         sendRequest(Constants.Methods.GET_CATEGORY_CONTENT, params, callback, lockWithLoadingScreen);
     }

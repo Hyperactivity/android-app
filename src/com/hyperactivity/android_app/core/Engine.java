@@ -44,7 +44,7 @@ public class Engine extends Application {
         settings.loadLocal();
 
         //TODO: This account should be created when logging in.
-        account = new Account(1337);
+        account = new Account(1);
     }
 
     // Called by the system when the device configuration changes while you component is running.

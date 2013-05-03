@@ -22,4 +22,7 @@
     <string name="wait_server_text">Chatting with server...</string>
     <string name="login">Login</string>
     <string name="search_text">Sök</string>
+    <string name="headline">Headline</string>
+    <string name="text">Text</string>
+    <string name="create">Create</string>
 </resources>

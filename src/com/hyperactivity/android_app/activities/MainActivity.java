@@ -1,10 +1,11 @@
 package com.hyperactivity.android_app.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-
+import android.view.inputmethod.InputMethodManager;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
@@ -13,12 +14,12 @@ import com.hyperactivity.android_app.forum.models.Thread;
 
 public class MainActivity extends FragmentActivity implements ForumEventCallback {
     public static final int HOME_FRAGMENT = 0,
-            				FORUM_FRAGMENT = 1,
-        					DIARY_FRAGMENT = 2,
-        					CREATE_THREAD_FRAGMENT = 3,
-        					SEARCH_FRAGMENT = 4,
-        					VIEW_THREAD_FRAGMENT = 5;
-    		
+            FORUM_FRAGMENT = 1,
+            DIARY_FRAGMENT = 2,
+            CREATE_THREAD_FRAGMENT = 3,
+            SEARCH_FRAGMENT = 4,
+            VIEW_THREAD_FRAGMENT = 5;
+
 
     private Fragment[] fragments;
     private int currentFragment;
@@ -29,11 +30,13 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         // Make a link from the navigation menu to this activity
         navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_menu_fragment);
         navigationMenu.setParentActivity(this);
-        
+
         initializeFragments();
         currentFragment = -1;
         changeFragment(HOME_FRAGMENT);
@@ -52,7 +55,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         fragments[SEARCH_FRAGMENT] = new SearchFragment();
         fragments[VIEW_THREAD_FRAGMENT] = new ViewThreadFragment();
     }
-    
+
     public void visitThread(Thread thread) {
     	((Engine)getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
     	((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
@@ -61,9 +64,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     public void changeFragment(int fragmentID) {
         if (currentFragment != fragmentID) {
-            if(currentFragment == FORUM_FRAGMENT) {
-                ((ForumFragment)fragments[FORUM_FRAGMENT]).test();
-            }
             currentFragment = fragmentID;
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);
@@ -89,23 +89,32 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void categoriesLoaded() {
-		((ForumFragment)fragments[FORUM_FRAGMENT]).updateCategories();
+        ((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
+        ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
     }
 
     @Override
     public void threadsLoaded() {
-    	if (currentFragment == FORUM_FRAGMENT) {
-            ((ForumFragment)fragments[FORUM_FRAGMENT]).updateThreadList();
-    	} else if (currentFragment == HOME_FRAGMENT) {
-    		// Get latest threads
-            ((HomeFragment)fragments[HOME_FRAGMENT]).updateThreadList();
-    	}
+        if (currentFragment == FORUM_FRAGMENT) {
+            ((ForumFragment) fragments[FORUM_FRAGMENT]).updateThreadList();
+        } else if (currentFragment == HOME_FRAGMENT) {
+            // Get latest threads
+            ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();
+        }
     }
 
     @Override
     public void repliesLoaded() {
+    	System.out.println("Replies are loaded");
     	if (currentFragment == VIEW_THREAD_FRAGMENT) {
     		((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
     	}
+    }
+
+    @Override
+    public void threadCreated(Thread thread) {
+        if (currentFragment == CREATE_THREAD_FRAGMENT) {
+            visitThread(thread);
+        }
     }
 }
