@@ -287,6 +287,50 @@ public class Forum {
             }
         });
     }
+    
+    @SuppressWarnings("unchecked")
+    public void createReply(final Activity activity, int threadID, String text, boolean lockWithLoadingScreen) {
+        callback.loadingStarted();
+
+        ((Engine) activity.getApplicationContext()).getServerLink().createReply(threadID, text, lockWithLoadingScreen, new NetworkCallback() {
+            @Override
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);
+
+
+
+                callback.replyCreated((Reply)(deSerialize(Reply.class, (String) result.get(Constants.Transfer.REPLY))));
+            }
+
+            @Override
+            public void onError(JSONRPC2Error error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(JSONObject error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(int userId) throws Exception {
+                super.onError(userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onErrorDismissed() {
+                super.onErrorDismissed();
+            }
+
+            @Override
+            public Activity getActivity() {
+                return activity;
+            }
+        });
+    }
 
     public List<Thread> getLatestThreads() {
         return latestThreads;

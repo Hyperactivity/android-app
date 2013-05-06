@@ -8,6 +8,8 @@ import java.lang.*;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.hyperactivity.android_app.forum.models.Thread;
+
 /**
  * Created with IntelliJ IDEA.
  * User: OMMatte
@@ -18,7 +20,7 @@ public class Reply {
 	private int id;
     private Timestamp time;
     private String text;
-    private com.hyperactivity.android_app.forum.models.Thread parentThread;
+    private Thread parentThread;
     private Account account;
     private List<ThumbsUp> thumbsUp;
     
@@ -31,7 +33,7 @@ public class Reply {
 	public String getText() {
 		return text;
 	}
-	public com.hyperactivity.android_app.forum.models.Thread getParentThread() {
+	public Thread getParentThread() {
 		return parentThread;
 	}
 	public Account getAccount() {

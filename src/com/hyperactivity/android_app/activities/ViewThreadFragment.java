@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
@@ -83,8 +84,9 @@ public class ViewThreadFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				System.out.println("Publicerar...");
-				// TODO create reply
+				if (writeReplyField.getText().toString().trim().length() > 0) {
+					((Engine)getActivity().getApplication()).getPublicForum().createReply(getActivity(), currentThread.getId(), writeReplyField.getText().toString().trim(), true);
+				}
 			}
 		});
 		writeReplyContainer.addView(writeReplyButton);

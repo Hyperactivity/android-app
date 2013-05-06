@@ -9,6 +9,7 @@ import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
+import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 public class MainActivity extends FragmentActivity implements ForumEventCallback {
@@ -115,4 +116,10 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             visitThread(thread);
         }
     }
+
+	@Override
+	public void replyCreated(Reply reply) {
+		System.out.println("Reply created");
+        visitThread(reply.getParentThread());
+	}
 }
