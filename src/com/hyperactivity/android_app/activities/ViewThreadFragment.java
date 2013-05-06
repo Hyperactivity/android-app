@@ -2,6 +2,7 @@ package com.hyperactivity.android_app.activities;
 
 import java.util.List;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -44,7 +46,7 @@ public class ViewThreadFragment extends Fragment {
 		headlineField.setFocusableInTouchMode(true);
 		
 		// TODO ugly
-		SINGLE_LINE_TEXT_HEIGHT = 100;
+		SINGLE_LINE_TEXT_HEIGHT = 70;
 		MULTIPLE_LINE_TEXT_HEIGHT = SINGLE_LINE_TEXT_HEIGHT * 3;		
 		
 		writeReplyField.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -90,12 +92,20 @@ public class ViewThreadFragment extends Fragment {
 			}
 		});
 		writeReplyContainer.addView(writeReplyButton);
+		
+		// Show keyboard
+		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(writeReplyField, InputMethodManager.SHOW_IMPLICIT);
 	}
 	
 	private void shrinkWriteReply() {
 		writeReplyField.getLayoutParams().height = SINGLE_LINE_TEXT_HEIGHT;
 		writeReplyField.setSingleLine(true);
 		writeReplyContainer.removeView(writeReplyButton);
+		
+		// Hide keyboard
+		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(writeReplyField.getWindowToken(), 0);
 	}
 	
 	public void onResume() {
