@@ -7,7 +7,6 @@ import com.hyperactivity.android_app.R.xml;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 /**

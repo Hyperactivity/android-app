@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.LinkedList;
 
+import com.hyperactivity.android_app.R;
 import net.minidev.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,7 +14,6 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.hyperactivity.android_app.Constants;
-import com.hyperactivity.android_app.R;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thoughtworks.xstream.XStream;
 

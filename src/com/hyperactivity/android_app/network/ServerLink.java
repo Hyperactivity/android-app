@@ -3,6 +3,8 @@ package com.hyperactivity.android_app.network;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.core.Engine;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
@@ -29,11 +31,11 @@ public class ServerLink {
 
     //---------------------------- ACCOUNT ----------------------------
 
-    public void login(final NetworkCallback callback) {
+    public void login(Session facebookSession, GraphUser facebookUser, final NetworkCallback callback) {
         java.util.Map<String, Object> params = new HashMap<String, Object>();
         String email = "TODO";
-        int facebookID = 1337;
-
+        int facebookID = Integer.parseInt(facebookUser.getId());
+        String token = facebookSession.getAccessToken();
         /*
         TODO: fix fb stuff
         Response facebookUser = getFacebookUserInfo();
@@ -41,7 +43,8 @@ public class ServerLink {
         facebookID = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
         */
 
-        params.put(Constants.Transfer.EMAIL, email);
+//        params.put(Constants.Transfer.EMAIL, email);
+        params.put(Constants.Transfer.TOKEN, token);
         sendRequest(Constants.Methods.LOGIN, facebookID, params, callback, true);
     }
 

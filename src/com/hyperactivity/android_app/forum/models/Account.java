@@ -1,5 +1,9 @@
 package com.hyperactivity.android_app.forum.models;
 
+import com.hyperactivity.android_app.core.Profile;
+import com.hyperactivity.android_app.core.RemoteObject;
+import com.hyperactivity.android_app.core.Settings;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -21,6 +25,24 @@ public class Account {
     private int facebookId;
     private String username;
     private boolean showBirthDate;
+
+    protected Account(Account account) {
+        this(account.getProfileDescription(), account.getId(), account.getBirthDate(), account.getLimitPerDay(), account.isUseDefaultColors(), account.getFacebookId(), account.getUsername(), account.isShowBirthDate());
+    }
+
+    public Account() {
+    }
+
+    private Account(String profileDescription, int id, Date birthDate, int limitPerDay, boolean useDefaultColors, int facebookId, String username, boolean showBirthDate) {
+        this.profileDescription = profileDescription;
+        this.id = id;
+        this.birthDate = birthDate;
+        this.limitPerDay = limitPerDay;
+        this.useDefaultColors = useDefaultColors;
+        this.facebookId = facebookId;
+        this.username = username;
+        this.showBirthDate = showBirthDate;
+    }
 
     public int getId() {
         return id;
