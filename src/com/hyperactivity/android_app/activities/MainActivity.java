@@ -122,7 +122,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
 	@Override
 	public void replyCreated(Reply reply) {
-		System.out.println("Reply created");
         visitThread(reply.getParentThread());
 	}
 }

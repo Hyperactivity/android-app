@@ -36,6 +36,29 @@
     		android:inputType="textNoSuggestions"
             />
         
+        <LinearLayout 
+            android:id="@+id/write_reply_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="invisible">
+            
+            <Button
+                android:id="@+id/write_reply_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_reply_cancel_text"
+                android:layout_gravity="left"/>
+            
+            <Button
+                android:id="@+id/write_reply_submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_reply_submit_text"
+                android:layout_gravity="right"/>
+            
+        </LinearLayout>
+        
     </LinearLayout>
 
 </LinearLayout>

@@ -26,5 +26,6 @@
     <string name="text">Text</string>
     <string name="create">Create</string>
     <string name="write_reply_text">Skriv svar</string>
-    <string name="create_reply_button_text">Publicera</string>
+    <string name="write_reply_cancel_text">Tillbaka</string>
+    <string name="write_reply_submit_text">Svara</string>
 </resources>
