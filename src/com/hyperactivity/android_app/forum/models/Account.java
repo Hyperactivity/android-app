@@ -53,4 +53,39 @@ public class Account {
     public boolean isShowBirthDate() {
         return showBirthDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Account)) {
+            return false;
+        }
+
+        Account a = (Account) o;
+
+        if (this.getId() != a.getId()) {
+            return false;
+        }
+
+        if (!(this.getBirthDate() == null && a.getBirthDate() == null || this.getBirthDate().equals(a.getBirthDate()))) {
+            return false;
+        }
+
+        if (this.getFacebookId() != a.getFacebookId()) {
+            return false;
+        }
+
+        if (this.getLimitPerDay() != a.getLimitPerDay()) {
+            return false;
+        }
+
+        if (!this.getProfileDescription().equals(a.getProfileDescription())) {
+            return false;
+        }
+
+        if (!(this.username == null && a.getUsername() == null || this.getUsername().equals(a.getUsername()))) {
+            return false;
+        }
+
+        return true;
+    }
 }

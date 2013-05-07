@@ -11,8 +11,10 @@ import com.hyperactivity.android_app.network.NetworkCallback;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import net.minidev.json.JSONObject;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Forum {
     private ForumType type;
@@ -39,6 +41,30 @@ public class Forum {
         return categories;
     }
 
+
+    public List<Category> getCategories(Activity activity) {
+        loadCategories(activity, false);
+
+        return getCategories();
+    }
+
+    public List<Thread> getLatestThreads() {
+        return latestThreads;
+    }
+
+
+    public List<Thread> getLatestThreads(Activity activity, int limit) {
+        loadLatestThreads(activity, limit, false);
+
+        return getLatestThreads();
+    }
+
+    public List<Thread> getThreads(Activity activity, Category category) {
+        loadThreads(activity, category, false);
+
+        return category.getThreads();
+    }
+
     @SuppressWarnings("unchecked")
     public void loadCategories(final Activity activity, boolean lockWithLoadingScreen) {
         callback.loadingStarted();
@@ -48,16 +74,27 @@ public class Forum {
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
 
+                boolean newData = false;
+
                 try {
-                    categories = (LinkedList<Category>) deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.CATEGORIES));
+                    List<Category> resultCategories = (LinkedList<Category>) deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.CATEGORIES));
+
+                    if (!categories.equals(resultCategories)) {
+                        categories = resultCategories;
+                        newData = true;
+                    }
                 } catch (Exception e) {
-                    Log.e(Constants.Log.TAG, e.toString());
+                    Log.e(Constants.Log.TAG, "exception", e);
                     callback.loadingFailed();
                     return;
                 }
 
                 callback.loadingFinished();
-                callback.categoriesLoaded();
+
+                if (newData) {
+                    callback.categoriesLoaded();
+                    Log.d(Constants.Log.TAG, "New categories");
+                }
             }
 
             @Override
@@ -99,17 +136,28 @@ public class Forum {
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
 
+                boolean newData = false;
+
                 try {
-                    //TODO: this should be rewritten when we get linkedlists from server.
-                    category.setThreads((LinkedList<Thread>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS))));
+                    List<Thread> resultThreads = (LinkedList<Thread>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS)));
+
+                    if (!category.getThreads().equals(resultThreads)) {
+                        category.setThreads(resultThreads);
+                        newData = true;
+                    }
+
                 } catch (Exception e) {
-                    Log.e(Constants.Log.TAG, e.toString());
+                    Log.e(Constants.Log.TAG, "exception", e);
                     callback.loadingFailed();
                     return;
                 }
 
                 callback.loadingFinished();
-                callback.threadsLoaded();
+
+                if (newData) {
+                    Log.d(Constants.Log.TAG, "New threads in category: " + category.getHeadLine());
+                    callback.threadsLoaded();
+                }
             }
 
             @Override
@@ -151,16 +199,28 @@ public class Forum {
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
 
+                boolean newData = false;
+
                 try {
-                    latestThreads = (LinkedList<Thread>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS)));
+                    List<Thread> resultThreads = (LinkedList<Thread>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.THREADS)));
+
+                    if (!latestThreads.equals(resultThreads)) {
+                        latestThreads = resultThreads;
+                        newData = true;
+                    }
+
                 } catch (Exception e) {
-                    Log.e(Constants.Log.TAG, e.toString());
+                    Log.e(Constants.Log.TAG, "exception", e);
                     callback.loadingFailed();
                     return;
                 }
 
                 callback.loadingFinished();
-                callback.threadsLoaded();
+
+                if (newData) {
+                    Log.d(Constants.Log.TAG, "New latest threads");
+                    callback.threadsLoaded();
+                }
             }
 
             @Override
@@ -202,8 +262,15 @@ public class Forum {
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
 
+                boolean newData = false;
+
                 try {
-                    thread.setReplies((LinkedList<Reply>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.REPLIES))));
+                    List<Reply> resultReplies = (LinkedList<Reply>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.REPLIES)));
+
+                    if (!thread.getReplies().equals(resultReplies)) {
+                        thread.setReplies(resultReplies);
+                        newData = true;
+                    }
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, e.toString());
                     callback.loadingFailed();
@@ -211,7 +278,11 @@ public class Forum {
                 }
 
                 callback.loadingFinished();
-                callback.repliesLoaded();
+
+                if (newData) {
+                    Log.d(Constants.Log.TAG, "New replies in thread: " + thread.getHeadLine());
+                    callback.repliesLoaded();
+                }
             }
 
             @Override
@@ -254,8 +325,7 @@ public class Forum {
                 super.onSuccess(result, userId);
 
 
-
-                callback.threadCreated((Thread)(deSerialize(Thread.class, (String) result.get(Constants.Transfer.THREAD))));
+                callback.threadCreated((Thread) (deSerialize(Thread.class, (String) result.get(Constants.Transfer.THREAD))));
             }
 
             @Override
@@ -287,7 +357,7 @@ public class Forum {
             }
         });
     }
-    
+
     @SuppressWarnings("unchecked")
     public void createReply(final Activity activity, int threadID, String text, boolean lockWithLoadingScreen) {
         callback.loadingStarted();
@@ -298,8 +368,7 @@ public class Forum {
                 super.onSuccess(result, userId);
 
 
-
-                callback.replyCreated((Reply)(deSerialize(Reply.class, (String) result.get(Constants.Transfer.REPLY))));
+                callback.replyCreated((Reply) (deSerialize(Reply.class, (String) result.get(Constants.Transfer.REPLY))));
             }
 
             @Override
@@ -330,10 +399,6 @@ public class Forum {
                 return activity;
             }
         });
-    }
-
-    public List<Thread> getLatestThreads() {
-        return latestThreads;
     }
 
     public enum ForumType {

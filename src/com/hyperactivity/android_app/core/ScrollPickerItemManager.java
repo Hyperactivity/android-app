@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.core;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
@@ -134,6 +135,16 @@ public class ScrollPickerItemManager {
 
         if (selectedItem != null) {
             selectedItem.doDraw(canvas);
+        }
+    }
+
+    public void addCategories(Context context, List<Category> categories, int textColor) {
+        for(Category category : categories) {
+            addItem(category.getImage(context), category.getHeadLine(), textColor, category, false, false);
+        }
+
+        if(categories.size() > 0) {
+            recalculateItems();
         }
     }
 

@@ -53,10 +53,49 @@ public class Thread {
     }
 
     public List<Reply> getReplies() {
-        if(replies == null) {
+        if (replies == null) {
             replies = new LinkedList<Reply>();
         }
 
         return replies;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Thread)) {
+            return false;
+        }
+
+        Thread t = (Thread) o;
+
+        if (!this.getHeadLine().equals(t.getHeadLine())) {
+            return false;
+        }
+
+        if (!this.getReplies().equals(t.getReplies())) {
+            return false;
+        }
+
+        if (!this.getAccount().equals(t.getAccount())) {
+            return false;
+        }
+
+        if (this.getId() != t.getId()) {
+            return false;
+        }
+
+        if (!this.getParentCategory().equals(t.getParentCategory())) {
+            return false;
+        }
+
+        if (!this.getText().equals(t.getText())) {
+            return false;
+        }
+
+        if (!this.getTime().equals(t.getTime())) {
+            return false;
+        }
+
+        return true;
     }
 }

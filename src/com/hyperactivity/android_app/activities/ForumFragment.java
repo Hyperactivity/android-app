@@ -36,20 +36,8 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
         scrollPicker.getThread().setCallback(this);
 
-        if (((Engine) getActivity().getApplication()).getPublicForum().getCategories().size() > 0) {
-            //Categories already loaded.
-
-            Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
-
-            while (it.hasNext()) {
-                Category category = it.next();
-
-                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.BLACK, category);
-            }
-        } else {
-            //not loaded, tell forum to load.
-            ((Engine) getActivity().getApplication()).getPublicForum().loadCategories(getActivity(), false);
-        }
+        Engine engine = ((Engine) getActivity().getApplication());
+        scrollPicker.getItemManager().addCategories(getActivity(), engine.getPublicForum().getCategories(getActivity()), Color.BLACK);
 
         return view;
     }
@@ -63,15 +51,15 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
     }
 
     @Override
-    public void selectedItemChanged(ScrollPickerItem selected) {
-        if (selected != null) {
-            ((Engine) getActivity().getApplication()).getPublicForum().loadThreads(getActivity(), selected.getCategory(), false);
-        }
-
+    public void selectedItemChanged(final ScrollPickerItem selected) {
         //This callback will be executed as the scrollpicker thread. Change to UI because UI stuff is gonna be done.
         this.getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                updateThreadList(new LinkedList<Thread>());
+                if (selected != null) {
+                    updateThreadList(((Engine) getActivity().getApplication()).getPublicForum().getThreads(getActivity(), selected.getCategory()));
+                } else {
+                    updateThreadList(new LinkedList<Thread>());
+                }
             }
         });
     }

@@ -24,10 +24,10 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        ((Engine)getActivity().getApplication()).getPublicForum().loadLatestThreads(getActivity(), 10, false);
+        updateThreadList();
     }
 
     public void updateThreadList() {
-        threadList.updateThreadList(((Engine)getActivity().getApplication()).getPublicForum().getLatestThreads());
+        threadList.updateThreadList(((Engine)getActivity().getApplication()).getPublicForum().getLatestThreads(getActivity(), 10));
 	}
 }

@@ -41,7 +41,7 @@ public class Category {
     }
 
     public List<Thread> getThreads() {
-        if(threads == null) {
+        if (threads == null) {
             threads = new LinkedList<Thread>();
         }
 
@@ -73,7 +73,7 @@ public class Category {
     }
 
     public Bitmap getImage(Context context) {
-        if(image == null) {
+        if (image == null) {
             String filename = getImageName();
 
 //            TODO: not needed any more?
@@ -96,5 +96,37 @@ public class Category {
         }
 
         return image;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!(o instanceof Category)) {
+            return false;
+        }
+
+        Category c = (Category) o;
+
+        if (this.getId() != c.getId()) {
+            return false;
+        }
+
+        if (!this.getHeadLine().equals(c.getHeadLine())) {
+            return false;
+        }
+
+        if (!this.getThreads().equals(c.getThreads())) {
+            return false;
+        }
+
+        if (this.getColorCode() != c.getColorCode()) {
+            return false;
+        }
+
+        if (!this.getImageName().equals(c.getImageName())) {
+            return false;
+        }
+
+        return true;
     }
 }

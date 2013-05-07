@@ -33,20 +33,23 @@ public class CreateThreadFragment extends Fragment {
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
         scrollPicker.setZOrderOnTop(true);
 
-        if (((Engine) getActivity().getApplication()).getPublicForum().getCategories().size() > 0) {
-            //Categories already loaded.
+        Engine engine = ((Engine) getActivity().getApplication());
+        scrollPicker.getItemManager().addCategories(getActivity(), engine.getPublicForum().getCategories(getActivity()), Color.BLACK);
 
-            Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
-
-            while (it.hasNext()) {
-                Category category = it.next();
-
-                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.BLACK, category);
-            }
-        } else {
-            //not loaded, tell forum to load.
-            ((Engine) getActivity().getApplication()).getPublicForum().loadCategories(getActivity(), false);
-        }
+//        if (((Engine) getActivity().getApplication()).getPublicForum().getCategories().size() > 0) {
+//            //Categories already loaded.
+//
+//            Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
+//
+//            while (it.hasNext()) {
+//                Category category = it.next();
+//
+//                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.BLACK, category);
+//            }
+//        } else {
+//            //not loaded, tell forum to load.
+//            ((Engine) getActivity().getApplication()).getPublicForum().loadCategories(getActivity(), false);
+//        }
 
         final EditText headline = headlineEditText;
         final EditText text = textEditText;
