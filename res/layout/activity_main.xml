@@ -29,9 +29,10 @@
         <FrameLayout android:id="@+id/main_fragment_container"
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
-
-                     />
+                     android:layout_margin="5dp"
+                     android:focusableInTouchMode="false"
+                     android:clickable="false"
+                    android:focusable="false"/>
     </LinearLayout>
 
     <fragment android:id="@+id/navigation_menu_fragment"
