@@ -30,25 +30,53 @@ public class ViewThreadFragment extends Fragment {
 	private Thread currentThread;
 	private TextView headlineField, textField;
 	private EditText writeReplyField;
-	private LinearLayout writeReplyContainer;
-	private Button writeReplyButton;
+	private LinearLayout writeReplyButtonContainer;
+	private Button writeReplyCancelButton, writeReplySubmitButton;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.view_thread_fragment, null);
 		
 		headlineField = (TextView)view.findViewById(R.id.thread_headline_field);
 		textField = (TextView)view.findViewById(R.id.thread_text_field);
-		writeReplyField = (EditText)view.findViewById(R.id.write_reply_field);
-		writeReplyContainer = (LinearLayout)view.findViewById(R.id.write_reply_container);
 		
 		// Needed to take focus from writeReplyField
 		headlineField.setFocusable(true);
 		headlineField.setFocusableInTouchMode(true);
 		
+		initializeWriteReplyContainer(view);
+		
 		// TODO ugly
 		SINGLE_LINE_TEXT_HEIGHT = 70;
 		MULTIPLE_LINE_TEXT_HEIGHT = SINGLE_LINE_TEXT_HEIGHT * 3;		
 		
+		replyList = new ReplyListFragment();
+		getFragmentManager().beginTransaction().replace(R.id.reply_list_container, replyList).commit();
+		
+		return view;
+	}
+	
+	private void initializeWriteReplyContainer(View view) {
+		writeReplyField = (EditText)view.findViewById(R.id.write_reply_field);
+		writeReplyButtonContainer = (LinearLayout)view.findViewById(R.id.write_reply_button_container);
+		writeReplyCancelButton = (Button)view.findViewById(R.id.write_reply_cancel_button);
+		writeReplySubmitButton = (Button)view.findViewById(R.id.write_reply_submit_button);
+		
+		writeReplyCancelButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				removeFocusFromWriteReply();
+			}
+		});
+		writeReplySubmitButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (writeReplyField.getText().toString().trim().length() > 0) {
+					((Engine)getActivity().getApplication()).getPublicForum().createReply(getActivity(), currentThread.getId(), writeReplyField.getText().toString().trim(), true);
+				}
+			}
+		});
 		writeReplyField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 			@Override
@@ -60,38 +88,21 @@ public class ViewThreadFragment extends Fragment {
 				}
 			}
 		});
-		
-		replyList = new ReplyListFragment();
-		getFragmentManager().beginTransaction().replace(R.id.reply_list_container, replyList).commit();
-		
-		OnClickListener removeFocusListener = new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				headlineField.requestFocus();
-			}
-		};
-		
-		view.setOnClickListener(removeFocusListener);
-		
-		return view;
+	}
+	
+	private void clearWriteReplyContainer() {
+		writeReplyField.setText("");
+		removeFocusFromWriteReply();
+	}
+	
+	private void removeFocusFromWriteReply() {
+		headlineField.requestFocus();
 	}
 	
 	private void expandWriteReply() {
 		writeReplyField.setSingleLine(false);
 		writeReplyField.getLayoutParams().height = MULTIPLE_LINE_TEXT_HEIGHT;
-		writeReplyButton = new Button(getActivity());
-		writeReplyButton.setText(getActivity().getText(R.string.create_reply_button_text));
-		writeReplyButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if (writeReplyField.getText().toString().trim().length() > 0) {
-					((Engine)getActivity().getApplication()).getPublicForum().createReply(getActivity(), currentThread.getId(), writeReplyField.getText().toString().trim(), true);
-				}
-			}
-		});
-		writeReplyContainer.addView(writeReplyButton);
+		writeReplyButtonContainer.setVisibility(View.VISIBLE);
 		
 		// Show keyboard
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -101,7 +112,7 @@ public class ViewThreadFragment extends Fragment {
 	private void shrinkWriteReply() {
 		writeReplyField.getLayoutParams().height = SINGLE_LINE_TEXT_HEIGHT;
 		writeReplyField.setSingleLine(true);
-		writeReplyContainer.removeView(writeReplyButton);
+		writeReplyButtonContainer.setVisibility(View.INVISIBLE);
 		
 		// Hide keyboard
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -132,6 +143,6 @@ public class ViewThreadFragment extends Fragment {
 	private void updateCurrentThread() {
 		headlineField.setText(currentThread.getHeadLine());
 		textField.setText(currentThread.getText());
-		writeReplyField.setText("");
+		clearWriteReplyContainer();
 	}
 }
