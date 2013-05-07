@@ -89,8 +89,11 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void categoriesLoaded() {
-        ((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
-        ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
+        if(currentFragment == FORUM_FRAGMENT) {
+            ((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
+        } else if (currentFragment == CREATE_THREAD_FRAGMENT) {
+            ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
+        }
     }
 
     @Override

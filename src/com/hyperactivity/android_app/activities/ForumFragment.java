@@ -28,9 +28,25 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
         View view = inflater.inflate(R.layout.forum_fragment, null);
         threadList = new ThreadListFragment();
         getFragmentManager().beginTransaction().replace(R.id.forum_thread_list_container, threadList).commit();
+
         scrollPicker = (ScrollPicker) view.findViewById(R.id.forum_categories_surface_view);
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
         scrollPicker.getThread().setCallback(this);
+
+        if (((Engine) getActivity().getApplication()).getPublicForum().getCategories().size() > 0) {
+            //Categories already loaded.
+
+            Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
+
+            while (it.hasNext()) {
+                Category category = it.next();
+
+                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.BLACK, category);
+            }
+        } else {
+            //not loaded, tell forum to load.
+            ((Engine) getActivity().getApplication()).getPublicForum().loadCategories(getActivity(), false);
+        }
 
         return view;
     }
@@ -76,9 +92,5 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
 
             scrollPicker.getItemManager().recalculateItems();
         }
-    }
-
-    public void test() {
-        scrollPicker.getThread().pause();
     }
 }
