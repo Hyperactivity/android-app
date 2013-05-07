@@ -21,8 +21,6 @@ public class ThreadListFragment extends ListFragment {
     private List<HashMap<String, String>> data;
 
     public void updateThreadList(List<Thread> threadList) {
-
-
         data = new ArrayList<HashMap<String, String>>();
 
         for (int i = 0; i < threadList.size(); i++) {
