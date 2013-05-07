@@ -11,7 +11,7 @@ import com.hyperactivity.android_app.network.ServerLink;
 
 public class Engine extends Application {
     boolean loggedIn;
-    Account account;
+    ClientInfo clientInfo;
     Settings settings;
     ServerLink serverLink;
     int actionCount;
@@ -25,7 +25,7 @@ public class Engine extends Application {
         loggedIn = false;
         publicModeActive = true;
         serverLink = new ServerLink(this);
-        account = null;
+        clientInfo = null;
         settings = new Settings(getApplicationContext());
         actionCount = 0;
         timer = 0;
@@ -42,9 +42,6 @@ public class Engine extends Application {
 
         // Read stored settings
         settings.loadLocal();
-
-        //TODO: This account should be created when logging in.
-        account = new Account(1);
     }
 
     // Called by the system when the device configuration changes while you component is running.
@@ -110,12 +107,12 @@ public class Engine extends Application {
         return settings;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setClientInfo(ClientInfo clientInfo) {
+        this.clientInfo = clientInfo;
     }
 
-    public Account getAccount() {
-        return account;
+    public ClientInfo getClientInfo() {
+        return clientInfo;
     }
 
     public PublicForum getPublicForum() {

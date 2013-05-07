@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.Utils;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.ScrollPicker;
 import com.hyperactivity.android_app.core.ScrollPickerEventCallback;

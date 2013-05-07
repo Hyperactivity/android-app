@@ -1,5 +1,9 @@
 package com.hyperactivity.android_app.forum.models;
 
+import com.hyperactivity.android_app.core.Profile;
+import com.hyperactivity.android_app.core.RemoteObject;
+import com.hyperactivity.android_app.core.Settings;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;

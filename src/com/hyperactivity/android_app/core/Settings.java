@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-
 import com.hyperactivity.android_app.R;
 
 public class Settings extends RemoteObject {
