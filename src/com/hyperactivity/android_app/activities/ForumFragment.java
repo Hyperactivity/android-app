@@ -3,9 +3,11 @@ package com.hyperactivity.android_app.activities;
 import android.graphics.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.Utils;
 import com.hyperactivity.android_app.core.Engine;
@@ -92,5 +94,19 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
 
             scrollPicker.getItemManager().recalculateItems();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        scrollPicker.getThread().pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        scrollPicker.getThread().unpause();
     }
 }
