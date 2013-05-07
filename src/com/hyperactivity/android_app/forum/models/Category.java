@@ -115,9 +115,9 @@ public class Category {
             return false;
         }
 
-        if (!this.getThreads().equals(c.getThreads())) {
-            return false;
-        }
+//        if (!this.getThreads().equals(c.getThreads())) {
+//            return false;
+//        }
 
         if (this.getColorCode() != c.getColorCode()) {
             return false;
@@ -128,5 +128,10 @@ public class Category {
         }
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "{" + getId() + " " + getHeadLine() + " " + getColorCode() + " " + getImageName() + " }";
     }
 }

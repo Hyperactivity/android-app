@@ -1,9 +1,11 @@
 package com.hyperactivity.android_app.core;
 
+import com.hyperactivity.android_app.forum.models.Account;
+
 import java.util.Date;
 
 public class Post {
-	Account	author;
+	Account author;
 	String	text;
 	Date	date;
 
