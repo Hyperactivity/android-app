@@ -32,6 +32,7 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
         getFragmentManager().beginTransaction().replace(R.id.forum_thread_list_container, threadList).commit();
 
         scrollPicker = (ScrollPicker) view.findViewById(R.id.forum_categories_surface_view);
+        scrollPicker.setZOrderOnTop(true);
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
         scrollPicker.getThread().setCallback(this);
 

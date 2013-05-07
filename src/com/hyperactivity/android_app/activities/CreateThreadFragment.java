@@ -31,6 +31,7 @@ public class CreateThreadFragment extends Fragment {
 
         scrollPicker = (ScrollPicker) view.findViewById(R.id.forum_categories_surface_view);
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
+        scrollPicker.setZOrderOnTop(true);
 
         if (((Engine) getActivity().getApplication()).getPublicForum().getCategories().size() > 0) {
             //Categories already loaded.

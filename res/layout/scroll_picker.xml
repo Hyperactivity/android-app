@@ -6,6 +6,7 @@
     <com.hyperactivity.android_app.core.ScrollPicker
             android:id="@+id/forum_surface_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
 
 </FrameLayout>
