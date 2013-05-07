@@ -26,24 +26,6 @@ public class Account {
     private String username;
     private boolean showBirthDate;
 
-    protected Account(Account account) {
-        this(account.getProfileDescription(), account.getId(), account.getBirthDate(), account.getLimitPerDay(), account.isUseDefaultColors(), account.getFacebookId(), account.getUsername(), account.isShowBirthDate());
-    }
-
-    public Account() {
-    }
-
-    private Account(String profileDescription, int id, Date birthDate, int limitPerDay, boolean useDefaultColors, int facebookId, String username, boolean showBirthDate) {
-        this.profileDescription = profileDescription;
-        this.id = id;
-        this.birthDate = birthDate;
-        this.limitPerDay = limitPerDay;
-        this.useDefaultColors = useDefaultColors;
-        this.facebookId = facebookId;
-        this.username = username;
-        this.showBirthDate = showBirthDate;
-    }
-
     public int getId() {
         return id;
     }

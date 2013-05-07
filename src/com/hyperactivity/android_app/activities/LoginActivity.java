@@ -2,32 +2,19 @@ package com.hyperactivity.android_app.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.service.textservice.SpellCheckerService;
-import android.support.v4.app.FragmentManager;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 
-import android.widget.TextView;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.ClientInfo;
 import com.hyperactivity.android_app.core.Engine;
-import com.hyperactivity.android_app.core.LoginAccount;
 import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.network.NetworkCallback;
-import com.hyperactivity.android_app.network.TestNetworkCallback;
 import net.minidev.json.JSONObject;
 
 import com.facebook.*;
 import com.facebook.model.*;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Activity which displays a login screen to the user, offering registration as well.
@@ -49,6 +36,7 @@ public class LoginActivity extends Activity {
                                 loginClicked(session, user);
                             }
                         }
+
                     });
                 }
             };
@@ -90,8 +78,8 @@ public class LoginActivity extends Activity {
             public void onSuccess(JSONObject result, int userId) throws Exception {
                 super.onSuccess(result, userId);
                 Account account = deSerialize(Account.class, (String) result.get(Constants.Transfer.ACCOUNT));
-                LoginAccount loginAccount = new LoginAccount(account, session.getAccessToken());
-                engine.setAccount(loginAccount);
+                ClientInfo clientInfo = new ClientInfo(account, session.getAccessToken());
+                engine.setClientInfo(clientInfo);
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(intent);
             }

@@ -10,7 +10,6 @@ import com.hyperactivity.android_app.core.Engine;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 
 import java.util.HashMap;
-import java.util.List;
 
 /*
 //TODO: enable the fb stuff
@@ -36,16 +35,9 @@ public class ServerLink {
         String email = "TODO";
         int facebookID = Integer.parseInt(facebookUser.getId());
         String token = facebookSession.getAccessToken();
-        /*
-        TODO: fix fb stuff
-        Response facebookUser = getFacebookUserInfo();
-        email = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.EMAIL);
-        facebookID = (String) facebookUser.getGraphObject().getProperty(Constants.Transfer.ID);
-        */
-
 //        params.put(Constants.Transfer.EMAIL, email);
         params.put(Constants.Transfer.TOKEN, token);
-        sendRequest(Constants.Methods.LOGIN, facebookID, params, callback, true);
+        sendRequest(Constants.Methods.LOGIN, facebookID, token, params, callback, true);
     }
 
     public void getAccount(int accountID, boolean lockWithLoadingScreen, final NetworkCallback callback) {
@@ -185,16 +177,14 @@ public class ServerLink {
 
     //---------------------------- HELPER METHODS ----------------------------
 
-    private void sendRequest(String method, String id, List<Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
-        final JSONRPC2Request reqOut = new JSONRPC2Request(method, params, id);
-        sendRequest(reqOut, activityCallback, lockWithLoadingScreen);
-    }
-
     private void sendRequest(String method, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
-        sendRequest(method, engine.getAccount().getId(), params, activityCallback, lockWithLoadingScreen);
+        sendRequest(method, engine.getClientInfo().getAccount().getId(), engine.getClientInfo().getFacebookToken(), params, activityCallback, lockWithLoadingScreen);
     }
 
-    private void sendRequest(String method, int id, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+    private void sendRequest(String method, int id, String facebookToken, java.util.Map<String, Object> params, final NetworkCallback activityCallback, boolean lockWithLoadingScreen) {
+        if(facebookToken != null){
+            params.put(Constants.Transfer.TOKEN, facebookToken);
+        }
         final JSONRPC2Request reqOut = new JSONRPC2Request(method, params, id);
         sendRequest(reqOut, activityCallback, lockWithLoadingScreen);
     }

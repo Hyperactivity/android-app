@@ -17,6 +17,7 @@ public class Constants {
         public static final String IP = "achtungonline.com";
         public static final String PORT = "12345";
         public static final int TIMEOUT = 10000;
+        public static final boolean USE_LOCAL_DEVELOPMENT_SERVER = true;
     }
 
     public class Methods {

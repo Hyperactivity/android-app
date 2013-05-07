@@ -11,7 +11,7 @@ import com.hyperactivity.android_app.network.ServerLink;
 
 public class Engine extends Application {
     boolean loggedIn;
-    LoginAccount account;
+    ClientInfo clientInfo;
     Settings settings;
     ServerLink serverLink;
     int actionCount;
@@ -25,7 +25,7 @@ public class Engine extends Application {
         loggedIn = false;
         publicModeActive = true;
         serverLink = new ServerLink(this);
-        account = null;
+        clientInfo = null;
         settings = new Settings(getApplicationContext());
         actionCount = 0;
         timer = 0;
@@ -107,12 +107,12 @@ public class Engine extends Application {
         return settings;
     }
 
-    public void setAccount(LoginAccount account) {
-        this.account = account;
+    public void setClientInfo(ClientInfo clientInfo) {
+        this.clientInfo = clientInfo;
     }
 
-    public LoginAccount getAccount() {
-        return account;
+    public ClientInfo getClientInfo() {
+        return clientInfo;
     }
 
     public PublicForum getPublicForum() {
