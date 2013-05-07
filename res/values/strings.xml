@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">android-app</string>
+    <string name="app_id">534043489970951</string>
     <string name="app_settings_name">Settings</string>
     <string name="latest_threads">Senaste inläggen</string>
     <string name="hello_world">Hello world!</string>

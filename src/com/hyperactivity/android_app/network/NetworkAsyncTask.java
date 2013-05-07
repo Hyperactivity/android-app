@@ -12,8 +12,10 @@ import com.thetransactioncompany.jsonrpc2.client.JSONRPC2Session;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2SessionException;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2SessionOptions;
 
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Response> {
     private NetworkCallback networkCallback;
@@ -34,9 +36,9 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
         JSONRPC2Request jsonrpc2Request = (JSONRPC2Request) jsonrpc2Requests[0];
         int id = (Integer)jsonrpc2Request.getID();
         URL serverURL = null;
-
         try {
-            serverURL = new URL("http://" + Constants.Server.IP + ":" + Constants.Server.PORT + "/");
+
+                serverURL = new URL("http://" + Constants.Server.IP + ":" + Constants.Server.PORT + "/");
         } catch (MalformedURLException e) {
             Log.e(Constants.Log.TAG, "exception: ", e);
             return new JSONRPC2Response(JSONRPC2Error.PARSE_ERROR.appendMessage(e.getMessage()), null);
