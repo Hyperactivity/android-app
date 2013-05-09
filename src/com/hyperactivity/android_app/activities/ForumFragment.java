@@ -51,14 +51,18 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
 
     @Override
     public void selectedItemChanged(final ScrollPickerItem selected) {
-        //This callback will be executed as the scrollpicker thread. Change to UI because UI stuff is gonna be done.
+        //This callback will be executed as the scrollpicker thread.
+
+        final List<Thread> threads;
+        if (selected != null) {
+            threads = ((Engine) getActivity().getApplication()).getPublicForum().getThreads(getActivity(), selected.getCategory());
+        } else {
+            threads = new LinkedList<Thread>();
+        }
+
         this.getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                if (selected != null) {
-                    updateThreadList(((Engine) getActivity().getApplication()).getPublicForum().getThreads(getActivity(), selected.getCategory()));
-                } else {
-                    updateThreadList(new LinkedList<Thread>());
-                }
+                updateThreadList(threads);
             }
         });
     }

@@ -58,7 +58,8 @@ public class ScrollPickerItemManager {
                     setSelectedItem(((LinkedList<ScrollPickerItem>) getItemsRight()).getFirst());
                     moveDirection = -1;
                 }
-                movingSpeed = moveDirection * x * speed;
+//              movingSpeed = moveDirection * x * speed;
+                movingSpeed = 2000f;
 
             } catch (NoSuchElementException e) {
                 moveDirection = 0;

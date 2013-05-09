@@ -1,7 +1,7 @@
 package com.hyperactivity.android_app.core;
 
 import android.content.Context;
-import android.graphics.Canvas;
+import android.graphics.*;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,6 +18,8 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
     private float xOffset;
     private float yOffset;
     private float scrollSpeed;
+    private float xStart;
+    private float yStart;
 
     public ScrollPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,33 +52,47 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             xTouch = event.getX();
             yTouch = event.getY();
+
+            if (xStart == 0f) {
+                xStart = event.getX();
+            }
+
+            if (yStart == 0f) {
+                yStart = event.getY();
+            }
+
             thread.onTouchDown(xTouch, yTouch);
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             float deltaX = -(xTouch - event.getX());
             float deltaY = -(yTouch - event.getY());
 
             //offset should be cleared on scroll direction changes.
-            if ((xOffset < 0 && deltaX > 0) || (xOffset > 0 && deltaX < 0)) {
-                xOffset = 0;
+            if ((xOffset < 0f && deltaX > 0f) || (xOffset > 0f && deltaX < 0f)) {
+                xOffset = 0f;
             }
-            if ((yOffset < 0 && deltaY > 0) || (yOffset > 0 && deltaY < 0)) {
-                yOffset = 0;
+            if ((yOffset < 0f && deltaY > 0f) || (yOffset > 0f && deltaY < 0f)) {
+                yOffset = 0f;
             }
 
             xOffset += deltaX;
             yOffset += deltaY;
 
-            thread.onTouchMove(deltaX * scrollSpeed, deltaY * scrollSpeed);
+//          thread.onTouchMove(deltaX * scrollSpeed, deltaY * scrollSpeed);
 
             xTouch = event.getX();
             yTouch = event.getY();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            thread.onTouchUp(event.getX(), event.getY());
+//            thread.onTouchUp(event.getX(), event.getY());
+            float x = event.getX();
+            float y = event.getY();
+            thread.onTouchMove(-(xStart - x), -(yStart - y));
 
-            xOffset = 0;
-            yOffset = 0;
-            xTouch = 0;
-            yTouch = 0;
+            xOffset = 0f;
+            yOffset = 0f;
+            xTouch = 0f;
+            yTouch = 0f;
+            xStart = 0f;
+            yStart = 0f;
         }
         return true;
     }

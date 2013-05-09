@@ -29,9 +29,10 @@ public class ThreadListFragment extends ListFragment {
         }
 
         if (getActivity() != null) {
-            SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), data, R.layout.thread_list_item, from, to);
-            setListAdapter(adapter);
+            final SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), data, R.layout.thread_list_item, from, to);
             data = null;
+
+            setListAdapter(adapter);
             getListView().setDivider(null);
         }
         currentThreads = threadList;

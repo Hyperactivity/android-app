@@ -7,7 +7,10 @@ import android.content.res.Configuration;
 import android.os.Build;
 import com.hyperactivity.android_app.forum.PrivateForum;
 import com.hyperactivity.android_app.forum.PublicForum;
+import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.network.ServerLink;
+
+import java.sql.Date;
 
 public class Engine extends Application {
     boolean loggedIn;
