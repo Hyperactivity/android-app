@@ -30,6 +30,24 @@ import net.minidev.json.JSONObject;
 public class LoginActivity extends FragmentActivity {
 
     private Engine engine;
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(final Session session,
+        SessionState state, Exception exception) {
+            Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+
+                // loginCallback after Graph API response with user object
+                @Override
+                public void onCompleted(GraphUser user, Response response) {
+                    if (user != null) {
+
+                        loginClicked(session, user);
+                    }
+                }
+
+            });
+        }
+    };
 
     private Fragment registerFragment;
 
@@ -48,25 +66,8 @@ public class LoginActivity extends FragmentActivity {
 
         engine = ((Engine) getApplication());
 //        start Facebook Login
-        Session.openActiveSession(this, true,
-                new Session.StatusCallback() {
-                    @Override
-                    public void call(final Session session,
-                                     SessionState state, Exception exception) {
-                        Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+        Session.openActiveSession(this, true, callback);
 
-                            // loginCallback after Graph API response with user object
-                            @Override
-                            public void onCompleted(GraphUser user, Response response) {
-                                if (user != null) {
-
-                                    loginClicked(session, user);
-                                }
-                            }
-
-                        });
-                    }
-                });
     }
 
     private void registerFragments() {
