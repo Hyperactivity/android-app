@@ -29,7 +29,7 @@ public class ScrollPickerItem {
         this.showText = false;
         this.textMargin = 0f;
         textPaint = new Paint();
-        textPaint.setTextSize(24f);
+        textPaint.setTextSize(26f);
         textPaint.setColor(textColor);
 
         renderImage = image;

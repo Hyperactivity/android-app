@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.ScrollPicker;
@@ -35,6 +36,9 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
 
         Engine engine = ((Engine) getActivity().getApplication());
         scrollPicker.getItemManager().addCategories(getActivity(), engine.getPrivateForum().getCategories(getActivity()), Color.BLACK);
+
+        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        caption.setText((String)getResources().getText(R.string.diary_and_notes));
 
         return view;
     }

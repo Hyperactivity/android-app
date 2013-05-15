@@ -4,6 +4,8 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <include android:id="@+id/caption" layout="@layout/caption" />
+
     <com.hyperactivity.android_app.core.ScrollPicker
             android:id="@+id/forum_categories_surface_view"
             android:layout_width="fill_parent"
