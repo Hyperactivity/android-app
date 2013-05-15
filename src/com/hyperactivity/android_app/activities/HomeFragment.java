@@ -16,15 +16,20 @@ public class HomeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.home_fragment, null);
 		threadList = new ThreadListFragment();
-        getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
 		return view;
 	}
 
     @Override
     public void onResume() {
         super.onResume();
-
+        getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
         updateThreadList();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFragmentManager().beginTransaction().remove(threadList).commit();
     }
 
     public void updateThreadList() {

@@ -19,6 +19,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             SEARCH_FRAGMENT = 4,
             VIEW_THREAD_FRAGMENT = 5;
 
+    private final String CURRENT_FRAGMENT = "current_fragment";
 
     private Fragment[] fragments;
     private int currentFragment;
@@ -37,12 +38,29 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         navigationMenu.setParentActivity(this);
 
         initializeFragments();
-        currentFragment = -1;
-        changeFragment(HOME_FRAGMENT);
+
+        if (savedInstanceState != null) {
+            retainSavedState(savedInstanceState);
+            int tmp = currentFragment;
+            currentFragment = -1;
+            changeFragment(tmp);
+        } else {
+            currentFragment = -1;
+            changeFragment(HOME_FRAGMENT);
+        }
 
         Engine engine = (Engine) getApplication();
         engine.getPublicForum().setCallback(this);
         engine.getPublicForum().loadCategories(this, false);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(CURRENT_FRAGMENT, currentFragment);
+    }
+
+    private void retainSavedState(Bundle state) {
+        currentFragment = state.getInt(CURRENT_FRAGMENT);
     }
 
     private void initializeFragments() {
@@ -56,7 +74,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     public void visitThread(Thread thread) {
-    	((Engine)getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
+        ((Engine)getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
     	((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
     	changeFragment(VIEW_THREAD_FRAGMENT);
     }

@@ -31,7 +31,6 @@ public class SearchFragment extends Fragment {
 		
 		searchResultList = new ThreadListFragment();
 		searchResultList.updateThreadList(new ArrayList<Thread>());
-		getFragmentManager().beginTransaction().replace(R.id.search_thread_list_container, searchResultList).commit();
 
         searchEditText = (EditText)view.findViewById(R.id.search_text_field);
 
@@ -70,8 +69,14 @@ public class SearchFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-
+        getFragmentManager().beginTransaction().remove(searchResultList).commit();
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFragmentManager().beginTransaction().replace(R.id.search_thread_list_container, searchResultList).commit();
     }
 }
