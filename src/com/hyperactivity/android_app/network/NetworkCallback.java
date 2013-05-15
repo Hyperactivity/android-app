@@ -36,9 +36,13 @@ public abstract class NetworkCallback {
                 if (result instanceof JSONObject) {
 
                     JSONObject resultObject = (JSONObject) result;
-                    if (resultObject.containsKey(Constants.Transfer.STATUS) && resultObject.get(Constants.Transfer.STATUS).equals(Constants.Transfer.SUCCESS)) {
-                        onSuccess(resultObject, userId);
-                    } else {
+                    if (resultObject.containsKey(Constants.Transfer.STATUS)){
+                        if(resultObject.get(Constants.Transfer.STATUS).equals(Constants.Transfer.SUCCESS)) {
+                            onSuccess(resultObject, userId);
+                        }else{
+                            onOther((String) resultObject.get(Constants.Transfer.STATUS), resultObject, userId);
+                        }
+                    } else{
                         onError(resultObject, userId);
                     }
                 } else if (result instanceof JSONRPC2Error) {
@@ -53,6 +57,9 @@ public abstract class NetworkCallback {
     }
 
     public void onSuccess(JSONObject result, int userId) throws Exception {
+    }
+
+    public void onOther(String status, JSONObject result, int userId) throws Exception{
     }
 
     public void onError(JSONRPC2Error error, int userId) throws Exception {
