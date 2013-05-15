@@ -15,6 +15,7 @@ public class ScrollPickerItem {
     private Bitmap image;
     private Bitmap renderImage;
     private Category category;
+    private Paint imagePaint;
 
     public ScrollPickerItem(Bitmap image, String text, int textColor, Category category) {
         this.image = image;
@@ -33,6 +34,8 @@ public class ScrollPickerItem {
         textPaint.setColor(textColor);
 
         renderImage = image;
+        imagePaint = new Paint();
+        imagePaint.setAlpha(220);
     }
 
     public void doUpdate(float delta) {
@@ -41,7 +44,7 @@ public class ScrollPickerItem {
 
     public void doDraw(Canvas canvas) {
         if (visible) {
-            canvas.drawBitmap(renderImage, centerX - radius, centerY - radius, null);
+            canvas.drawBitmap(renderImage, centerX - radius, centerY - radius, imagePaint);
 
             if (showText) {
                 Rect bounds = new Rect();

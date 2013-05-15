@@ -22,7 +22,7 @@ public abstract class NetworkCallback {
     public void onNetworkTaskComplete(Boolean successful, Object result, int userId) {
         try {
             if (result != null) {
-//                Log.d(Constants.Log.TAG, "response: " + result.toString());
+                Log.d(Constants.Log.TAG, "response: " + result.toString());
             }
 
             if (!successful) {
