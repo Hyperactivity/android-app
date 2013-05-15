@@ -52,6 +52,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         Engine engine = (Engine) getApplication();
         engine.getPublicForum().setCallback(this);
         engine.getPublicForum().loadCategories(this, false);
+
+        engine.getPrivateForum().setCallback(this);
     }
 
     @Override
@@ -108,6 +110,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     public void categoriesLoaded() {
         if(currentFragment == FORUM_FRAGMENT) {
             ((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
+        } else if(currentFragment == DIARY_FRAGMENT) {
+            ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateCategories();
         } else if (currentFragment == CREATE_THREAD_FRAGMENT) {
             ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
         }
@@ -117,6 +121,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     public void threadsLoaded() {
         if (currentFragment == FORUM_FRAGMENT) {
             ((ForumFragment) fragments[FORUM_FRAGMENT]).updateThreadList();
+        } else if (currentFragment == DIARY_FRAGMENT) {
+            ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateThreadList();
         } else if (currentFragment == HOME_FRAGMENT) {
             // Get latest threads
             ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();
