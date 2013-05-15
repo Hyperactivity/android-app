@@ -45,6 +45,9 @@ public class SearchFragment extends Fragment {
 				querySearchString(text);
 			}
 		});
+
+        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        caption.setText((String)getResources().getText(R.string.search));
 		
 		return view;
 	}

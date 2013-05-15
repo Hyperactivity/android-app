@@ -31,4 +31,8 @@
     <string name="write_reply_submit_text">Svara</string>
     <string name="edit">Redigera</string>
     <string name="delete">Ta bort</string>
+    <string name="forum">Forum</string>
+    <string name="diary_and_notes"><![CDATA[Dagbok & anteckningar]]></string>
+    <string name="select_category">Välj kategori</string>
+    <string name="search">Sök</string>
 </resources>

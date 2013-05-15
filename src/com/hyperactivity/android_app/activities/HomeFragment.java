@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
+import android.widget.TextView;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 
@@ -17,7 +18,11 @@ public class HomeFragment extends Fragment {
 		View view = inflater.inflate(R.layout.home_fragment, null);
 		threadList = new ThreadListFragment();
         getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
-		return view;
+
+        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        caption.setText((String)getResources().getText(R.string.latest_threads));
+
+        return view;
 	}
 
     @Override
