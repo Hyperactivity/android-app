@@ -40,6 +40,15 @@ public class ServerLink {
         sendRequest(Constants.Methods.LOGIN, facebookID, token, params, callback, true);
     }
 
+    public void register(Session facebookSession, GraphUser facebookUser, String username, NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        int facebookID = Integer.parseInt(facebookUser.getId());
+        String token = facebookSession.getAccessToken();
+        params.put(Constants.Transfer.TOKEN, token);
+        params.put(Constants.Transfer.USERNAME, username);
+        sendRequest(Constants.Methods.REGISTER, facebookID, token, params, callback, true);
+    }
+
     public void getAccount(int accountID, boolean lockWithLoadingScreen, final NetworkCallback callback) {
         java.util.Map<String, Object> params = new HashMap<String, Object>();
         params.put(Constants.Transfer.ACCOUNT_ID, accountID);
@@ -197,6 +206,8 @@ public class ServerLink {
             Log.e(Constants.Log.TAG, "exception: ", e);
         }
     }
+
+
 
     /*
     TODO: implement fb stuff

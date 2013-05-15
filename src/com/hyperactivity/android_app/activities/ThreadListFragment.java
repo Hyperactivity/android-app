@@ -42,13 +42,11 @@ public class ThreadListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.d(Constants.Log.TAG, "Clicked list item");
         if (position >= 0 && position < currentThreads.size()) {
             if (getActivity() != null) {
                 ((MainActivity) getActivity()).visitThread(currentThreads.get(position));
             }
         }
-
     }
 
 

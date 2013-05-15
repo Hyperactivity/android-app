@@ -77,6 +77,13 @@ public class Constants {
         public static final String REPLY_ID = "reply_id";
         public static final String THUMB_UP = "thumb_up";
         public static final String REPLIES = "replies";
+
         public static final String REPLY = "reply";
+
+        public static final String FIRST_LOGIN = "first_login";
+        public static final int MIN_USERNAME = 4;
+        public static final int MAX_USERNAME = 20;
+        public static final String REGISTER = "register";
+        public static final String USERNAME_TAKEN = "username_taken";
     }
 }
