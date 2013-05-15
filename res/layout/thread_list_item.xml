@@ -7,14 +7,15 @@
              android:orientation="horizontal"
              android:clickable="false"
              android:paddingBottom="5dp"
+             android:descendantFocusability="blocksDescendants"
         >
     <ImageButton
             android:id="@+id/button_x"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:src="@drawable/button_selector"
-            android:clickable="true"
-            android:focusable="true"
+            android:clickable="false"
+            android:focusable="false"
             android:scaleType="fitXY"
             android:background="#ffffff">
     </ImageButton>

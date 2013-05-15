@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.ScrollPicker;
@@ -36,21 +37,6 @@ public class CreateThreadFragment extends Fragment {
         Engine engine = ((Engine) getActivity().getApplication());
         scrollPicker.getItemManager().addCategories(getActivity(), engine.getPublicForum().getCategories(getActivity()), Color.BLACK);
 
-//        if (((Engine) getActivity().getApplication()).getPublicForum().getCategories().size() > 0) {
-//            //Categories already loaded.
-//
-//            Iterator<Category> it = ((Engine) getActivity().getApplication()).getPublicForum().getCategories().iterator();
-//
-//            while (it.hasNext()) {
-//                Category category = it.next();
-//
-//                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.BLACK, category);
-//            }
-//        } else {
-//            //not loaded, tell forum to load.
-//            ((Engine) getActivity().getApplication()).getPublicForum().loadCategories(getActivity(), false);
-//        }
-
         final EditText headline = headlineEditText;
         final EditText text = textEditText;
         final Button button = (Button) view.findViewById(R.id.create_button);
@@ -63,6 +49,9 @@ public class CreateThreadFragment extends Fragment {
                 ((Engine) getActivity().getApplication()).getPublicForum().createThread(getActivity(), scrollPicker.getThread().getItemManager().getSelectedItem().getCategory().getId(), headlineEditText.getText().toString().trim(), textEditText.getText().toString().trim(), true);
             }
         });
+
+        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        caption.setText((String)getResources().getText(R.string.select_category));
 
         return view;
     }

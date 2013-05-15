@@ -50,7 +50,6 @@ public class ViewThreadFragment extends Fragment {
 		MULTIPLE_LINE_TEXT_HEIGHT = SINGLE_LINE_TEXT_HEIGHT * 3;		
 		
 		replyList = new ReplyListFragment();
-		getFragmentManager().beginTransaction().replace(R.id.reply_list_container, replyList).commit();
 		
 		return view;
 	}
@@ -118,9 +117,15 @@ public class ViewThreadFragment extends Fragment {
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(writeReplyField.getWindowToken(), 0);
 	}
+
+    public void onPause() {
+        super.onPause();
+        getFragmentManager().beginTransaction().remove(replyList).commit();
+    }
 	
 	public void onResume() {
 		super.onResume();
+        getFragmentManager().beginTransaction().replace(R.id.reply_list_container, replyList).commit();
 		if (currentThread != null) {
 			updateCurrentThread();
 		}
