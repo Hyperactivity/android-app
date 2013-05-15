@@ -24,7 +24,7 @@
         <item name="android:padding">16dp</item>
     </style>
 
-    <integer name="scroll_picker_categories_text_size">24</integer>
+    <integer name="scroll_picker_categories_text_size">26</integer>
     <integer name="scroll_picker_categories_size">70</integer> <!-- in percent -->
 
     <color name="fps">#000000</color>
