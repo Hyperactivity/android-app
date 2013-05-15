@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.forum.models.Thread;
 
@@ -40,6 +42,7 @@ public class ThreadListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        Log.d(Constants.Log.TAG, "Clicked list item");
         if (position >= 0 && position < currentThreads.size()) {
             if (getActivity() != null) {
                 ((MainActivity) getActivity()).visitThread(currentThreads.get(position));

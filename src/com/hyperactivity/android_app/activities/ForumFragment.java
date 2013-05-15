@@ -29,7 +29,6 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.forum_fragment, null);
         threadList = new ThreadListFragment();
-        getFragmentManager().beginTransaction().replace(R.id.forum_thread_list_container, threadList).commit();
 
         scrollPicker = (ScrollPicker) view.findViewById(R.id.forum_categories_surface_view);
         scrollPicker.setZOrderOnTop(true);
@@ -95,14 +94,14 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
     @Override
     public void onPause() {
         super.onPause();
-
+        getFragmentManager().beginTransaction().remove(threadList).commit();
         scrollPicker.getThread().pause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        getFragmentManager().beginTransaction().replace(R.id.forum_thread_list_container, threadList).commit();
         scrollPicker.getThread().unpause();
     }
 }

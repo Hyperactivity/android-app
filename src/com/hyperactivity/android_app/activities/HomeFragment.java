@@ -28,8 +28,14 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
         updateThreadList();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFragmentManager().beginTransaction().remove(threadList).commit();
     }
 
     public void updateThreadList() {
