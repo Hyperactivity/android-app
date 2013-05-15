@@ -38,7 +38,7 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
         URL serverURL = null;
         try {
 
-                serverURL = new URL("http://130.229.182.25:" + Constants.Server.PORT + "/");
+                serverURL = new URL("http://"+Constants.Server.IP+":" + Constants.Server.PORT + "/");
         } catch (MalformedURLException e) {
             Log.e(Constants.Log.TAG, "exception: ", e);
             return new JSONRPC2Response(JSONRPC2Error.PARSE_ERROR.appendMessage(e.getMessage()), null);
