@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
@@ -19,7 +22,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             CREATE_THREAD_FRAGMENT = 3,
             SEARCH_FRAGMENT = 4,
             VIEW_THREAD_FRAGMENT = 5,
-            VIEW_PROFILE_FRAGMENT = 6;
+            SETTINGS_FRAGMENT = 6,
+            VIEW_PROFILE_FRAGMENT = 7;
 
     private final String CURRENT_FRAGMENT = "current_fragment";
 
@@ -68,13 +72,14 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private void initializeFragments() {
-        fragments = new Fragment[7];
+        fragments = new Fragment[8];
         fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
         fragments[CREATE_THREAD_FRAGMENT] = new CreateThreadFragment();
         fragments[SEARCH_FRAGMENT] = new SearchFragment();
         fragments[VIEW_THREAD_FRAGMENT] = new ViewThreadFragment();
+        fragments[SETTINGS_FRAGMENT] = new SettingsFragment();
         fragments[VIEW_PROFILE_FRAGMENT] = new ProfileFragment();
     }
 
@@ -155,4 +160,15 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 	public void replyCreated(Reply reply) {
         visitThread(reply.getParentThread());
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    public void onSettingsClick(MenuItem item) {
+        changeFragment(SETTINGS_FRAGMENT);
+    }
 }

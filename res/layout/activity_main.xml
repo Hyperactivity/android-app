@@ -32,7 +32,7 @@
                      android:layout_margin="5dp"
                      android:focusableInTouchMode="false"
                      android:clickable="false"
-                    android:focusable="false"/>
+                     android:focusable="false"/>
     </LinearLayout>
 
     <fragment android:id="@+id/navigation_menu_fragment"

@@ -1,26 +1,43 @@
 package com.hyperactivity.android_app.activities;
 
+import java.util.ArrayList;
+import java.util.Locale;
 
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-/**
- * The loader for the menu-items "Settings" for Android versions including and above 3.0
- * The loader for versions below 3.0 is SettingsActivity
- * @author OMMatte
- *
- */
-public class SettingsFragment extends PreferenceFragment {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.Engine;
+import com.hyperactivity.android_app.forum.models.Category;
+import com.hyperactivity.android_app.forum.models.Thread;
 
-		// Load the preferences from an XML resource
-		// Gets the value from the active head in the headers xml
-		int res=getActivity().getResources().getIdentifier(getArguments().getString("resource"), "xml", getActivity().getPackageName());
-	    addPreferencesFromResource(res);
-	}
+public class SettingsFragment extends Fragment {
+
+    ThreadListFragment searchResultList;
+    TextView noResultsText;
+    EditText searchEditText;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+
+        // THIS WILL BE REMOVED, IT'S HERE SO THAT THE PAGE WILL NOT BE EMPTY
+        View view = inflater.inflate(R.layout.search_fragment, null);
+        searchResultList = new ThreadListFragment();
+        searchResultList.updateThreadList(new ArrayList<Thread>());
+
+
+        return view;
+    }
+
+
+
+
 }
