@@ -123,8 +123,11 @@ public class Category {
             return false;
         }
 
-        if (!this.getImageName().equals(c.getImageName())) {
-            return false;
+        String imageName1 = getImageName(), imageName2 = c.getImageName();
+        if (imageName1 == null) {
+            if (imageName2 != null) return false;
+        } else {
+            if (!imageName1.equals(imageName2)) return false;
         }
 
         return true;
