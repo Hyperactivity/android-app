@@ -21,7 +21,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             CREATE_THREAD_FRAGMENT = 3,
             SEARCH_FRAGMENT = 4,
             VIEW_THREAD_FRAGMENT = 5,
-            SETTINGS_FRAGMENT = 6;
+            SETTINGS_FRAGMENT = 6,
+            CHAT_FRAGMENT = 7;
 
     private final String CURRENT_FRAGMENT = "current_fragment";
 
@@ -70,7 +71,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private void initializeFragments() {
-        fragments = new Fragment[7];
+        fragments = new Fragment[8];
         fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
@@ -78,6 +79,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         fragments[SEARCH_FRAGMENT] = new SearchFragment();
         fragments[VIEW_THREAD_FRAGMENT] = new ViewThreadFragment();
         fragments[SETTINGS_FRAGMENT] = new SettingsFragment();
+        fragments[CHAT_FRAGMENT] = new ChatFragment();
     }
 
     public void visitThread(Thread thread) {
