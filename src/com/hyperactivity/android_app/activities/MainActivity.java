@@ -11,6 +11,7 @@ import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
+import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
@@ -22,7 +23,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             SEARCH_FRAGMENT = 4,
             VIEW_THREAD_FRAGMENT = 5,
             SETTINGS_FRAGMENT = 6,
-            CHAT_FRAGMENT = 7;
+            VIEW_PROFILE_FRAGMENT = 7,
+            CHAT_FRAGMENT = 8;
 
     private final String CURRENT_FRAGMENT = "current_fragment";
 
@@ -71,7 +73,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private void initializeFragments() {
-        fragments = new Fragment[8];
+        fragments = new Fragment[9];
         fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
@@ -79,6 +81,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         fragments[SEARCH_FRAGMENT] = new SearchFragment();
         fragments[VIEW_THREAD_FRAGMENT] = new ViewThreadFragment();
         fragments[SETTINGS_FRAGMENT] = new SettingsFragment();
+        fragments[VIEW_PROFILE_FRAGMENT] = new ProfileFragment();
         fragments[CHAT_FRAGMENT] = new ChatFragment();
     }
 
@@ -86,6 +89,11 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         ((Engine)getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
     	((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
     	changeFragment(VIEW_THREAD_FRAGMENT);
+    }
+
+    public void visitAccount(Account account) {
+        ((ProfileFragment)fragments[VIEW_PROFILE_FRAGMENT]).setCurrentAccount(account);
+        changeFragment(VIEW_PROFILE_FRAGMENT);
     }
 
     public void changeFragment(int fragmentID) {
