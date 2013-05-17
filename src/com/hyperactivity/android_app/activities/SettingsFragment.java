@@ -29,7 +29,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         // THIS WILL BE REMOVED, IT'S HERE SO THAT THE PAGE WILL NOT BE EMPTY
-        View view = inflater.inflate(R.layout.search_fragment, null);
+        View view = inflater.inflate(R.layout.settings_fragment, null);
         searchResultList = new ThreadListFragment();
         searchResultList.updateThreadList(new ArrayList<Thread>());
 
