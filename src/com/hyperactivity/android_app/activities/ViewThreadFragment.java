@@ -19,6 +19,7 @@ import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ViewThreadFragment extends Fragment {
@@ -139,16 +140,21 @@ public class ViewThreadFragment extends Fragment {
 		}
 	}
 	
-	public void updateReplies() {
+	public List<Reply> updateReplies() {
 		List<Reply> replies = currentThread.getReplies();
 		if (replies != null) {
 			replyList.updateReplyList(replies);
-		}
+            return replies;
+		}else{
+            return new LinkedList<Reply>();
+        }
+
 	}
 	
 	private void updateCurrentThread() {
 		headlineField.setText(currentThread.getHeadLine());
 		textField.setText(currentThread.getText());
 		clearWriteReplyContainer();
+        updateReplies();
 	}
 }

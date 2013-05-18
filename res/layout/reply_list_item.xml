@@ -16,6 +16,7 @@
             >
 
     <ImageView
+            android:id="@+id/reply_image"
             android:src="@drawable/ic_launcher"
             android:contentDescription="@string/home_desc"
             android:layout_width="wrap_content"
