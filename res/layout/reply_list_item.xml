@@ -3,81 +3,44 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal"
-              android:clickable="false"
-              android:focusable="false"
+              android:clickable="false" android:focusable="false"
               android:focusableInTouchMode="false"
-        >
-
+              >
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:orientation="horizontal"
-                  android:background="@drawable/thread_background"
-                  android:clickable="false"
-                  android:focusable="false"
-                  android:focusableInTouchMode="false"
-                  android:padding="10dp"
+                  android:orientation="horizontal" android:background="@drawable/thread_background"
+                  android:clickable="false" android:focusable="false"
+                  android:focusableInTouchMode="false" android:padding="10dp"
                   android:layout_margin="8dp"
             >
 
-        <ImageView
-                android:src="@drawable/ic_launcher"
-                android:contentDescription="@string/home_desc"
+    <ImageView
+            android:src="@drawable/ic_launcher"
+            android:contentDescription="@string/home_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:clickable="false"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical" android:padding="2dp">
+        <TextView
+                android:id="@+id/reply_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"/>
+                android:textStyle="bold"/>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      android:padding="2dp">
-
-            <TextView
-                    android:id="@+id/reply_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"/>
-
-            <TextView
-                    android:id="@+id/reply_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-
-                <TextView
-                        android:id="@+id/reply_timestamp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="visible"
-                        android:text="2013-02-02"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"/>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                              android:layout_height="wrap_content"
-                              android:layout_width="wrap_content"
-                              android:layout_alignParentRight="true">
-
-                    <Button
-                            android:id="@+id/admin_edit_reply_button"
-                            android:text="@string/edit"
-                            style="@style/admin_button"/>
-
-                    <Button
-                            android:id="@+id/admin_delete_reply_button"
-                            android:text="@string/delete"
-                            style="@style/admin_button"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-        </LinearLayout>
-
+        <TextView
+                android:id="@+id/reply_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        
+        <TextView
+                android:id="@+id/reply_timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
     </LinearLayout>
+
+</LinearLayout>
 </LinearLayout>
