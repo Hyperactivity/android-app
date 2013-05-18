@@ -5,6 +5,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +19,8 @@ public class PrivateCategory {
     private Category parentPrivateCategory;
     private Account account;
     private String headLine;
+    private List<Note> notes;
+    private List<Thread> linkedThreads;
 
     public String getHeadLine() {
         return headLine;
