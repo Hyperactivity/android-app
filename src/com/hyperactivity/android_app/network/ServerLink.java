@@ -92,7 +92,7 @@ public class ServerLink {
             @Override
             protected Void doInBackground(Void... voids) {
                 for(Account account: accounts){
-                    String imageURL = "http://graph.facebook.com/"+account.getFacebookId()+"/picture?type=square";
+                    String imageURL = "http://graph.facebook.com/"+account.getFacebookId()+"/picture?width=100&height=100";
                     try {
                         account.setProfilePicture(BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent()));
                     } catch (IOException e) {
