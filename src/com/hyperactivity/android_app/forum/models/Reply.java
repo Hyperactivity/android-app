@@ -8,6 +8,7 @@ import java.lang.*;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.hyperactivity.android_app.Utils;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 /**
@@ -56,31 +57,13 @@ public class Reply {
 
         Reply r = (Reply)o;
 
-        if(!this.getTime().equals(r.getTime())) {
-            return false;
-        }
+        if(!Utils.objectsEqual(this.getTime(), r.getTime())) return false;
 
-        if(!this.getText().equals(r.getText())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getText(), r.getText())) return false;
 
-        if(this.getId() != r.getId())
-        {
-            return false;
-        }
+        if(this.getId() != r.getId()) return false;
 
-        if(!this.getAccount().equals(r.getAccount())) {
-            return false;
-        }
-
-        if(!this.getParentThread().equals(r.getParentThread()))
-        {
-            return false;
-        }
-
-        if(!this.getThumbsUp().equals(r.getThumbsUp())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getAccount(), r.getAccount())) return false;
 
         return true;
     }

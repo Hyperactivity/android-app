@@ -22,11 +22,11 @@ public class NavigationMenuFragment extends Fragment {
 	
 	static {
 		buttonInfo = new NavigationButtonInfo[NUMBER_OF_BUTTONS];
-		buttonInfo[0] = new NavigationButtonInfo(R.id.navigation_menu_button_1, R.drawable.active_house, R.drawable.non_active_house, MainActivity.HOME_FRAGMENT);
-		buttonInfo[1] = new NavigationButtonInfo(R.id.navigation_menu_button_2, R.drawable.active_bubble, R.drawable.non_active_bubble, MainActivity.FORUM_FRAGMENT);
+		buttonInfo[0] = new NavigationButtonInfo(R.id.navigation_menu_button_1, R.drawable.active_home, R.drawable.non_active_home, MainActivity.HOME_FRAGMENT);
+		buttonInfo[1] = new NavigationButtonInfo(R.id.navigation_menu_button_2, R.drawable.active_forum, R.drawable.non_active_forum, MainActivity.FORUM_FRAGMENT);
 		buttonInfo[2] = new NavigationButtonInfo(R.id.navigation_menu_button_3, R.drawable.active_diary, R.drawable.non_active_diary, MainActivity.DIARY_FRAGMENT);
 		buttonInfo[3] = new NavigationButtonInfo(R.id.navigation_menu_button_4, R.drawable.active_pen, R.drawable.non_active_pen, MainActivity.CREATE_THREAD_FRAGMENT);
-		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, MainActivity.CHAT_FRAGMENT);
+		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_chat, R.drawable.non_active_chat, MainActivity.CHAT_FRAGMENT);
 		
 		activeButtonFragmentMapping = new HashMap<Integer, Integer>();
 		activeButtonFragmentMapping.put(MainActivity.HOME_FRAGMENT, 0);
@@ -34,7 +34,7 @@ public class NavigationMenuFragment extends Fragment {
 		activeButtonFragmentMapping.put(MainActivity.VIEW_THREAD_FRAGMENT, 1);
 		activeButtonFragmentMapping.put(MainActivity.DIARY_FRAGMENT, 2);
 		activeButtonFragmentMapping.put(MainActivity.CREATE_THREAD_FRAGMENT, 3);
-		activeButtonFragmentMapping.put(MainActivity.SEARCH_FRAGMENT, 4);
+		activeButtonFragmentMapping.put(MainActivity.CHAT_FRAGMENT, 4);
 	}
 
 	private MainActivity parentActivity;
@@ -48,7 +48,7 @@ public class NavigationMenuFragment extends Fragment {
 		DisplayMetrics metrics = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		int width = metrics.widthPixels;
-		int height = (int)(width*0.87/NUMBER_OF_BUTTONS);
+		int height = (int)(width*0.91/NUMBER_OF_BUTTONS);
 		
 		buttons = new ImageView[NUMBER_OF_BUTTONS];
 		for (int i = 0; i < buttons.length; i++) {

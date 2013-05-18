@@ -1,6 +1,8 @@
 package com.hyperactivity.android_app.forum.models;
 
 
+import com.hyperactivity.android_app.Utils;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -68,33 +70,15 @@ public class Thread {
 
         Thread t = (Thread) o;
 
-        if (!this.getHeadLine().equals(t.getHeadLine())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getHeadLine(), t.getHeadLine())) return false;
 
-        if (!this.getReplies().equals(t.getReplies())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getAccount(), t.getAccount())) return false;
 
-        if (!this.getAccount().equals(t.getAccount())) {
-            return false;
-        }
+        if (this.getId() != t.getId()) return false;
 
-        if (this.getId() != t.getId()) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getText(), t.getText())) return false;
 
-        if (!this.getParentCategory().equals(t.getParentCategory())) {
-            return false;
-        }
-
-        if (!this.getText().equals(t.getText())) {
-            return false;
-        }
-
-        if (!this.getTime().equals(t.getTime())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getTime(), t.getTime())) return false;
 
         return true;
     }

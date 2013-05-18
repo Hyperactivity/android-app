@@ -1,5 +1,8 @@
 package com.hyperactivity.android_app.forum.models;
 
+import com.facebook.android.Util;
+import com.hyperactivity.android_app.Utils;
+
 import java.sql.Date;
 
 /**
@@ -63,33 +66,23 @@ public class Account {
 
         Account a = (Account) o;
 
-        if (this.getId() != a.getId()) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getProfileDescription(), a.getProfileDescription())) return false;
 
-        if (!(this.getBirthDate() == null && a.getBirthDate() == null || this.getBirthDate().equals(a.getBirthDate()))) {
-            return false;
-        }
+        if (this.getId() != a.getId()) return false;
 
-        if (this.getFacebookId() != a.getFacebookId()) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getBirthDate(), a.getBirthDate())) return false;
 
-        if (this.getLimitPerDay() != a.getLimitPerDay()) {
-            return false;
-        }
+        if (this.getLimitPerDay() != a.getLimitPerDay()) return false;
 
-        if (!this.getProfileDescription().equals(a.getProfileDescription())) {
-            return false;
-        }
+        if (this.isUseDefaultColors() != a.isUseDefaultColors()) return false;
 
-        if (!(this.username == null && a.getUsername() == null || this.getUsername().equals(a.getUsername()))) {
-            return false;
-        }
+        if (this.getFacebookId() != a.getFacebookId()) return false;
 
-        if (!(this.admin == a.admin)) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getUsername(), a.getUsername())) return false;
+
+        if (this.isShowBirthDate() != a.isShowBirthDate()) return false;
+
+        if (this.isAdmin() != a.isAdmin()) return false;
 
         return true;
     }

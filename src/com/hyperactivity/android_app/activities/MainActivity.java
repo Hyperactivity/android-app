@@ -3,11 +3,15 @@ package com.hyperactivity.android_app.activities;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.AdminActionCallback;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
@@ -15,7 +19,7 @@ import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
-public class MainActivity extends FragmentActivity implements ForumEventCallback {
+public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
     public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
             DIARY_FRAGMENT = 2,
@@ -36,7 +40,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         // Make a link from the navigation menu to this activity
@@ -86,24 +89,39 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     public void visitThread(Thread thread) {
-        ((Engine)getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
-    	((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
-    	changeFragment(VIEW_THREAD_FRAGMENT);
+        ((Engine) getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
+        ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
+        changeFragment(VIEW_THREAD_FRAGMENT);
     }
 
     public void visitAccount(Account account) {
-        ((ProfileFragment)fragments[VIEW_PROFILE_FRAGMENT]).setCurrentAccount(account);
+        ((ProfileFragment) fragments[VIEW_PROFILE_FRAGMENT]).setCurrentAccount(account);
         changeFragment(VIEW_PROFILE_FRAGMENT);
     }
 
     public void changeFragment(int fragmentID) {
         if (currentFragment != fragmentID) {
-            currentFragment = fragmentID;
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);
+            transaction.replace(R.id.main_fragment_container, fragments[fragmentID]).addToBackStack(currentFragment+"");
             transaction.commit();
+            currentFragment = fragmentID;
             navigationMenu.updateNavigationMenu(currentFragment);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            try {
+                currentFragment = Integer.parseInt(fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName());
+                navigationMenu.updateNavigationMenu(currentFragment);
+            } catch (NumberFormatException e) {
+                Log.d(Constants.Log.TAG, "Backstack entry didn't have number tag");
+            }
+        }
+        Log.d(Constants.Log.TAG, "Pressed back button!");
+        super.onBackPressed();
     }
 
     @Override
@@ -123,9 +141,9 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void categoriesLoaded() {
-        if(currentFragment == FORUM_FRAGMENT) {
+        if (currentFragment == FORUM_FRAGMENT) {
             ((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
-        } else if(currentFragment == DIARY_FRAGMENT) {
+        } else if (currentFragment == DIARY_FRAGMENT) {
             ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateCategories();
         } else if (currentFragment == CREATE_THREAD_FRAGMENT) {
             ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
@@ -146,9 +164,9 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void repliesLoaded() {
-    	if (currentFragment == VIEW_THREAD_FRAGMENT) {
-    		((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
-    	}
+        if (currentFragment == VIEW_THREAD_FRAGMENT) {
+            ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
+        }
     }
 
     @Override
@@ -158,19 +176,49 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         }
     }
 
-	@Override
-	public void replyCreated(Reply reply) {
+    @Override
+    public void replyCreated(Reply reply) {
         visitThread(reply.getParentThread());
-	}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
 
-    public void onSettingsClick(MenuItem item) {
-        changeFragment(SETTINGS_FRAGMENT);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                changeFragment(SETTINGS_FRAGMENT);
+                return true;
+        }
+
+        return false;
+    }
+
+    //--------------- admin actions ------------
+
+    @Override
+    public void editThread(Thread thread) {
+    }
+
+    @Override
+    public void deleteThread(Thread thread) {
+    }
+
+    @Override
+    public void editReply(Reply reply) {
+    }
+
+    @Override
+    public void deleteReply(Reply reply) {
+    }
+
+    @Override
+    public void banAccount(Account account) {
     }
 }
