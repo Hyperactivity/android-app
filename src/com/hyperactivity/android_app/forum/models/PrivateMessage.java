@@ -1,5 +1,7 @@
 package com.hyperactivity.android_app.forum.models;
 
+import com.hyperactivity.android_app.Utils;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -32,5 +34,22 @@ public class PrivateMessage {
 
     public String getText() {
         return text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof PrivateMessage)) return false;
+
+        PrivateMessage p = (PrivateMessage) o;
+
+        if (!Utils.objectsEqual(this.getText(), p.getText())) return false;
+
+        if (!Utils.objectsEqual(this.getSenderAccount(), p.getSenderAccount())) return false;
+
+        if (!Utils.objectsEqual(this.getRecieverAccount(), p.getRecieverAccount())) return false;
+
+        if (!Utils.objectsEqual(this.getTime(), p.getTime())) return false;
+
+        return true;
     }
 }

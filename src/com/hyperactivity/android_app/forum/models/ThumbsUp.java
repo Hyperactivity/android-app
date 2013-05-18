@@ -1,6 +1,8 @@
 package com.hyperactivity.android_app.forum.models;
 
 
+import com.hyperactivity.android_app.Utils;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -26,19 +28,13 @@ public class ThumbsUp {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ThumbsUp)) {
-            return false;
-        }
+        if (!(o instanceof ThumbsUp)) return false;
 
         ThumbsUp t = (ThumbsUp) o;
 
-        if (this.getAccount().equals(t.getAccount())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getAccount(), t.getAccount())) return false;
 
-        if (this.getReply().equals(t.getReply())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getReply(), t.getReply())) return false;
 
         return true;
     }
