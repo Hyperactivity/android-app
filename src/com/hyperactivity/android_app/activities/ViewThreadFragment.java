@@ -9,6 +9,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.AdminActionCallback;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
@@ -46,6 +47,10 @@ public class ViewThreadFragment extends Fragment {
 
         replyList = new ReplyListFragment();
         replyList.updateReplyList(new ArrayList<Reply>());
+
+        if (getActivity() instanceof AdminActionCallback) {
+            replyList.setCallback((AdminActionCallback) getActivity());
+        }
 
         return view;
     }
