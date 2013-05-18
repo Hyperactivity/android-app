@@ -38,7 +38,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         setContentView(R.layout.activity_main);
 
 
-
         // Make a link from the navigation menu to this activity
         navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_menu_fragment);
@@ -86,13 +85,13 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     public void visitThread(Thread thread) {
-        ((Engine)getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
-    	((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
-    	changeFragment(VIEW_THREAD_FRAGMENT);
+        ((Engine) getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
+        ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
+        changeFragment(VIEW_THREAD_FRAGMENT);
     }
 
     public void visitAccount(Account account) {
-        ((ProfileFragment)fragments[VIEW_PROFILE_FRAGMENT]).setCurrentAccount(account);
+        ((ProfileFragment) fragments[VIEW_PROFILE_FRAGMENT]).setCurrentAccount(account);
         changeFragment(VIEW_PROFILE_FRAGMENT);
     }
 
@@ -123,9 +122,9 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void categoriesLoaded() {
-        if(currentFragment == FORUM_FRAGMENT) {
+        if (currentFragment == FORUM_FRAGMENT) {
             ((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
-        } else if(currentFragment == DIARY_FRAGMENT) {
+        } else if (currentFragment == DIARY_FRAGMENT) {
             ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateCategories();
         } else if (currentFragment == CREATE_THREAD_FRAGMENT) {
             ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
@@ -146,9 +145,9 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void repliesLoaded() {
-    	if (currentFragment == VIEW_THREAD_FRAGMENT) {
-    		((ViewThreadFragment)fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
-    	}
+        if (currentFragment == VIEW_THREAD_FRAGMENT) {
+            ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
+        }
     }
 
     @Override
@@ -158,19 +157,28 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         }
     }
 
-	@Override
-	public void replyCreated(Reply reply) {
+    @Override
+    public void replyCreated(Reply reply) {
         visitThread(reply.getParentThread());
-	}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
 
-    public void onSettingsClick(MenuItem item) {
-        changeFragment(SETTINGS_FRAGMENT);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                changeFragment(SETTINGS_FRAGMENT);
+                return true;
+        }
+
+        return false;
+
     }
 }
