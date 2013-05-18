@@ -3,10 +3,13 @@ package com.hyperactivity.android_app.activities;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
@@ -98,12 +101,27 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     public void changeFragment(int fragmentID) {
         if (currentFragment != fragmentID) {
-            currentFragment = fragmentID;
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_fragment_container, fragments[fragmentID]);
+            transaction.replace(R.id.main_fragment_container, fragments[fragmentID]).addToBackStack(currentFragment+"");
             transaction.commit();
+            currentFragment = fragmentID;
             navigationMenu.updateNavigationMenu(currentFragment);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            try {
+                currentFragment = Integer.parseInt(fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName());
+                navigationMenu.updateNavigationMenu(currentFragment);
+            } catch (NumberFormatException e) {
+                Log.d(Constants.Log.TAG, "Backstack entry didn't have number tag");
+            }
+        }
+        Log.d(Constants.Log.TAG, "Pressed back button!");
+        super.onBackPressed();
     }
 
     @Override
