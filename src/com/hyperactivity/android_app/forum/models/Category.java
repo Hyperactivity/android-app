@@ -100,35 +100,19 @@ public class Category {
 
     @Override
     public boolean equals(Object o) {
-
         if (!(o instanceof Category)) {
             return false;
         }
 
         Category c = (Category) o;
 
-        if (this.getId() != c.getId()) {
-            return false;
-        }
+        if (this.getId() != c.getId()) return false;
 
-        if (!this.getHeadLine().equals(c.getHeadLine())) {
-            return false;
-        }
+        if (!Utils.objectsEqual(this.getHeadLine(), c.getHeadLine())) return false;
 
-//        if (!this.getThreads().equals(c.getThreads())) {
-//            return false;
-//        }
+        if (this.getColorCode() != c.getColorCode())  return false;
 
-        if (this.getColorCode() != c.getColorCode()) {
-            return false;
-        }
-
-        String imageName1 = getImageName(), imageName2 = c.getImageName();
-        if (imageName1 == null) {
-            if (imageName2 != null) return false;
-        } else {
-            if (!imageName1.equals(imageName2)) return false;
-        }
+        if (!Utils.objectsEqual(this.getImageName(), c.getImageName())) return false;
 
         return true;
     }

@@ -1,6 +1,8 @@
 package com.hyperactivity.android_app.forum.models;
 
 
+import com.hyperactivity.android_app.Utils;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -40,5 +42,22 @@ public class PrivateCategory {
 
     public Account getAccount() {
         return account;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof PrivateCategory)) return false;
+
+        PrivateCategory p = (PrivateCategory) o;
+
+        if (this.getId() != p.getId()) return false;
+
+        if (this.getColorCode() != p.getColorCode()) return false;
+
+        if (!Utils.objectsEqual(this.getAccount(), p.getAccount())) return false;
+
+        if(!Utils.objectsEqual(this.getHeadLine(), p.getHeadLine())) return false;
+
+        return true;
     }
 }

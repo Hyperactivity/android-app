@@ -1,5 +1,7 @@
 package com.hyperactivity.android_app.forum.models;
 
+import com.hyperactivity.android_app.Utils;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -27,5 +29,20 @@ public class CustomCategoryColor{
 
     public int getColorCode() {
         return colorCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof CustomCategoryColor)) return false;
+
+        CustomCategoryColor c = (CustomCategoryColor) o;
+
+        if (this.colorCode != c.colorCode) return false;
+
+        if (!Utils.objectsEqual(this.getAccount(), c.getAccount())) return false;
+
+        if (!Utils.objectsEqual(this.getCategory(), c.getCategory())) return false;
+
+        return true;
     }
 }
