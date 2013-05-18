@@ -20,7 +20,7 @@ import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.forum.models.Thread;
 
-public class SettingsFragment extends Fragment {
+public class ChatFragment extends Fragment {
 
     ThreadListFragment searchResultList;
     TextView noResultsText;
@@ -29,10 +29,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         // THIS WILL BE REMOVED, IT'S HERE SO THAT THE PAGE WILL NOT BE EMPTY
-        View view = inflater.inflate(R.layout.settings_fragment, null);
-        searchResultList = new ThreadListFragment();
-        searchResultList.updateThreadList(new ArrayList<Thread>());
-
+        View view = inflater.inflate(R.layout.chat_fragment, null);
 
         return view;
     }

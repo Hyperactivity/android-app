@@ -26,7 +26,7 @@ public class NavigationMenuFragment extends Fragment {
 		buttonInfo[1] = new NavigationButtonInfo(R.id.navigation_menu_button_2, R.drawable.active_bubble, R.drawable.non_active_bubble, MainActivity.FORUM_FRAGMENT);
 		buttonInfo[2] = new NavigationButtonInfo(R.id.navigation_menu_button_3, R.drawable.active_diary, R.drawable.non_active_diary, MainActivity.DIARY_FRAGMENT);
 		buttonInfo[3] = new NavigationButtonInfo(R.id.navigation_menu_button_4, R.drawable.active_pen, R.drawable.non_active_pen, MainActivity.CREATE_THREAD_FRAGMENT);
-		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, MainActivity.SEARCH_FRAGMENT);
+		buttonInfo[4] = new NavigationButtonInfo(R.id.navigation_menu_button_5, R.drawable.active_search, R.drawable.non_active_search, MainActivity.CHAT_FRAGMENT);
 		
 		activeButtonFragmentMapping = new HashMap<Integer, Integer>();
 		activeButtonFragmentMapping.put(MainActivity.HOME_FRAGMENT, 0);

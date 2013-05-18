@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.support.v4.app.ListFragment;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.hyperactivity.android_app.R;
@@ -16,8 +18,10 @@ public class ReplyListFragment extends ListFragment {
 	private int[] to = new int[] {R.id.reply_author, R.id.reply_text, R.id.reply_timestamp};
 	
 	private List<HashMap<String, String>> data;
+    private List<Reply> currentReplies;
 
 	public void updateReplyList(List<Reply> replyList) {
+        currentReplies = replyList;
 		data = new ArrayList<HashMap<String, String>>();
 				
 		for(int i = 0; i < replyList.size(); i++) {
@@ -30,6 +34,15 @@ public class ReplyListFragment extends ListFragment {
 	        setListAdapter(adapter);
 	        data = null;
 		}
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        if (position >= 0 && position < currentReplies.size()) {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).visitAccount(currentReplies.get(position).getAccount());
+            }
+        }
     }
 	
 	@Override
