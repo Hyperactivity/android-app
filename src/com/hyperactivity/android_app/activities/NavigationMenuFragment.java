@@ -34,7 +34,7 @@ public class NavigationMenuFragment extends Fragment {
 		activeButtonFragmentMapping.put(MainActivity.VIEW_THREAD_FRAGMENT, 1);
 		activeButtonFragmentMapping.put(MainActivity.DIARY_FRAGMENT, 2);
 		activeButtonFragmentMapping.put(MainActivity.CREATE_THREAD_FRAGMENT, 3);
-		activeButtonFragmentMapping.put(MainActivity.SEARCH_FRAGMENT, 4);
+		activeButtonFragmentMapping.put(MainActivity.CHAT_FRAGMENT, 4);
 	}
 
 	private MainActivity parentActivity;
