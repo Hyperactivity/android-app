@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.AdminActionCallback;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
@@ -15,7 +16,7 @@ import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
-public class MainActivity extends FragmentActivity implements ForumEventCallback {
+public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
     public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
             DIARY_FRAGMENT = 2,
@@ -179,6 +180,27 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         }
 
         return false;
+    }
 
+    //--------------- admin actions ------------
+
+    @Override
+    public void editThread(Thread thread) {
+    }
+
+    @Override
+    public void deleteThread(Thread thread) {
+    }
+
+    @Override
+    public void editReply(Reply reply) {
+    }
+
+    @Override
+    public void deleteReply(Reply reply) {
+    }
+
+    @Override
+    public void banAccount(Account account) {
     }
 }

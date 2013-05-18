@@ -1,29 +1,33 @@
 package com.hyperactivity.android_app.activities;
 
-import android.widget.TextView;
-import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.core.Engine;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.AdminActionCallback;
+import com.hyperactivity.android_app.core.Engine;
 
 public class HomeFragment extends Fragment {
-	
-	ThreadListFragment threadList;
-	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.home_fragment, null);
-		threadList = new ThreadListFragment();
+
+    ThreadListFragment threadList;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.home_fragment, null);
+        threadList = new ThreadListFragment();
         getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
 
-        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
-        caption.setText((String)getResources().getText(R.string.latest_threads));
+        TextView caption = (TextView) view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        caption.setText((String) getResources().getText(R.string.latest_threads));
+
+        if (getActivity() instanceof AdminActionCallback) {
+            threadList.setCallback((AdminActionCallback) getActivity());
+        }
 
         return view;
-	}
+    }
 
     @Override
     public void onResume() {
@@ -39,6 +43,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateThreadList() {
-        threadList.updateThreadList(((Engine)getActivity().getApplication()).getPublicForum().getLatestThreads(getActivity(), 10));
-	}
+        threadList.updateThreadList(((Engine) getActivity().getApplication()).getPublicForum().getLatestThreads(getActivity(), 10));
+    }
 }
