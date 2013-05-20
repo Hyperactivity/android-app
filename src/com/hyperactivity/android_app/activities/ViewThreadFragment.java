@@ -15,6 +15,7 @@ import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ViewThreadFragment extends Fragment {
@@ -127,29 +128,35 @@ public class ViewThreadFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getFragmentManager().beginTransaction().replace(R.id.reply_list_container, replyList).commit();
-        if (currentThread != null) {
-            updateCurrentThread();
+		if (currentThread != null) {
+			updateCurrentThread();
+		}
+	}
+	
+	public void setCurrentThread(Thread thread) {
+		currentThread = thread;
+		if (getActivity() != null) {
+			updateCurrentThread();
+		}
+	}
+	
+	public List<Reply> updateReplies() {
+		List<Reply> replies = currentThread.getReplies();
+		if (replies != null) {
+			replyList.updateReplyList(replies);
+            return replies;
+		}else{
+            return new LinkedList<Reply>();
         }
-    }
 
-    public void setCurrentThread(Thread thread) {
-        currentThread = thread;
-        if (getActivity() != null) {
-            updateCurrentThread();
-        }
-    }
-
-    public void updateReplies() {
-        List<Reply> replies = currentThread.getReplies();
-        if (replies != null) {
-            replyList.updateReplyList(replies);
-        }
-    }
-
-    private void updateCurrentThread() {
-        headlineField.setText(currentThread.getHeadLine());
-        textField.setText(currentThread.getText());
-        clearWriteReplyContainer();
+	}
+	
+	private void updateCurrentThread() {
+		headlineField.setText(currentThread.getHeadLine());
+		textField.setText(currentThread.getText());
+		clearWriteReplyContainer();
         updateReplies();
-    }
+	}
+
+
 }

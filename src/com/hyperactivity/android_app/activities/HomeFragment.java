@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.hyperactivity.android_app.forum.models.Thread;
+
+import java.util.List;
 import android.widget.TextView;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.AdminActionCallback;
@@ -42,7 +45,9 @@ public class HomeFragment extends Fragment {
         getFragmentManager().beginTransaction().remove(threadList).commit();
     }
 
-    public void updateThreadList() {
-        threadList.updateThreadList(((Engine) getActivity().getApplication()).getPublicForum().getLatestThreads(getActivity(), 10));
-    }
+    public List<Thread> updateThreadList() {
+        List<Thread> threads = ((Engine)getActivity().getApplication()).getPublicForum().getLatestThreads(getActivity(), 10);
+        threadList.updateThreadList(threads);
+        return threads;
+	}
 }

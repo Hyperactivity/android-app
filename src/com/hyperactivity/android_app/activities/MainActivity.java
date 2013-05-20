@@ -18,6 +18,10 @@ import com.hyperactivity.android_app.forum.SortType;
 import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
+import com.hyperactivity.android_app.network.NetworkCallback;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
     public static final int HOME_FRAGMENT = 0,
@@ -148,24 +152,46 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         } else if (currentFragment == CREATE_THREAD_FRAGMENT) {
             ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
         }
+
     }
 
     @Override
     public void threadsLoaded() {
+        List<Thread> threads = new LinkedList<Thread>();
         if (currentFragment == FORUM_FRAGMENT) {
-            ((ForumFragment) fragments[FORUM_FRAGMENT]).updateThreadList();
+            threads = ((ForumFragment) fragments[FORUM_FRAGMENT]).updateThreadList();
         } else if (currentFragment == DIARY_FRAGMENT) {
-            ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateThreadList();
+            threads = ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateThreadList();
         } else if (currentFragment == HOME_FRAGMENT) {
             // Get latest threads
-            ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();
+            threads = ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();
         }
+        List<Account> profilePicUpdateList = new LinkedList<Account>();
+        for(Thread thread: threads){
+            if(thread.getAccount().getProfilePicture() == null){
+                profilePicUpdateList.add(thread.getAccount());
+            }
+        }
+        if(!profilePicUpdateList.isEmpty()){
+            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(Thread.class, profilePicUpdateList, this);
+        }
+
     }
 
     @Override
     public void repliesLoaded() {
+        List<Reply> replies = new LinkedList<Reply>();
         if (currentFragment == VIEW_THREAD_FRAGMENT) {
-            ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
+            replies =((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
+        }
+        List<Account> profilePicUpdateList = new LinkedList<Account>();
+        for(Reply reply: replies){
+            if(reply.getAccount().getProfilePicture() == null){
+                profilePicUpdateList.add(reply.getAccount());
+            }
+        }
+        if(!profilePicUpdateList.isEmpty()){
+            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(Reply.class, profilePicUpdateList, this);
         }
     }
 

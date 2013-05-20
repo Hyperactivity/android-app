@@ -1,15 +1,24 @@
 package com.hyperactivity.android_app.network;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.hyperactivity.android_app.Constants;
+import com.hyperactivity.android_app.activities.MainActivity;
 import com.hyperactivity.android_app.core.Engine;
+import com.hyperactivity.android_app.forum.ForumEventCallback;
+import com.hyperactivity.android_app.forum.models.*;
+import com.hyperactivity.android_app.forum.models.Thread;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 
 /*
 //TODO: enable the fb stuff
@@ -64,6 +73,37 @@ public class ServerLink {
         //TODO: Also send avatar.
 
         sendRequest(Constants.Methods.UPDATE_PROFILE, params, callback, lockWithLoadingScreen);
+    }
+
+    public void loadAvatars(final Class callbackMethodType, final List<Account> accounts, final ForumEventCallback callback) {
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if(callbackMethodType.equals(Thread.class)){
+                    callback.threadsLoaded();
+
+                }else if(callbackMethodType.equals(Reply.class)){
+                    callback.repliesLoaded();
+                }
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                for(Account account: accounts){
+                    String imageURL = "http://graph.facebook.com/"+account.getFacebookId()+"/picture?width=100&height=100";
+                    try {
+                        account.setProfilePicture(BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent()));
+                    } catch (IOException e) {
+                        Log.d(Constants.Log.TAG, "Loading Picture FAILED");
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        }.execute();
+
     }
 
     //---------------------------- CATEGORY ----------------------------
@@ -206,6 +246,8 @@ public class ServerLink {
             Log.e(Constants.Log.TAG, "exception: ", e);
         }
     }
+
+
 
 
 
