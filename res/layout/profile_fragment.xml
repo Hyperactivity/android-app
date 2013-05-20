@@ -42,11 +42,12 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@drawable/description_background"
+
         android:minHeight="85dp"
         android:paddingBottom="3dp"
         android:paddingLeft="15dp"
         android:paddingRight="3dp"
         android:paddingTop="3dp" />
+    <!--android:background="@drawable/description_background" -->
 
 </LinearLayout>
