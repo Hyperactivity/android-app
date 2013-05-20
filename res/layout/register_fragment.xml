@@ -23,4 +23,11 @@
             android:onClick="createAccount"
             android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
             android:layout_marginTop="247dp"/>
+    <ImageView
+            android:layout_width="236dp"
+            android:layout_height="103dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/forum"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="23dp"/>
 </RelativeLayout>
