@@ -46,7 +46,10 @@ public class CreateThreadFragment extends Fragment {
             public void onClick(View v) {
                 String h = headline.getText().toString().trim();
                 String t = text.getText().toString().trim();
-                ((Engine) getActivity().getApplication()).getPublicForum().createThread(getActivity(), scrollPicker.getThread().getItemManager().getSelectedItem().getCategory().getId(), headlineEditText.getText().toString().trim(), textEditText.getText().toString().trim(), true);
+                if (h.length() > 0 && t.length() > 0) {
+                    ((Engine) getActivity().getApplication()).getPublicForum().createThread(getActivity(), scrollPicker.getThread().getItemManager().getSelectedItem().getCategory().getId(), headlineEditText.getText().toString().trim(), textEditText.getText().toString().trim(), true);
+                    clearFields();
+                }
             }
         });
 
@@ -86,5 +89,10 @@ public class CreateThreadFragment extends Fragment {
         super.onResume();
 
         scrollPicker.getThread().unpause();
+    }
+
+    public void clearFields() {
+        headlineEditText.setText("");
+        textEditText.setText("");
     }
 }
