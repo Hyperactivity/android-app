@@ -25,6 +25,10 @@ public class ProfileFragment extends Fragment {
         profileNameField = (TextView) view.findViewById(R.id.profile_name_field);
         birthDateField = (TextView) view.findViewById(R.id.profile_birth_date_field);
         profileDescriptionField = (TextView) view.findViewById(R.id.profile_description_field);
+        
+        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        caption.setText((String)getResources().getText(R.string.profile));
+        
 
         return view;
     }

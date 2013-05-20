@@ -8,9 +8,10 @@
             android:id="@+id/username_textfield"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:hint="@string/username"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="168dp"/>
 
 
 
@@ -19,7 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:onClick="createAccount"/>
+            android:onClick="createAccount"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="247dp"/>
+    <ImageView
+            android:layout_width="236dp"
+            android:layout_height="103dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/forum"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="23dp"/>
 </RelativeLayout>

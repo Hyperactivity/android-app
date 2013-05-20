@@ -1,6 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
@@ -26,14 +27,27 @@ public class ChatFragment extends Fragment {
     TextView noResultsText;
     EditText searchEditText;
 
+
+    ChatListFragment chatListFragment;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
+        chatListFragment = new ChatListFragment();
         // THIS WILL BE REMOVED, IT'S HERE SO THAT THE PAGE WILL NOT BE EMPTY
         View view = inflater.inflate(R.layout.chat_fragment, null);
+
+
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    chatListFragment.updateChatList();
+        getFragmentManager().beginTransaction().replace(R.id.chat_list_container, chatListFragment).commit();
+    }
 
 
 

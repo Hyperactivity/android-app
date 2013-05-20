@@ -7,15 +7,22 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
 import com.hyperactivity.android_app.R;
-import com.hyperactivity.android_app.forum.models.Reply;
+import com.hyperactivity.android_app.core.AdminActionCallback;
+import com.hyperactivity.android_app.core.Engine;
+import com.hyperactivity.android_app.forum.models.*;
 
 public class ReplyListFragment extends ListFragment {
 
@@ -109,8 +116,19 @@ public class ReplyListFragment extends ListFragment {
 	
 	private List<HashMap<String, Object>> data;
     private List<Reply> currentReplies;
+    private AdminActionCallback callback;
 
-	public void updateReplyList(List<Reply> replyList) {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //TODO: debug only
+        if (true || ((Engine) getActivity().getApplication()).getClientInfo().getAccount().isAdmin()) {
+            registerForContextMenu(getListView());
+        }
+    }
+
+    public void updateReplyList(List<Reply> replyList) {
         currentReplies = replyList;
 		data = new ArrayList<HashMap<String, Object>>();
 
@@ -156,4 +174,41 @@ public class ReplyListFragment extends ListFragment {
         row.put("reply_image", reply.getAccount().getProfilePicture());
 		return row;
 	}
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = this.getActivity().getMenuInflater();
+        inflater.inflate(R.menu.admin_edit_delete, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        if(callback == null) {
+            return super.onContextItemSelected(item);
+        }
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Reply reply = currentReplies.get(info.position);
+
+        switch (item.getItemId()) {
+
+            case R.id.admin_edit:
+                callback.editReply(reply);
+                return true;
+
+            case R.id.admin_delete:
+                callback.deleteReply(reply);
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    public void setCallback(AdminActionCallback callback) {
+        this.callback = callback;
+    }
 }

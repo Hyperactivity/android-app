@@ -17,8 +17,7 @@
             android:clickable="false"
             android:focusable="false"
             android:scaleType="fitXY"
-            android:background="#ffffff">
-    </ImageButton>
+            android:background="#ffffff" />
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
