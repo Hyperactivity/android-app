@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.inputmethod.InputMethodManager;
@@ -49,6 +50,11 @@ public class CreateThreadFragment extends Fragment {
                 if (h.length() > 0 && t.length() > 0) {
                     ((Engine) getActivity().getApplication()).getPublicForum().createThread(getActivity(), scrollPicker.getThread().getItemManager().getSelectedItem().getCategory().getId(), headlineEditText.getText().toString().trim(), textEditText.getText().toString().trim(), true);
                     clearFields();
+                } else {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                    alert.setMessage(getString(R.string.headline_or_text_empty));
+                    alert.setPositiveButton("Ok", null);
+                    alert.show();
                 }
             }
         });
