@@ -150,5 +150,6 @@ public class ViewThreadFragment extends Fragment {
         headlineField.setText(currentThread.getHeadLine());
         textField.setText(currentThread.getText());
         clearWriteReplyContainer();
+        updateReplies();
     }
 }
