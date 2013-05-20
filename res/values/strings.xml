@@ -29,8 +29,8 @@
     <string name="write_reply_text">Skriv svar</string>
     <string name="write_reply_cancel_text">Tillbaka</string>
     <string name="write_reply_submit_text">Svara</string>
-    <string name="register">Create Account</string>
-    <string name="username">Username</string>
+    <string name="register">Anslut</string>
+    <string name="username">Ange användarnamn...</string>
     <string name="edit">Redigera</string>
     <string name="delete">Ta bort</string>
     <string name="forum">Forum</string>
