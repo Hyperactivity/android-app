@@ -15,6 +15,7 @@ import com.hyperactivity.android_app.core.ScrollPickerItem;
 import com.hyperactivity.android_app.forum.models.*;
 import com.hyperactivity.android_app.forum.models.Thread;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,13 +46,14 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
     }
 
     public List<Thread> updateThreadList() {
-        List<Thread> threads = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads();
-        updateThreadList(threads);
-        return threads;
+//        List<Thread> threads = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads();
+//        updateThreadList(threads);
+//        return threads;
+        return new ArrayList<Thread>();
     }
 
     public void updateThreadList(List<Thread> threads) {
-        threadList.updateThreadList(threads);
+//        threadList.updateThreadList(threads);
     }
 
     @Override
