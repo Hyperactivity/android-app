@@ -39,4 +39,5 @@
     <string name="search">Sök</string>
     <string name="profile">Min Profil</string>
     <string name="headline_or_text_empty">Rubrik och text får inte vara tomma</string>
+    <string name="reply_empty">Fältet får inte vara tomt</string>
 </resources>

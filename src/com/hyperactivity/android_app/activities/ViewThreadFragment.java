@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,11 @@ public class ViewThreadFragment extends Fragment {
             public void onClick(View v) {
                 if (writeReplyField.getText().toString().trim().length() > 0) {
                     ((Engine) getActivity().getApplication()).getPublicForum().createReply(getActivity(), currentThread.getId(), writeReplyField.getText().toString().trim(), true);
+                }else{
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                    alert.setMessage(getString(R.string.reply_empty));
+                    alert.setPositiveButton("Ok", null);
+                    alert.show();
                 }
             }
         });
