@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.AdminActionCallback;
@@ -39,6 +41,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     private Fragment[] fragments;
     private int currentFragment;
     private NavigationMenuFragment navigationMenu;
+
+    private Drawable previousOuterBackground, previousInnerBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,14 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.main_fragment_container, fragments[fragmentID]).addToBackStack(currentFragment+"");
             transaction.commit();
+
+            // TODO will not work well if multiple fragments should have black background
+            if (fragmentID == DIARY_FRAGMENT) {
+                makeBlackBackground();
+            } else if (currentFragment == DIARY_FRAGMENT) {
+                restoreBackground();
+            }
+
             currentFragment = fragmentID;
             navigationMenu.updateNavigationMenu(currentFragment);
         }
@@ -126,6 +138,31 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         }
         Log.d(Constants.Log.TAG, "Pressed back button!");
         super.onBackPressed();
+    }
+
+    /**
+     * Methods used for the background change in the diary. Ugly
+     */
+    public void makeBlackBackground() {
+        if (previousOuterBackground == null) {
+            LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
+            LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
+            previousOuterBackground = outerBackground.getBackground();
+            previousInnerBackground = innerBackground.getBackground();
+            outerBackground.setBackgroundResource(R.color.black);
+            innerBackground.setBackgroundResource(R.color.black);
+        }
+    }
+
+    public void restoreBackground() {
+        if (previousOuterBackground != null) {
+            LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
+            LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
+            outerBackground.setBackground(previousOuterBackground);
+            innerBackground.setBackground(previousInnerBackground);
+            previousOuterBackground = null;
+            previousInnerBackground = null;
+        }
     }
 
     @Override
