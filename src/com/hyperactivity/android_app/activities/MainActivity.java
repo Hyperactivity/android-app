@@ -113,14 +113,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             transaction.replace(R.id.main_fragment_container, fragments[fragmentID]).addToBackStack(currentFragment+"");
             transaction.commit();
 
-            // TODO will not work well if multiple fragments should have black background
-            if (fragmentID == DIARY_FRAGMENT) {
-                makeBlackBackground();
-            } else if (currentFragment == DIARY_FRAGMENT) {
-                restoreBackground();
-            }
-
             currentFragment = fragmentID;
+            updateBackground();
             navigationMenu.updateNavigationMenu(currentFragment);
         }
     }
@@ -132,6 +126,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             try {
                 currentFragment = Integer.parseInt(fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName());
                 navigationMenu.updateNavigationMenu(currentFragment);
+                updateBackground();
             } catch (NumberFormatException e) {
                 Log.d(Constants.Log.TAG, "Backstack entry didn't have number tag");
             }
@@ -143,6 +138,14 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     /**
      * Methods used for the background change in the diary. Ugly
      */
+    public void updateBackground() {
+        if (currentFragment == DIARY_FRAGMENT) {
+            makeBlackBackground();
+        } else {
+            restoreBackground();
+        }
+    }
+
     public void makeBlackBackground() {
         if (previousOuterBackground == null) {
             LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
