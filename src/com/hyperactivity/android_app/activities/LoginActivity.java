@@ -33,7 +33,7 @@ public class LoginActivity extends FragmentActivity {
     private Session.StatusCallback callback = new Session.StatusCallback() {
         @Override
         public void call(final Session session,
-        SessionState state, Exception exception) {
+                         SessionState state, Exception exception) {
             Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 
                 // loginCallback after Graph API response with user object

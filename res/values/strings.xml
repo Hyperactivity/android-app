@@ -23,9 +23,9 @@
     <string name="wait_server_text">Chatting with server...</string>
     <string name="login">Login</string>
     <string name="search_text">Sök</string>
-    <string name="headline">Headline</string>
+    <string name="headline">Rubrik</string>
     <string name="text">Text</string>
-    <string name="create">Create</string>
+    <string name="create">Skapa</string>
     <string name="write_reply_text">Skriv svar</string>
     <string name="write_reply_cancel_text">Tillbaka</string>
     <string name="write_reply_submit_text">Svara</string>
