@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -52,7 +53,8 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateCurrentAccount() {
-        profilePictureView.setImageResource(R.drawable.com_facebook_profile_default_icon);
+//        profilePictureView.setImageResource(R.drawable.com_facebook_profile_default_icon);
+        profilePictureView.setBackground(new BitmapDrawable(getResources(), currentAccount.getProfilePicture()));
         profileNameField.setText(currentAccount.getUsername());
         if (currentAccount.isShowBirthDate() && currentAccount.getBirthDate() != null) birthDateField.setText(currentAccount.getBirthDate().toString());
         profileDescriptionField.setText(currentAccount.getProfileDescription());
