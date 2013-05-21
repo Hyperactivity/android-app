@@ -27,8 +27,8 @@ public class ProfileFragment extends Fragment {
         profileDescriptionField = (TextView) view.findViewById(R.id.profile_description_field);
         
         TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
-        caption.setText((String)getResources().getText(R.string.profile));
-        
+      //  caption.setText((String)getResources().getText(R.string.profile));
+        caption.setText("Profil");
 
         return view;
     }

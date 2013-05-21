@@ -47,7 +47,7 @@ public class CreateThreadFragment extends Fragment {
             public void onClick(View v) {
                 String h = headline.getText().toString().trim();
                 String t = text.getText().toString().trim();
-                if (h.length() > 0 && t.length() > 0) {
+                if (h.length() > 0 && t.length() > 0 && h.length()<=40) {
                     ((Engine) getActivity().getApplication()).getPublicForum().createThread(getActivity(), scrollPicker.getThread().getItemManager().getSelectedItem().getCategory().getId(), headlineEditText.getText().toString().trim(), textEditText.getText().toString().trim(), true);
                     clearFields();
                 } else {
