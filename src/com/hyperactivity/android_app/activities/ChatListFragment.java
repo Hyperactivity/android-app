@@ -126,7 +126,7 @@ public class ChatListFragment extends ListFragment {
         HashMap<String, Object> row = new HashMap<String, Object>();
         row.put("chat_item_pic", pic);
         row.put("chat_item_text", text);
-        data.add(row);
+        data.add(0,row);
     }
 
     @Override
