@@ -1,54 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="fill_parent"
-        >
+              android:layout_height="match_parent"
+              android:layout_margin="25dp"
+              android:orientation="vertical"
+              android:padding="10dp">
 
-    <CheckBox android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Show age"
-            />
-    <!--
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@+id/profile_pic"
-            />
-    -->
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@+id/profile_name"
-            />
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@+id/profile_desc"
-            />
+    <include
+            android:id="@+id/caption"
+            layout="@layout/caption"/>
 
-    <!--
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <Button
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Profilnamn:"/>
+        <TextView
+                android:id="@+id/profile_name_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Byt bild"
                 />
-        <Button
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Verkställ"
-                android:layout_alignParentRight="true"
-                />
+                android:text="Födelseår:"/>
+        <TextView
+                android:id="@+id/profile_birth_date_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="20dp"/>
+
+        <CheckBox android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Visa min ålder"
+                  android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profil beskrivning:"/>
+        <EditText
+                android:textSize="12sp"
+                android:id="@+id/profile_description_field"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+
+                android:minHeight="85dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="3dp"
+                android:paddingTop="3dp"/>
+    </LinearLayout>
 
 
-        </LinearLayout>
-      -->
-
+    <Button android:id="@+id/sendButton" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spara"/>
 
 </LinearLayout>
+
+
