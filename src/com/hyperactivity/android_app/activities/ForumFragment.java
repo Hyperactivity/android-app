@@ -52,6 +52,7 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
     }
 
     public void updateThreadList(List<Thread> threads) {
+        System.out.println("Updating thread list!");
         threadList.updateThreadList(threads);
     }
 

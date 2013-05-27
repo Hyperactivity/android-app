@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -160,20 +161,48 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
             previousOuterBackground = outerBackground.getBackground();
             previousInnerBackground = innerBackground.getBackground();
+
+            int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+            int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
+
             outerBackground.setBackgroundResource(R.color.black);
             innerBackground.setBackgroundResource(R.color.black);
+
+            outerBackground.setPadding(outerPadding[0], outerPadding[1],
+                    outerPadding[2], outerPadding[3]);
+            innerBackground.setPadding(innerPadding[0], innerPadding[1],
+                    innerPadding[2], innerPadding[3]);
+
         }
     }
 
+    @SuppressLint("NewApi")
     public void restoreBackground() {
         if (previousOuterBackground != null) {
             LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
             LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
+
+            int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+            int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
+
             outerBackground.setBackground(previousOuterBackground);
             innerBackground.setBackground(previousInnerBackground);
+
+            outerBackground.setPadding(outerPadding[0], outerPadding[1], outerPadding[2], outerPadding[3]);
+            innerBackground.setPadding(innerPadding[0], innerPadding[1], innerPadding[2], innerPadding[3]);
+
             previousOuterBackground = null;
             previousInnerBackground = null;
         }
+    }
+
+    private int[] getPaddingFromLinearLayout(LinearLayout ll) {
+        int[] paddingList = new int[4];
+        paddingList[0] = ll.getPaddingLeft();
+        paddingList[1] = ll.getPaddingTop();
+        paddingList[2] = ll.getPaddingRight();
+        paddingList[3] = ll.getPaddingBottom();
+        return paddingList;
     }
 
     @Override
