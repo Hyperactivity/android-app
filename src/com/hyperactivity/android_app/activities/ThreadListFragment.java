@@ -38,7 +38,9 @@ public class ThreadListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         //TODO: debug only
-        if (true || ((Engine) getActivity().getApplication()).getClientInfo().getAccount().isAdmin()) {
+        Boolean isAdmin = ((Engine) getActivity().getApplication()).getClientInfo().getAccount().isAdmin();
+        if (isAdmin) {
+
             registerForContextMenu(getListView());
         }
     }

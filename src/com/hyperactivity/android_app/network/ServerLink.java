@@ -75,7 +75,37 @@ public class ServerLink {
         sendRequest(Constants.Methods.UPDATE_PROFILE, params, callback, lockWithLoadingScreen);
     }
 
-    public void loadAvatars(final Class callbackMethodType, final List<Account> accounts, final ForumEventCallback callback) {
+    public void loadAvatars(final HashMap cachedAccounts, final List<Account> accounts, final NetworkCallback callback) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    callback.onSuccess(null, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                for(Account account: accounts){
+                    String imageURL = "http://graph.facebook.com/"+account.getFacebookId()+"/picture?width=100&height=100";
+                    try {
+                        account.setProfilePicture(BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent()));
+                        cachedAccounts.put(account.getId(), account.getProfilePicture());
+                    } catch (IOException e) {
+                        Log.d(Constants.Log.TAG, "Loading Picture FAILED");
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        }.execute();
+
+    }
+
+    public void loadAvatars(final HashMap cachedAccounts, final Class callbackMethodType, final List<Account> accounts, final ForumEventCallback callback) {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -95,6 +125,7 @@ public class ServerLink {
                     String imageURL = "http://graph.facebook.com/"+account.getFacebookId()+"/picture?width=100&height=100";
                     try {
                         account.setProfilePicture(BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent()));
+                        cachedAccounts.put(account.getId(), account.getProfilePicture());
                     } catch (IOException e) {
                         Log.d(Constants.Log.TAG, "Loading Picture FAILED");
                         e.printStackTrace();
@@ -104,6 +135,17 @@ public class ServerLink {
             }
         }.execute();
 
+    }
+
+    public void getShoutBox(boolean lockWithLoadingScreen, final NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        sendRequest(Constants.Methods.GET_SHOUT_BOX, params, callback, lockWithLoadingScreen);
+    }
+
+    public void createShout(String text, final NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        params.put(Constants.Transfer.TEXT, text);
+        sendRequest(Constants.Methods.CREATE_SHOUT, params, callback, false);
     }
 
     //---------------------------- CATEGORY ----------------------------

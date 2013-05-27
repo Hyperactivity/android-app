@@ -38,7 +38,7 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
         URL serverURL = null;
         try {
 
-                serverURL = new URL("http://"+Constants.Server.IP+":" + Constants.Server.PORT + "/");
+                serverURL = new URL("http://130.229.167.31:" + Constants.Server.PORT + "/");
         } catch (MalformedURLException e) {
             Log.e(Constants.Log.TAG, "exception: ", e);
             return new JSONRPC2Response(JSONRPC2Error.PARSE_ERROR.appendMessage(e.getMessage()), null);
@@ -102,7 +102,7 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
     @Override
     protected void onPostExecute(JSONRPC2Response jsonrpc2Response) {
         super.onPostExecute(jsonrpc2Response);
-        if (lockWithLoadingScreen) {
+        if (lockWithLoadingScreen && (progressDialog != null)) {
             progressDialog.dismiss();
         }
 
