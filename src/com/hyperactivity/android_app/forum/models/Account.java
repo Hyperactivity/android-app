@@ -114,31 +114,6 @@ public class Account implements SimpleCallback{
     public void setProfilePicture(Bitmap profilePicture) {
         this.profilePicture = profilePicture;
     }
-
-    private class GetProfilePictureTask extends AsyncTask<Void, Void, Bitmap> {
-        SimpleCallback cb;
-        private GetProfilePictureTask(SimpleCallback cb) {
-            this.cb = cb;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
-            cb.onNetworkTaskComplete(result);
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... voids) {
-            String imageURL = "http://graph.facebook.com/"+getFacebookId()+"/picture?type=square";
-            try {
-                profilePicture = BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent());
-            } catch (IOException e) {
-                Log.d(Constants.Log.TAG, "Loading Picture FAILED");
-                e.printStackTrace();
-            }
-            return profilePicture;
-        }
-    };
 }
 
 
