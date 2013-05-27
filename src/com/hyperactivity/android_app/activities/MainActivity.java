@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,14 +19,19 @@ import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
 import com.hyperactivity.android_app.forum.models.Account;
+import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
+import net.minidev.json.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
+
+    final Activity mainActivity = this;
+
     public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
             DIARY_FRAGMENT = 2,
@@ -270,10 +276,19 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void editThread(Thread thread) {
+        //((Engine) this.getApplicationContext()).getServerLink().modifyThread();
+
     }
 
     @Override
     public void deleteThread(Thread thread) {
+            ((Engine) this.getApplicationContext()).getServerLink().deleteThread(thread.getId(), true, new NetworkCallback() {
+
+            @Override
+            public Activity getActivity() {
+                return mainActivity;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
     }
 
     @Override
@@ -282,6 +297,12 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void deleteReply(Reply reply) {
+        ((Engine) this.getApplicationContext()).getServerLink().deleteReply(reply.getId(), true, new NetworkCallback() {
+            @Override
+            public Activity getActivity() {
+                return mainActivity;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
     }
 
     @Override

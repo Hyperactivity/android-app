@@ -180,6 +180,7 @@ public class ReplyListFragment extends ListFragment {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         MenuInflater inflater = this.getActivity().getMenuInflater();
+
         inflater.inflate(R.menu.admin_edit_delete, menu);
     }
 
@@ -195,10 +196,11 @@ public class ReplyListFragment extends ListFragment {
 
         switch (item.getItemId()) {
 
+            /*
             case R.id.admin_edit:
                 callback.editReply(reply);
                 return true;
-
+            */
             case R.id.admin_delete:
                 callback.deleteReply(reply);
                 return true;

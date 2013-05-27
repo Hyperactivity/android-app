@@ -104,9 +104,11 @@ public class ThreadListFragment extends ListFragment {
 
         switch (item.getItemId()) {
 
+            /*
             case R.id.admin_edit:
                 callback.editThread(thread);
                 return true;
+            */
 
             case R.id.admin_delete:
                 callback.deleteThread(thread);

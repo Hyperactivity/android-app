@@ -1,6 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
+import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.forum.models.Thread;
 
@@ -61,4 +63,5 @@ public class ChatFragment extends Fragment {
         chatListFragment.updateChatList();
         getFragmentManager().beginTransaction().replace(R.id.chat_list_container, chatListFragment).commit();
     }
+
 }

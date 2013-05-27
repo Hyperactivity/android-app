@@ -13,13 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.Engine;
+import com.hyperactivity.android_app.forum.models.*;
 
 public class ChatListFragment extends ListFragment {
 
     private String[] from = new String[]{"chat_item_pic", "chat_item_text"};
     private int[] to = new int[]{R.id.chat_item_pic, R.id.chat_item_text};
 
-    private List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();;
+    private List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 
     public void updateChatList() {
         if (getActivity() != null) {
@@ -41,4 +43,6 @@ public class ChatListFragment extends ListFragment {
             updateChatList();
         }
     }
+
+
 }
