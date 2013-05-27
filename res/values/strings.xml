@@ -38,6 +38,6 @@
     <string name="select_category">Ny tråd</string>
     <string name="search">Sök</string>
     <string name="profile">Min Profil</string>
-    <string name="headline_or_text_empty">Rubriken får innehålla max 40 tecken och fälten får inte vara tomma</string>
+    <string name="headline_or_text_empty">Rubriken får innehålla max 35 tecken och fälten får inte vara tomma</string>
     <string name="reply_empty">Fältet får inte vara tomt</string>
 </resources>
