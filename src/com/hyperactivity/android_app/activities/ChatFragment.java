@@ -23,15 +23,12 @@ import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.*;
-import com.hyperactivity.android_app.forum.models.Thread;
+import com.hyperactivity.android_app.forum.models.Account;
 import com.hyperactivity.android_app.network.NetworkCallback;
 import net.minidev.json.JSONObject;
 
 public class ChatFragment extends Fragment {
 
-    ThreadListFragment searchResultList;
-    TextView noResultsText;
-    EditText searchEditText;
     private List<Shout> currentShoutBox;
     private HashMap<Integer,Bitmap> cachedAccounts = new HashMap<Integer, Bitmap>();
     ChatListFragment chatListFragment;

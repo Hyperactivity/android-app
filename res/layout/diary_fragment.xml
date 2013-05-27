@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/forum_private_display"/>
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+
+    <include android:id="@+id/caption" layout="@layout/caption" />
+
+    <com.hyperactivity.android_app.core.ScrollPicker
+            android:id="@+id/diary_categories_surface_view"
+            android:layout_width="fill_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="5dp"
+            />
+
+    <FrameLayout android:id="@+id/diary_note_list_container"
+                 android:layout_width="fill_parent"
+                 android:layout_height="0dp"
+                 android:layout_weight="1" />
 
 </LinearLayout>

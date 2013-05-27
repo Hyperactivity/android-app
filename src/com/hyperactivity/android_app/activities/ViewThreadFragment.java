@@ -26,7 +26,8 @@ public class ViewThreadFragment extends Fragment {
 
     private ReplyListFragment replyList;
     private Thread currentThread;
-    private TextView headlineField, textField;
+    private TextView headlineField, textField, firstPostTimeStamp, firstPostAuthor;
+    private ImageView firstPostImage;
     private EditText writeReplyField;
     private LinearLayout writeReplyButtonContainer;
     private Button writeReplyCancelButton, writeReplySubmitButton;
@@ -36,6 +37,10 @@ public class ViewThreadFragment extends Fragment {
 
         headlineField = (TextView) view.findViewById(R.id.thread_headline_field);
         textField = (TextView) view.findViewById(R.id.thread_text_field);
+        firstPostTimeStamp = (TextView) view.findViewById(R.id.firstPost_timestamp);
+        firstPostAuthor = (TextView) view.findViewById(R.id.firstPost_author);
+        firstPostImage = (ImageView) view.findViewById(R.id.firstPost_image);
+
 
         // Needed to take focus from writeReplyField
         headlineField.setFocusable(true);
@@ -160,6 +165,10 @@ public class ViewThreadFragment extends Fragment {
 	private void updateCurrentThread() {
 		headlineField.setText(currentThread.getHeadLine());
 		textField.setText(currentThread.getText());
+        firstPostAuthor.setText(currentThread.getAccount().getUsername());
+        firstPostTimeStamp.setText(currentThread.getTime().toString());
+        firstPostImage.setImageBitmap(currentThread.getAccount().getProfilePicture());
+
 		clearWriteReplyContainer();
         updateReplies();
 	}

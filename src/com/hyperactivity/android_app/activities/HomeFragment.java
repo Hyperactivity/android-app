@@ -20,7 +20,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, null);
         threadList = new ThreadListFragment();
-        getFragmentManager().beginTransaction().replace(R.id.latest_thread_list_container, threadList).commit();
+        threadList.setShowCategoryImages();
 
         TextView caption = (TextView) view.findViewById(R.id.caption).findViewById(R.id.caption_text);
         caption.setText((String) getResources().getText(R.string.latest_threads));

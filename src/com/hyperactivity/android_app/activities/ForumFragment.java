@@ -29,6 +29,7 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.forum_fragment, null);
         threadList = new ThreadListFragment();
+        threadList.setShowProfileImages();
 
         scrollPicker = (ScrollPicker) view.findViewById(R.id.forum_categories_surface_view);
         scrollPicker.setZOrderOnTop(true);
@@ -51,6 +52,7 @@ public class ForumFragment extends Fragment implements ScrollPickerEventCallback
     }
 
     public void updateThreadList(List<Thread> threads) {
+        System.out.println("Updating thread list!");
         threadList.updateThreadList(threads);
     }
 

@@ -1,5 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
+import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
 import com.hyperactivity.android_app.forum.models.Account;
+import com.hyperactivity.android_app.forum.models.Note;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
@@ -25,7 +28,10 @@ import com.hyperactivity.android_app.network.NetworkCallback;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
+    Activity mainActivity = this;
+
     public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
             DIARY_FRAGMENT = 2,
@@ -34,7 +40,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             VIEW_THREAD_FRAGMENT = 5,
             SETTINGS_FRAGMENT = 6,
             VIEW_PROFILE_FRAGMENT = 7,
-            CHAT_FRAGMENT = 8;
+            CHAT_FRAGMENT = 8,
+            VIEW_NOTE_FRAGMENT = 9;
 
     private final String CURRENT_FRAGMENT = "current_fragment";
 
@@ -84,7 +91,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private void initializeFragments() {
-        fragments = new Fragment[9];
+        fragments = new Fragment[10];
         fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
@@ -94,12 +101,18 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         fragments[SETTINGS_FRAGMENT] = new SettingsFragment();
         fragments[VIEW_PROFILE_FRAGMENT] = new ProfileFragment();
         fragments[CHAT_FRAGMENT] = new ChatFragment();
+        fragments[VIEW_NOTE_FRAGMENT] = new ViewNoteFragment();
     }
 
     public void visitThread(Thread thread) {
         ((Engine) getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
         ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
         changeFragment(VIEW_THREAD_FRAGMENT);
+    }
+
+    public void visitNote(Note note) {
+        ((ViewNoteFragment) fragments[VIEW_NOTE_FRAGMENT]).setCurrentNote(note);
+        changeFragment(VIEW_NOTE_FRAGMENT);
     }
 
     public void visitAccount(Account account) {
@@ -152,20 +165,48 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
             previousOuterBackground = outerBackground.getBackground();
             previousInnerBackground = innerBackground.getBackground();
+
+            int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+            int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
+
             outerBackground.setBackgroundResource(R.color.black);
             innerBackground.setBackgroundResource(R.color.black);
+
+            outerBackground.setPadding(outerPadding[0], outerPadding[1],
+                    outerPadding[2], outerPadding[3]);
+            innerBackground.setPadding(innerPadding[0], innerPadding[1],
+                    innerPadding[2], innerPadding[3]);
+
         }
     }
 
+    @SuppressLint("NewApi")
     public void restoreBackground() {
         if (previousOuterBackground != null) {
             LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
             LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
+
+            int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+            int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
+
             outerBackground.setBackground(previousOuterBackground);
             innerBackground.setBackground(previousInnerBackground);
+
+            outerBackground.setPadding(outerPadding[0], outerPadding[1], outerPadding[2], outerPadding[3]);
+            innerBackground.setPadding(innerPadding[0], innerPadding[1], innerPadding[2], innerPadding[3]);
+
             previousOuterBackground = null;
             previousInnerBackground = null;
         }
+    }
+
+    private int[] getPaddingFromLinearLayout(LinearLayout ll) {
+        int[] paddingList = new int[4];
+        paddingList[0] = ll.getPaddingLeft();
+        paddingList[1] = ll.getPaddingTop();
+        paddingList[2] = ll.getPaddingRight();
+        paddingList[3] = ll.getPaddingBottom();
+        return paddingList;
     }
 
     @Override
@@ -200,8 +241,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         List<Thread> threads = new LinkedList<Thread>();
         if (currentFragment == FORUM_FRAGMENT) {
             threads = ((ForumFragment) fragments[FORUM_FRAGMENT]).updateThreadList();
-        } else if (currentFragment == DIARY_FRAGMENT) {
-            threads = ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateThreadList();
         } else if (currentFragment == HOME_FRAGMENT) {
             // Get latest threads
             threads = ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();
@@ -267,13 +306,21 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     //--------------- admin actions ------------
-
     @Override
     public void editThread(Thread thread) {
+        //((Engine) this.getApplicationContext()).getServerLink().modifyThread();
+
     }
 
     @Override
     public void deleteThread(Thread thread) {
+        ((Engine) this.getApplicationContext()).getServerLink().deleteThread(thread.getId(), true, new NetworkCallback() {
+
+            @Override
+            public Activity getActivity() {
+                return mainActivity;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
     }
 
     @Override
@@ -282,9 +329,17 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void deleteReply(Reply reply) {
+        ((Engine) this.getApplicationContext()).getServerLink().deleteReply(reply.getId(), true, new NetworkCallback() {
+            @Override
+            public Activity getActivity() {
+                return mainActivity;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
     }
 
-    @Override
     public void banAccount(Account account) {
+
     }
 }
+
+

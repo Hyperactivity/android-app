@@ -10,12 +10,25 @@
               android:layout_height="wrap_content"
               android:text="Show age"
             />
+    <!--
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default_profile_picture"
+            android:src="@+id/profile_pic"
+            />
+    -->
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@+id/profile_name"
+            />
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@+id/profile_desc"
             />
 
+    <!--
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -35,7 +48,7 @@
 
 
         </LinearLayout>
-
+      -->
 
 
 </LinearLayout>

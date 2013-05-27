@@ -23,7 +23,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:orientation="vertical"
+                  android:orientation="horizontal"
 
                   android:paddingLeft="10dp"
                   android:paddingTop="2dp"
@@ -33,58 +33,44 @@
                   android:layout_margin="10dp"
                   android:background="@null"
                   android:listSelector="@android:color/transparent">
-        <TextView
-                android:id="@+id/thread_headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:clickable="false"
-                android:focusable="false"/>
 
-        <TextView
-                android:id="@+id/thread_text"
-                android:layout_width="wrap_content"
+        <ImageView
+                android:id="@+id/thread_image"
+                android:contentDescription="@string/home_desc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:autoText="false"
-                android:clickable="false"
-                android:focusable="false"/>
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:clickable="false"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="0dp"
+                      android:layout_weight="6"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+
+                      android:paddingLeft="10dp"
+
+                      android:clickable="false"
+                      android:focusable="false"
+                      android:background="@null"
+                      android:listSelector="@android:color/transparent">
+            <TextView
+                    android:id="@+id/thread_headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:clickable="false"
+                    android:focusable="false"/>
+
+            <TextView
+                    android:id="@+id/thread_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoText="false"
+                    android:clickable="false"
+                    android:focusable="false"/>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>
-
-
-
-
-        <!--
-       <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:orientation="horizontal"
-                     android:background="@drawable/thread_background"
-                     android:padding="10dp"
-                     android:layout_margin="8dp">
-
-
-           <ImageView
-                   android:src="@drawable/ic_launcher"
-                   android:contentDescription="@string/home_desc"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content" android:clickable="false"/>
-
-           <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                         android:layout_width="fill_parent"
-                         android:layout_height="wrap_content"
-                         android:orientation="vertical" android:padding="2dp">
-               <TextView
-                       android:id="@+id/thread_headline"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:textStyle="bold"/>
-
-               <TextView
-                       android:id="@+id/thread_text"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:autoText="false"/>
-           </LinearLayout>
-
-       </ImageButton> -->

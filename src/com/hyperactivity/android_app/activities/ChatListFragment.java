@@ -136,4 +136,6 @@ public class ChatListFragment extends ListFragment {
 //            updateChatList(currentShoutBox);
 //        }
     }
+
+
 }
