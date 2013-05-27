@@ -46,7 +46,7 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                       android:layout_width="0dp"
-                      android:layout_weight="4"
+                      android:layout_weight="6"
                       android:layout_height="wrap_content"
                       android:orientation="vertical"
 
