@@ -18,6 +18,7 @@ import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
 import com.hyperactivity.android_app.forum.models.Account;
+import com.hyperactivity.android_app.forum.models.Note;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
@@ -34,7 +35,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             VIEW_THREAD_FRAGMENT = 5,
             SETTINGS_FRAGMENT = 6,
             VIEW_PROFILE_FRAGMENT = 7,
-            CHAT_FRAGMENT = 8;
+            CHAT_FRAGMENT = 8,
+            VIEW_NOTE_FRAGMENT = 9;
 
     private final String CURRENT_FRAGMENT = "current_fragment";
 
@@ -84,7 +86,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private void initializeFragments() {
-        fragments = new Fragment[9];
+        fragments = new Fragment[10];
         fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
@@ -94,12 +96,18 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         fragments[SETTINGS_FRAGMENT] = new SettingsFragment();
         fragments[VIEW_PROFILE_FRAGMENT] = new ProfileFragment();
         fragments[CHAT_FRAGMENT] = new ChatFragment();
+        fragments[VIEW_NOTE_FRAGMENT] = new ViewNoteFragment();
     }
 
     public void visitThread(Thread thread) {
         ((Engine) getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
         ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
         changeFragment(VIEW_THREAD_FRAGMENT);
+    }
+
+    public void visitNote(Note note) {
+        ((ViewNoteFragment) fragments[VIEW_NOTE_FRAGMENT]).setCurrentNote(note);
+        changeFragment(VIEW_NOTE_FRAGMENT);
     }
 
     public void visitAccount(Account account) {
@@ -200,8 +208,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         List<Thread> threads = new LinkedList<Thread>();
         if (currentFragment == FORUM_FRAGMENT) {
             threads = ((ForumFragment) fragments[FORUM_FRAGMENT]).updateThreadList();
-        } else if (currentFragment == DIARY_FRAGMENT) {
-            threads = ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateThreadList();
         } else if (currentFragment == HOME_FRAGMENT) {
             // Get latest threads
             threads = ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();

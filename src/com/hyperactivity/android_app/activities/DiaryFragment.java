@@ -23,53 +23,52 @@ import java.util.List;
 public class DiaryFragment extends Fragment implements ScrollPickerEventCallback {
 
     private ScrollPicker scrollPicker;
-    private ThreadListFragment threadList;
+    private NoteListFragment noteList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.diary_fragment, null);
-//        View view = inflater.inflate(R.layout.forum_fragment, null);
-//        threadList = new ThreadListFragment();
-//        getFragmentManager().beginTransaction().replace(R.id.forum_thread_list_container, threadList).commit();
-//
-//        scrollPicker = (ScrollPicker) view.findViewById(R.id.forum_categories_surface_view);
-//        scrollPicker.setZOrderOnTop(true);
-//        scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
-//        scrollPicker.getThread().setCallback(this);
-//
-//        Engine engine = ((Engine) getActivity().getApplication());
-//        scrollPicker.getItemManager().addCategories(getActivity(), engine.getPrivateForum().getCategories(getActivity()), Color.BLACK);
-//
-//        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
-//        caption.setText((String)getResources().getText(R.string.diary_and_notes));
-//
-//        return view;
+        View view = inflater.inflate(R.layout.diary_fragment, null);
+        noteList = new NoteListFragment();
+
+        scrollPicker = (ScrollPicker) view.findViewById(R.id.diary_categories_surface_view);
+        scrollPicker.setZOrderOnTop(true);
+        scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
+        scrollPicker.getThread().setCallback(this);
+
+        Engine engine = ((Engine) getActivity().getApplication());
+        scrollPicker.getItemManager().addCategories(getActivity(), engine.getPrivateForum().getCategories(getActivity()), Color.BLACK);
+
+        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        caption.setText(getResources().getText(R.string.diary_and_notes));
+
+        return view;
     }
 
-    public List<Thread> updateThreadList() {
+    public List<Note> updateNoteList() {
+        // TODO Get Notes (Cast to PrivateCategory)
 //        List<Thread> threads = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads();
 //        updateThreadList(threads);
 //        return threads;
-        return new ArrayList<Thread>();
+        return null;
     }
 
-    public void updateThreadList(List<Thread> threads) {
-//        threadList.updateThreadList(threads);
+    public void updateNoteList(List<Note> notes) {
+        noteList.updateNoteList(notes);
     }
 
     @Override
     public void selectedItemChanged(final ScrollPickerItem selected) {
         //This callback will be executed as the scrollpicker thread.
 
-        final List<Thread> threads;
-        if (selected != null) {
-            threads = ((Engine) getActivity().getApplication()).getPrivateForum().getThreads(getActivity(), selected.getCategory());
-        } else {
-            threads = new LinkedList<Thread>();
-        }
+        final List<Note> notes = new LinkedList<Note>();
+//        if (selected != null) {
+//            threads = ((Engine) getActivity().getApplication()).getPrivateForum().getThreads(getActivity(), selected.getCategory());
+//        } else {
+//            threads = new LinkedList<Thread>();
+//        }
 
         this.getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                updateThreadList(threads);
+                updateNoteList(notes);
             }
         });
     }
@@ -95,18 +94,17 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
         }
     }
 
-// For Demo
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//        scrollPicker.getThread().pause();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        scrollPicker.getThread().unpause();
-//    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFragmentManager().beginTransaction().remove(noteList).commit();
+        scrollPicker.getThread().pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFragmentManager().beginTransaction().replace(R.id.diary_note_list_container, noteList).commit();
+        scrollPicker.getThread().unpause();
+    }
 }
