@@ -184,7 +184,6 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         }
     }
 
-    @SuppressLint("NewApi")
     public void restoreBackground() {
         if (previousOuterBackground != null) {
             LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
@@ -193,8 +192,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
             int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
 
-            outerBackground.setBackground(previousOuterBackground);
-            innerBackground.setBackground(previousInnerBackground);
+            outerBackground.setBackgroundResource(R.color.gray);
+            innerBackground.setBackgroundResource(R.drawable.main_background);
 
             outerBackground.setPadding(outerPadding[0], outerPadding[1], outerPadding[2], outerPadding[3]);
             innerBackground.setPadding(innerPadding[0], innerPadding[1], innerPadding[2], innerPadding[3]);
