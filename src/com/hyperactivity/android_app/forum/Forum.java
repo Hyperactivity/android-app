@@ -3,6 +3,7 @@ package com.hyperactivity.android_app.forum;
 import android.app.Activity;
 import android.util.Log;
 import com.hyperactivity.android_app.Constants;
+import com.hyperactivity.android_app.activities.MainActivity;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.models.Category;
 import com.hyperactivity.android_app.forum.models.Reply;
@@ -143,6 +144,9 @@ public class Forum {
 
                     if (!category.getThreads().equals(resultThreads)) {
                         category.setThreads(resultThreads);
+                        for(Thread thread: category.getThreads()){
+                            thread.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(thread.getAccount().getId()));
+                        }
                         newData = true;
                     }
 
@@ -269,6 +273,9 @@ public class Forum {
 
                     if (!thread.getReplies().equals(resultReplies)) {
                         thread.setReplies(resultReplies);
+                        for(Reply reply: thread.getReplies()){
+                            reply.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(thread.getAccount().getId()));
+                        }
                         newData = true;
                     }
                 } catch (Exception e) {

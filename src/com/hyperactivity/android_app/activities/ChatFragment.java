@@ -30,7 +30,6 @@ import net.minidev.json.JSONObject;
 public class ChatFragment extends Fragment {
 
     private List<Shout> currentShoutBox;
-    private HashMap<Integer,Bitmap> cachedAccounts = new HashMap<Integer, Bitmap>();
     ChatListFragment chatListFragment;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -102,14 +101,14 @@ public class ChatFragment extends Fragment {
                         List<Account> profilePicUpdateList = new LinkedList<Account>();
 
                         for(Shout shout: currentShoutBox){
-                            shout.getAccount().setProfilePicture(cachedAccounts.get(shout.getAccount().getId()));
+                            shout.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(shout.getAccount().getId()));
                             if(shout.getAccount().getProfilePicture() == null){
                                 profilePicUpdateList.add(shout.getAccount());
                             }
                         }
 
                         if(!profilePicUpdateList.isEmpty()){
-                            ((Engine) activity.getApplicationContext()).getServerLink().loadAvatars(cachedAccounts,profilePicUpdateList, new NetworkCallback() {
+                            ((Engine) activity.getApplicationContext()).getServerLink().loadAvatars(MainActivity.cachedAccounts,profilePicUpdateList, new NetworkCallback() {
                                 @Override
                                 public void onSuccess(JSONObject result, int userId) throws Exception {
                                     chatListFragment.updateData(currentShoutBox);

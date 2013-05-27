@@ -102,7 +102,7 @@ public class NetworkAsyncTask extends AsyncTask<Object, Integer, JSONRPC2Respons
     @Override
     protected void onPostExecute(JSONRPC2Response jsonrpc2Response) {
         super.onPostExecute(jsonrpc2Response);
-        if (lockWithLoadingScreen) {
+        if (lockWithLoadingScreen && (progressDialog != null)) {
             progressDialog.dismiss();
         }
 

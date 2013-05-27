@@ -2,6 +2,7 @@ package com.hyperactivity.android_app.activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,12 +26,15 @@ import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
     Activity mainActivity = this;
+    static public HashMap<Integer,Bitmap> cachedAccounts = new HashMap<Integer, Bitmap>();
+
 
     public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
@@ -252,7 +256,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             }
         }
         if(!profilePicUpdateList.isEmpty()){
-            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(Thread.class, profilePicUpdateList, this);
+            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(cachedAccounts,Thread.class, profilePicUpdateList, this);
         }
 
     }
@@ -270,7 +274,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             }
         }
         if(!profilePicUpdateList.isEmpty()){
-            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(Reply.class, profilePicUpdateList, this);
+            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(cachedAccounts,Reply.class, profilePicUpdateList, this);
         }
     }
 

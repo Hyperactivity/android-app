@@ -105,7 +105,7 @@ public class ServerLink {
 
     }
 
-    public void loadAvatars(final Class callbackMethodType, final List<Account> accounts, final ForumEventCallback callback) {
+    public void loadAvatars(final HashMap cachedAccounts, final Class callbackMethodType, final List<Account> accounts, final ForumEventCallback callback) {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -125,6 +125,7 @@ public class ServerLink {
                     String imageURL = "http://graph.facebook.com/"+account.getFacebookId()+"/picture?width=100&height=100";
                     try {
                         account.setProfilePicture(BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent()));
+                        cachedAccounts.put(account.getId(), account.getProfilePicture());
                     } catch (IOException e) {
                         Log.d(Constants.Log.TAG, "Loading Picture FAILED");
                         e.printStackTrace();
