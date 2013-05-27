@@ -234,6 +234,17 @@ public class ServerLink {
         sendRequest(Constants.Methods.DELETE_THREAD, params, callback, lockWithLoadingScreen);
     }
 
+    //---------------------------- NOTES ----------------------------
+
+    public void createNote(int categoryID, String headline, String text, boolean lockWithLoadingScreen, final NetworkCallback callback) {
+        java.util.Map<String, Object> params = new HashMap<String, Object>();
+        params.put(Constants.Transfer.PRIVATE_CATEGORY_ID, categoryID);
+        params.put(Constants.Transfer.HEADLINE, headline);
+        params.put(Constants.Transfer.TEXT, text);
+
+        sendRequest(Constants.Methods.CREATE_NOTE, params, callback, lockWithLoadingScreen);
+    }
+
     //---------------------------- REPLIES ----------------------------
 
     public void createReply(int threadID, String text, boolean lockWithLoadingScreen, final NetworkCallback callback) {
