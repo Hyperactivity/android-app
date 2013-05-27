@@ -1,5 +1,6 @@
 package com.hyperactivity.android_app.forum;
 
+import com.hyperactivity.android_app.forum.models.Note;
 import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 
@@ -14,5 +15,6 @@ public interface ForumEventCallback {
     public void notesLoaded();
 
     public void threadCreated(Thread thread);
+    public void noteCreated(Note note);
     public void replyCreated(Reply reply);
 }

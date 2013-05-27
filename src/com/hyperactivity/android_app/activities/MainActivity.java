@@ -44,7 +44,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             SETTINGS_FRAGMENT = 6,
             VIEW_PROFILE_FRAGMENT = 7,
             CHAT_FRAGMENT = 8,
-            VIEW_NOTE_FRAGMENT = 9;
+            VIEW_NOTE_FRAGMENT = 9,
+            CREATE_NOTE_FRAGMENT = 10;
 
     private final String CURRENT_FRAGMENT = "current_fragment";
     private final String IN_PRIVATE_VIEW = "in_private_view";
@@ -100,7 +101,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private void initializeFragments() {
-        fragments = new Fragment[10];
+        fragments = new Fragment[11];
         fragments[HOME_FRAGMENT] = new HomeFragment();
         fragments[FORUM_FRAGMENT] = new ForumFragment();
         fragments[DIARY_FRAGMENT] = new DiaryFragment();
@@ -111,6 +112,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         fragments[VIEW_PROFILE_FRAGMENT] = new ProfileFragment();
         fragments[CHAT_FRAGMENT] = new ChatFragment();
         fragments[VIEW_NOTE_FRAGMENT] = new ViewNoteFragment();
+        fragments[CREATE_NOTE_FRAGMENT] = new CreateNoteFragment();
     }
 
     public void visitThread(Thread thread) {
@@ -176,7 +178,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     private boolean isPrivateFragment(int fragmentID) {
-        return fragmentID == DIARY_FRAGMENT || fragmentID == VIEW_NOTE_FRAGMENT;
+        return fragmentID == DIARY_FRAGMENT || fragmentID == VIEW_NOTE_FRAGMENT || fragmentID == CREATE_NOTE_FRAGMENT;
     }
 
     public void makeBlackBackground() {
@@ -241,6 +243,8 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateCategories();
         } else if (currentFragment == CREATE_THREAD_FRAGMENT) {
             ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
+        } else if (currentFragment == CREATE_NOTE_FRAGMENT) {
+            ((CreateNoteFragment) fragments[currentFragment]).updateCategories();
         }
 
     }
@@ -294,6 +298,13 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     public void threadCreated(Thread thread) {
         if (currentFragment == CREATE_THREAD_FRAGMENT) {
             visitThread(thread);
+        }
+    }
+
+    @Override
+    public void noteCreated(Note note) {
+        if (currentFragment == CREATE_NOTE_FRAGMENT) {
+            visitNote(note);
         }
     }
 

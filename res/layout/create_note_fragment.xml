@@ -7,7 +7,7 @@
     <include android:id="@+id/caption" layout="@layout/caption" />
 
     <com.hyperactivity.android_app.core.ScrollPicker
-            android:id="@+id/forum_categories_surface_view"
+            android:id="@+id/note_categories_surface_view"
             android:layout_width="fill_parent"
             android:layout_height="160dp"
 
@@ -22,23 +22,28 @@
             android:layout_weight="1">
 
         <EditText
-                android:id="@+id/headline_textfield"
+                android:id="@+id/note_headline_textfield"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/headline"
                 android:singleLine="true"
-                android:layout_gravity="center"/>
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"/>
 
         <EditText
-                android:id="@+id/text_textfield"
+                android:id="@+id/note_text_textfield"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/text"
                 android:singleLine="false"
-                android:layout_gravity="center"/>
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                />
 
         <Button
-                android:id="@+id/create_button"
+                android:id="@+id/create_note_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/create"

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
@@ -34,6 +35,14 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
         scrollPicker.getThread().setCallback(this);
         scrollPicker.getThread().setBackgroundColor(R.color.black);
+
+        Button newNoteButton = (Button)view.findViewById(R.id.new_note_button);
+        newNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).changeFragment(MainActivity.CREATE_NOTE_FRAGMENT);
+            }
+        });
 
         Engine engine = ((Engine) getActivity().getApplication());
         scrollPicker.getItemManager().addCategories(getActivity(), engine.getPrivateForum().getCategories(getActivity()), Color.WHITE);

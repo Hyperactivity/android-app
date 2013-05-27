@@ -89,6 +89,7 @@ public class Forum {
                         categories = resultCategories;
                         newData = true;
                     }
+
                 } catch (Exception e) {
                     Log.e(Constants.Log.TAG, "exception", e);
                     callback.loadingFailed();
@@ -390,6 +391,48 @@ public class Forum {
 
 
                 callback.threadCreated((Thread) (deSerialize(Thread.class, (String) result.get(Constants.Transfer.THREAD))));
+            }
+
+            @Override
+            public void onError(JSONRPC2Error error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(JSONObject error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(int userId) throws Exception {
+                super.onError(userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onErrorDismissed() {
+                super.onErrorDismissed();
+            }
+
+            @Override
+            public Activity getActivity() {
+                return activity;
+            }
+        });
+    }
+
+    public void createNote(final Activity activity, int categoryID, String headline, String text, boolean lockWithLoadingScreen) {
+        callback.loadingStarted();
+
+        ((Engine) activity.getApplicationContext()).getServerLink().createNote(categoryID, headline, text, lockWithLoadingScreen, new NetworkCallback() {
+            @Override
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);
+
+
+                callback.noteCreated((Note) (deSerialize(Note.class, (String) result.get(Constants.Transfer.NOTE))));
             }
 
             @Override

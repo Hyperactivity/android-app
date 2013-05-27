@@ -29,7 +29,7 @@ public class ViewThreadFragment extends Fragment {
     private TextView headlineField, textField, firstPostTimeStamp, firstPostAuthor;
     private ImageView firstPostImage;
     private EditText writeReplyField;
-    private LinearLayout writeReplyButtonContainer;
+    private LinearLayout writeReplyButtonContainer, firstPostContainer;
     private Button writeReplyCancelButton, writeReplySubmitButton;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class ViewThreadFragment extends Fragment {
         firstPostTimeStamp = (TextView) view.findViewById(R.id.firstPost_timestamp);
         firstPostAuthor = (TextView) view.findViewById(R.id.firstPost_author);
         firstPostImage = (ImageView) view.findViewById(R.id.firstPost_image);
-
+        firstPostContainer = (LinearLayout) view.findViewById(R.id.first_post_container);
 
         // Needed to take focus from writeReplyField
         headlineField.setFocusable(true);
@@ -171,6 +171,13 @@ public class ViewThreadFragment extends Fragment {
         firstPostTimeStamp.setText(currentThread.getTime().toString());
         currentThread.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(currentThread.getAccount().getId()));
         firstPostImage.setImageBitmap(currentThread.getAccount().getProfilePicture());
+
+        firstPostContainer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).visitAccount(currentThread.getAccount());
+            }
+        });
 
 		clearWriteReplyContainer();
         updateReplies();
