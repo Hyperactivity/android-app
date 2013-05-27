@@ -48,12 +48,12 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             VIEW_NOTE_FRAGMENT = 9;
 
     private final String CURRENT_FRAGMENT = "current_fragment";
+    private final String IN_PRIVATE_VIEW = "in_private_view";
 
     private Fragment[] fragments;
     private int currentFragment;
     private NavigationMenuFragment navigationMenu;
-
-    private Drawable previousOuterBackground, previousInnerBackground;
+    private boolean inPrivateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +70,15 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
         if (savedInstanceState != null) {
             retainSavedState(savedInstanceState);
+            if (inPrivateView) {
+                makeBlackBackground();
+            }
             int tmp = currentFragment;
             currentFragment = -1;
             changeFragment(tmp);
         } else {
             currentFragment = -1;
+            inPrivateView = false;
             changeFragment(HOME_FRAGMENT);
         }
 
@@ -88,10 +92,12 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(CURRENT_FRAGMENT, currentFragment);
+        outState.putBoolean(IN_PRIVATE_VIEW, inPrivateView);
     }
 
     private void retainSavedState(Bundle state) {
         currentFragment = state.getInt(CURRENT_FRAGMENT);
+        inPrivateView = state.getBoolean(IN_PRIVATE_VIEW);
     }
 
     private void initializeFragments() {
@@ -156,52 +162,45 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
      * Methods used for the background change in the diary. Ugly
      */
     public void updateBackground() {
-        if (currentFragment == DIARY_FRAGMENT) {
+        if (isPrivateFragment(currentFragment) && !inPrivateView) {
             makeBlackBackground();
-        } else {
+        } else if (!isPrivateFragment(currentFragment) && inPrivateView) {
             restoreBackground();
         }
     }
 
-    public void makeBlackBackground() {
-        if (previousOuterBackground == null) {
-            LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
-            LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
-            previousOuterBackground = outerBackground.getBackground();
-            previousInnerBackground = innerBackground.getBackground();
-
-            int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
-            int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
-
-            outerBackground.setBackgroundResource(R.color.black);
-            innerBackground.setBackgroundResource(R.color.black);
-
-            outerBackground.setPadding(outerPadding[0], outerPadding[1],
-                    outerPadding[2], outerPadding[3]);
-            innerBackground.setPadding(innerPadding[0], innerPadding[1],
-                    innerPadding[2], innerPadding[3]);
-
-        }
+    private boolean isPrivateFragment(int fragmentID) {
+        return fragmentID == DIARY_FRAGMENT || fragmentID == VIEW_NOTE_FRAGMENT;
     }
 
-    @SuppressLint("NewApi")
+    public void makeBlackBackground() {
+        LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
+        LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
+
+        int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+        int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
+
+        outerBackground.setBackgroundResource(R.color.black);
+        innerBackground.setBackgroundResource(R.color.black);
+
+        outerBackground.setPadding(outerPadding[0], outerPadding[1], outerPadding[2], outerPadding[3]);
+        innerBackground.setPadding(innerPadding[0], innerPadding[1], innerPadding[2], innerPadding[3]);
+        inPrivateView = true;
+    }
+
     public void restoreBackground() {
-        if (previousOuterBackground != null) {
-            LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
-            LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
+        LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
+        LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
 
-            int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
-            int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
+        int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+        int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
 
-            outerBackground.setBackground(previousOuterBackground);
-            innerBackground.setBackground(previousInnerBackground);
+        outerBackground.setBackgroundResource(R.color.gray);
+        innerBackground.setBackgroundResource(R.drawable.main_background);
 
-            outerBackground.setPadding(outerPadding[0], outerPadding[1], outerPadding[2], outerPadding[3]);
-            innerBackground.setPadding(innerPadding[0], innerPadding[1], innerPadding[2], innerPadding[3]);
-
-            previousOuterBackground = null;
-            previousInnerBackground = null;
-        }
+        outerBackground.setPadding(outerPadding[0], outerPadding[1], outerPadding[2], outerPadding[3]);
+        innerBackground.setPadding(innerPadding[0], innerPadding[1], innerPadding[2], innerPadding[3]);
+        inPrivateView = false;
     }
 
     private int[] getPaddingFromLinearLayout(LinearLayout ll) {
@@ -280,9 +279,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void notesLoaded() {
-        Log.d(Constants.Log.TAG, "Notes loaded!");
         if (currentFragment == DIARY_FRAGMENT) {
-            Log.d(Constants.Log.TAG, "In diary!");
             ((DiaryFragment) fragments[currentFragment]).updateNoteList();
         }
     }
