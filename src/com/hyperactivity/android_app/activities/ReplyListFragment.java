@@ -99,7 +99,6 @@ public class ReplyListFragment extends ListFragment {
         inflater.inflate(R.menu.admin_edit_delete, menu);
     }
 
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 

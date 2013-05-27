@@ -41,6 +41,8 @@ public class Constants {
         public static final String DELETE_THREAD = "delete_thread";
         public static final String MODIFY_REPLY = "modify_reply";
         public static final String DELETE_REPLY = "delete_reply";
+        public static final String GET_SHOUT_BOX = "get_shout_box";
+        public static final String CREATE_SHOUT = "create_shout";
     }
 
     public class Transfer {
@@ -78,6 +80,7 @@ public class Constants {
         public static final String REPLY_ID = "reply_id";
         public static final String THUMB_UP = "thumb_up";
         public static final String REPLIES = "replies";
+        public static final String NOTES = "notes";
 
         public static final String REPLY = "reply";
 
@@ -86,5 +89,7 @@ public class Constants {
         public static final int MAX_USERNAME = 20;
         public static final String REGISTER = "register";
         public static final String USERNAME_TAKEN = "username_taken";
+        public static final String SHOUT_BOX = "shout_box";
+        public static final int MAX_SHOUT_LENGTH = 100;
     }
 }

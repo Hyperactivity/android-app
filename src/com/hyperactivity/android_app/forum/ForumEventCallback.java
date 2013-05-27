@@ -11,6 +11,7 @@ public interface ForumEventCallback {
     public void categoriesLoaded();
     public void threadsLoaded();
     public void repliesLoaded();
+    public void notesLoaded();
 
     public void threadCreated(Thread thread);
     public void replyCreated(Reply reply);

@@ -40,6 +40,10 @@ public class PrivateCategory extends Category {
         return notes;
     }
 
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
+
     public Category getParentPrivateCategory() {
         return parentPrivateCategory;
     }

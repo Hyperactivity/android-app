@@ -39,6 +39,7 @@ public class Reply {
 
     public Thread getParentThread() {
         return parentThread;
+
     }
 
     public Account getAccount() {

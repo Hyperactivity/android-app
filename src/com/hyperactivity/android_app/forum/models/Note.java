@@ -18,7 +18,7 @@ public class Note {
     private String headLine;
     private String text;
     private Account account;
-    private Category parentPrivateCategory;
+    private PrivateCategory parentPrivateCategory;
 
     public int getId() {
         return id;
@@ -36,7 +36,7 @@ public class Note {
         return account;
     }
 
-    public Category getParentPrivateCategory() {
+    public PrivateCategory getParentPrivateCategory() {
         return parentPrivateCategory;
     }
 

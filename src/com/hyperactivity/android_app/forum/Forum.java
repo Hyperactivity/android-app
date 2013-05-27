@@ -3,9 +3,9 @@ package com.hyperactivity.android_app.forum;
 import android.app.Activity;
 import android.util.Log;
 import com.hyperactivity.android_app.Constants;
+import com.hyperactivity.android_app.activities.MainActivity;
 import com.hyperactivity.android_app.core.Engine;
-import com.hyperactivity.android_app.forum.models.Category;
-import com.hyperactivity.android_app.forum.models.Reply;
+import com.hyperactivity.android_app.forum.models.*;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
@@ -63,6 +63,12 @@ public class Forum {
         loadThreads(activity, category, false);
 
         return category.getThreads();
+    }
+
+    public List<Note> getNotes(Activity activity, PrivateCategory category) {
+        loadNotes(activity, category, false);
+
+        return category.getNotes();
     }
 
     @SuppressWarnings("unchecked")
@@ -143,6 +149,9 @@ public class Forum {
 
                     if (!category.getThreads().equals(resultThreads)) {
                         category.setThreads(resultThreads);
+                        for(Thread thread: category.getThreads()){
+                            thread.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(thread.getAccount().getId()));
+                        }
                         newData = true;
                     }
 
@@ -158,6 +167,57 @@ public class Forum {
                     Log.d(Constants.Log.TAG, "New threads in category: " + category.getHeadLine());
                     callback.threadsLoaded();
                 }
+            }
+
+            @Override
+            public void onError(JSONRPC2Error error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(JSONObject error, int userId) throws Exception {
+                super.onError(error, userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onError(int userId) throws Exception {
+                super.onError(userId);
+                callback.loadingFailed();
+            }
+
+            @Override
+            public void onErrorDismissed() {
+                super.onErrorDismissed();
+            }
+
+            @Override
+            public Activity getActivity() {
+                return activity;
+            }
+        });
+    }
+
+    public void loadNotes(final Activity activity, final PrivateCategory category, boolean lockWithLoadingScreen) {
+        callback.loadingStarted();
+
+        ((Engine) activity.getApplicationContext()).getServerLink().getCategoryContent(category.getId(), type.toString(), lockWithLoadingScreen, new NetworkCallback() {
+            @Override
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);
+
+                try {
+                    List<Note> resultNotes = (LinkedList<Note>) (deSerialize(LinkedList.class, (String) result.get(Constants.Transfer.NOTES)));
+                    category.setNotes(resultNotes);
+                } catch (Exception e) {
+                    Log.e(Constants.Log.TAG, "exception", e);
+                    callback.loadingFailed();
+                    return;
+                }
+
+                callback.loadingFinished();
+                callback.notesLoaded();
             }
 
             @Override
@@ -269,6 +329,9 @@ public class Forum {
 
                     if (!thread.getReplies().equals(resultReplies)) {
                         thread.setReplies(resultReplies);
+                        for(Reply reply: thread.getReplies()){
+                            reply.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(thread.getAccount().getId()));
+                        }
                         newData = true;
                     }
                 } catch (Exception e) {
