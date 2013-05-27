@@ -33,6 +33,7 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
         scrollPicker.setZOrderOnTop(true);
         scrollPicker.getThread().setState(ScrollPicker.ScrollPickerThread.STATE_READY);
         scrollPicker.getThread().setCallback(this);
+        scrollPicker.getThread().setBackgroundColor(R.color.black);
 
         Engine engine = ((Engine) getActivity().getApplication());
         scrollPicker.getItemManager().addCategories(getActivity(), engine.getPrivateForum().getCategories(getActivity()), Color.BLACK);
