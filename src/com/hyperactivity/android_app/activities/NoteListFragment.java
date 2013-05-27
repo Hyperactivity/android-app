@@ -12,26 +12,21 @@ import android.widget.SimpleAdapter;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.AdminActionCallback;
 import com.hyperactivity.android_app.core.Engine;
-import com.hyperactivity.android_app.core.SimpleAdapterEx;
+import com.hyperactivity.android_app.forum.models.Note;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ThreadListFragment extends ListFragment {
+public class NoteListFragment extends ListFragment {
 
-    private static final String THREAD_HEADLINE = "thread_headline";
-    private static final String THREAD_TEXT = "thread_text";
-    private static final String THREAD_IMAGE = "thread_image";
+    private String[] from = new String[]{"note_headline", "note_text"};
+    private int[] to = new int[]{R.id.note_headline, R.id.note_text};
 
-    private String[] from = new String[]{THREAD_HEADLINE, THREAD_TEXT, THREAD_IMAGE};
-    private int[] to = new int[]{R.id.thread_headline, R.id.thread_text, R.id.thread_image};
-
-    private List<Thread> currentThreads;
-    private List<HashMap<String, Object>> data;
+    private List<Note> currentNotes;
+    private List<HashMap<String, String>> data;
     private AdminActionCallback callback;
-    private boolean showCategoryImages = true;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -43,29 +38,29 @@ public class ThreadListFragment extends ListFragment {
         }
     }
 
-    public void updateThreadList(List<Thread> threadList) {
-        data = new ArrayList<HashMap<String, Object>>();
+    public void updateNoteList(List<Note> noteList) {
+        data = new ArrayList<HashMap<String, String>>();
 
-        for (int i = 0; i < threadList.size(); i++) {
-            Thread thread = threadList.get(i);
-            data.add(threadToMap(thread));
+        for (int i = 0; i < noteList.size(); i++) {
+            Note note = noteList.get(i);
+            data.add(noteToMap(note));
         }
 
         if (getActivity() != null) {
-            final SimpleAdapterEx adapter = new SimpleAdapterEx(getActivity().getBaseContext(), data, R.layout.thread_list_item, from, to);
+            final SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), data, R.layout.note_list_item, from, to);
             data = null;
 
             setListAdapter(adapter);
             getListView().setDivider(null);
         }
-        currentThreads = threadList;
+        currentNotes = noteList;
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if (position >= 0 && position < currentThreads.size()) {
+        if (position >= 0 && position < currentNotes.size()) {
             if (getActivity() != null) {
-                ((MainActivity) getActivity()).visitThread(currentThreads.get(position));
+                ((MainActivity) getActivity()).visitNote(currentNotes.get(position));
             }
         }
     }
@@ -75,23 +70,18 @@ public class ThreadListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         if (data != null) {
-            SimpleAdapterEx adapter = new SimpleAdapterEx(getActivity().getBaseContext(), data, R.layout.thread_list_item, from, to);
+            SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), data, R.layout.note_list_item, from, to);
             setListAdapter(adapter);
             data = null;
         }
     }
 
-    private HashMap<String, Object> threadToMap(Thread thread) {
-        String headline = thread.getHeadLine();
-        String text = thread.getText();
-        HashMap<String, Object> row = new HashMap<String, Object>();
-        row.put(THREAD_HEADLINE, headline);
-        row.put(THREAD_TEXT, text);
-        if (showCategoryImages) {
-            row.put(THREAD_IMAGE, thread.getParentCategory().getImage(getActivity()));
-        } else {
-            row.put(THREAD_IMAGE, thread.getAccount().getProfilePicture());
-        }
+    private HashMap<String, String> noteToMap(Note note) {
+        String headline = note.getHeadLine();
+        String text = note.getText();
+        HashMap<String, String> row = new HashMap<String, String>();
+        row.put("note_headline", headline);
+        row.put("note_text", text);
         return row;
     }
 
@@ -111,18 +101,18 @@ public class ThreadListFragment extends ListFragment {
         }
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Thread thread = currentThreads.get(info.position);
+        Note note = currentNotes.get(info.position);
 
         switch (item.getItemId()) {
 
             /*
             case R.id.admin_edit:
-                callback.editThread(thread);
+               callback.editThread(thread);
                 return true;
             */
 
             case R.id.admin_delete:
-                callback.deleteThread(thread);
+//                callback.deleteThread(thread);
                 return true;
 
             default:
@@ -132,13 +122,5 @@ public class ThreadListFragment extends ListFragment {
 
     public void setCallback(AdminActionCallback callback) {
         this.callback = callback;
-    }
-
-    public void setShowCategoryImages() {
-        showCategoryImages = true;
-    }
-
-    public void setShowProfileImages() {
-        showCategoryImages = false;
     }
 }

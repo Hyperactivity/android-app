@@ -43,7 +43,7 @@ public class SettingsFragment extends Fragment {
         currentAccount = ((Engine) getActivity().getApplication()).getClientInfo().getAccount();
 
         profile_name = (EditText) view.findViewById(R.id.profile_name);
-        profile_name.setText("Hwllo World!");
+        //profile_name.setText("Hwllo World!");
         //profile_name.setText(currentAccount.getUsername());
 
         profile_desc = (EditText) view.findViewById(R.id.profile_desc);

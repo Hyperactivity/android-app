@@ -15,7 +15,7 @@ import java.util.List;
  * Date: 2013-04-16
  * Time: 13:10
  */
-public class PrivateCategory {
+public class PrivateCategory extends Category {
     private int id;
     private int colorCode;
     private Category parentPrivateCategory;
@@ -34,6 +34,10 @@ public class PrivateCategory {
 
     public int getColorCode() {
         return colorCode;
+    }
+
+    public List<Note> getNotes() {
+        return notes;
     }
 
     public Category getParentPrivateCategory() {
