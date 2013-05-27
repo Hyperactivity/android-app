@@ -1,9 +1,6 @@
 package com.hyperactivity.android_app.activities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -30,10 +27,9 @@ import net.minidev.json.JSONObject;
 public class ChatFragment extends Fragment {
 
     private List<Shout> currentShoutBox;
-    ChatListFragment chatListFragment;
+    ChatListFragment chatListFragment = new ChatListFragment();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-
         // THIS WILL BE REMOVED, IT'S HERE SO THAT THE PAGE WILL NOT BE EMPTY
         View view = inflater.inflate(R.layout.chat_fragment, null);
 
@@ -57,6 +53,7 @@ public class ChatFragment extends Fragment {
         }
 
         return view;
+
     }
 
     @Override
@@ -98,7 +95,7 @@ public class ChatFragment extends Fragment {
 
                     if (!resultShoutBox.equals(currentShoutBox)) {
                         currentShoutBox = resultShoutBox;
-                        List<Account> profilePicUpdateList = new LinkedList<Account>();
+                        Set<Account> profilePicUpdateList = new HashSet<Account>();
 
                         for(Shout shout: currentShoutBox){
                             shout.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(shout.getAccount().getId()));
@@ -112,6 +109,7 @@ public class ChatFragment extends Fragment {
                                 @Override
                                 public void onSuccess(JSONObject result, int userId) throws Exception {
                                     chatListFragment.updateData(currentShoutBox);
+                                    chatListFragment.setSelection(currentShoutBox.size()-1);
                                 }
 
                                 @Override
@@ -133,6 +131,9 @@ public class ChatFragment extends Fragment {
                 if (newData) {
                     Log.d(Constants.Log.TAG, "New shout box");
                     chatListFragment.updateData(currentShoutBox);
+                    if(getFragment().isVisible()){
+                        chatListFragment.setSelection(currentShoutBox.size()-1);
+                    }
                 }
             }
 
@@ -141,6 +142,10 @@ public class ChatFragment extends Fragment {
                 return activity;
             }
         });
+    }
+
+    private Fragment getFragment(){
+        return this;
     }
 
 }

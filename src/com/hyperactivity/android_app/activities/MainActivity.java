@@ -26,9 +26,7 @@ import com.hyperactivity.android_app.forum.models.Reply;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
@@ -248,14 +246,14 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
             // Get latest threads
             threads = ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();
         }
-        List<Account> profilePicUpdateList = new LinkedList<Account>();
+        Set<Account> profilePicUpdateList = new HashSet<Account>();
         for(Thread thread: threads){
             if(thread.getAccount().getProfilePicture() == null){
                 profilePicUpdateList.add(thread.getAccount());
             }
         }
         if(!profilePicUpdateList.isEmpty()){
-            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(cachedAccounts,Thread.class, profilePicUpdateList, this);
+            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(cachedAccounts, Thread.class, profilePicUpdateList, this);
         }
 
     }
@@ -266,7 +264,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         if (currentFragment == VIEW_THREAD_FRAGMENT) {
             replies =((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
         }
-        List<Account> profilePicUpdateList = new LinkedList<Account>();
+        Set<Account> profilePicUpdateList = new HashSet<Account>();
         for(Reply reply: replies){
             if(reply.getAccount().getProfilePicture() == null){
                 profilePicUpdateList.add(reply.getAccount());

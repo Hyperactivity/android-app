@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import com.hyperactivity.android_app.R;
+import com.hyperactivity.android_app.core.SimpleAdapterEx;
 import com.hyperactivity.android_app.forum.models.Shout;
 
 public class ChatListFragment extends ListFragment {
@@ -126,16 +127,16 @@ public class ChatListFragment extends ListFragment {
         HashMap<String, Object> row = new HashMap<String, Object>();
         row.put("chat_item_pic", pic);
         row.put("chat_item_text", text);
-        data.add(0,row);
+        data.add(0, row);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        if (data != null) {
-//            updateChatList(currentShoutBox);
-//        }
+        if (data != null) {
+            setListAdapter(new SimpleAdapterEx(getActivity().getBaseContext(), data, R.layout.chat_list_item, from, to));
+            this.setSelection(data.size()-1);
+            data = null;
+        }
     }
-
-
 }

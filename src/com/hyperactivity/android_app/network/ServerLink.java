@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /*
 //TODO: enable the fb stuff
@@ -75,7 +76,7 @@ public class ServerLink {
         sendRequest(Constants.Methods.UPDATE_PROFILE, params, callback, lockWithLoadingScreen);
     }
 
-    public void loadAvatars(final HashMap cachedAccounts, final List<Account> accounts, final NetworkCallback callback) {
+    public void loadAvatars(final HashMap<Integer, Bitmap> cachedAccounts, final Set<Account> accounts, final NetworkCallback callback) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
@@ -105,7 +106,7 @@ public class ServerLink {
 
     }
 
-    public void loadAvatars(final HashMap cachedAccounts, final Class callbackMethodType, final List<Account> accounts, final ForumEventCallback callback) {
+    public void loadAvatars(final HashMap<Integer, Bitmap> cachedAccounts, final Class callbackMethodType, final Set<Account> accounts, final ForumEventCallback callback) {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
