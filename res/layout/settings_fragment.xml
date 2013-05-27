@@ -5,7 +5,8 @@
               android:layout_height="match_parent"
               android:layout_margin="25dp"
               android:orientation="vertical"
-              android:padding="10dp">
+              android:padding="10dp"
+              android:layout_gravity="center">
 
     <include
             android:id="@+id/caption"
@@ -20,6 +21,7 @@
                   android:layout_height="wrap_content"
                   android:text="Profilnamn:"/>
         <TextView
+                android:textStyle="bold"
                 android:id="@+id/profile_name_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -27,28 +29,14 @@
 
     </LinearLayout>
 
-    <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Födelseår:"/>
-        <TextView
-                android:id="@+id/profile_birth_date_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingBottom="20dp"/>
 
         <CheckBox android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="Visa min ålder"
+                  android:id="@+id/showAge"
                   android:layout_gravity="center"/>
 
-    </LinearLayout>
+
 
     <LinearLayout
             android:layout_width="fill_parent"
