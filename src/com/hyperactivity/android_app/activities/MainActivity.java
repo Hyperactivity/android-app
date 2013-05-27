@@ -1,6 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
 import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,249 +29,297 @@ import net.minidev.json.JSONObject;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements ForumEventCallback, AdminActionCallback {
 
-    final Activity mainActivity = this;
+    private Activity mainActivity = this;
 
-    public static final int HOME_FRAGMENT = 0,
+	public static final int HOME_FRAGMENT = 0,
             FORUM_FRAGMENT = 1,
-            DIARY_FRAGMENT = 2,
+			DIARY_FRAGMENT = 2,
             CREATE_THREAD_FRAGMENT = 3,
-            SEARCH_FRAGMENT = 4,
+			SEARCH_FRAGMENT = 4,
             VIEW_THREAD_FRAGMENT = 5,
-            SETTINGS_FRAGMENT = 6,
+			SETTINGS_FRAGMENT = 6,
             VIEW_PROFILE_FRAGMENT = 7,
-            CHAT_FRAGMENT = 8;
+			CHAT_FRAGMENT = 8;
 
-    private final String CURRENT_FRAGMENT = "current_fragment";
+	private final String CURRENT_FRAGMENT = "current_fragment";
 
-    private Fragment[] fragments;
-    private int currentFragment;
-    private NavigationMenuFragment navigationMenu;
+	private Fragment[] fragments;
+	private int currentFragment;
+	private NavigationMenuFragment navigationMenu;
 
-    private Drawable previousOuterBackground, previousInnerBackground;
+	private Drawable previousOuterBackground, previousInnerBackground;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
+		// Make a link from the navigation menu to this activity
+		navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.navigation_menu_fragment);
+		navigationMenu.setParentActivity(this);
 
-        // Make a link from the navigation menu to this activity
-        navigationMenu = (NavigationMenuFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.navigation_menu_fragment);
-        navigationMenu.setParentActivity(this);
+		initializeFragments();
 
-        initializeFragments();
+		if (savedInstanceState != null) {
+			retainSavedState(savedInstanceState);
+			int tmp = currentFragment;
+			currentFragment = -1;
+			changeFragment(tmp);
+		} else {
+			currentFragment = -1;
+			changeFragment(HOME_FRAGMENT);
+		}
 
-        if (savedInstanceState != null) {
-            retainSavedState(savedInstanceState);
-            int tmp = currentFragment;
-            currentFragment = -1;
-            changeFragment(tmp);
-        } else {
-            currentFragment = -1;
-            changeFragment(HOME_FRAGMENT);
-        }
+		Engine engine = (Engine) getApplication();
+		engine.getPublicForum().setCallback(this);
+		engine.getPublicForum().loadCategories(this, false);
 
-        Engine engine = (Engine) getApplication();
-        engine.getPublicForum().setCallback(this);
-        engine.getPublicForum().loadCategories(this, false);
+		engine.getPrivateForum().setCallback(this);
+	}
 
-        engine.getPrivateForum().setCallback(this);
-    }
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putInt(CURRENT_FRAGMENT, currentFragment);
+	}
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(CURRENT_FRAGMENT, currentFragment);
-    }
+	private void retainSavedState(Bundle state) {
+		currentFragment = state.getInt(CURRENT_FRAGMENT);
+	}
 
-    private void retainSavedState(Bundle state) {
-        currentFragment = state.getInt(CURRENT_FRAGMENT);
-    }
+	private void initializeFragments() {
+		fragments = new Fragment[9];
+		fragments[HOME_FRAGMENT] = new HomeFragment();
+		fragments[FORUM_FRAGMENT] = new ForumFragment();
+		fragments[DIARY_FRAGMENT] = new DiaryFragment();
+		fragments[CREATE_THREAD_FRAGMENT] = new CreateThreadFragment();
+		fragments[SEARCH_FRAGMENT] = new SearchFragment();
+		fragments[VIEW_THREAD_FRAGMENT] = new ViewThreadFragment();
+		fragments[SETTINGS_FRAGMENT] = new SettingsFragment();
+		fragments[VIEW_PROFILE_FRAGMENT] = new ProfileFragment();
+		fragments[CHAT_FRAGMENT] = new ChatFragment();
+	}
 
-    private void initializeFragments() {
-        fragments = new Fragment[9];
-        fragments[HOME_FRAGMENT] = new HomeFragment();
-        fragments[FORUM_FRAGMENT] = new ForumFragment();
-        fragments[DIARY_FRAGMENT] = new DiaryFragment();
-        fragments[CREATE_THREAD_FRAGMENT] = new CreateThreadFragment();
-        fragments[SEARCH_FRAGMENT] = new SearchFragment();
-        fragments[VIEW_THREAD_FRAGMENT] = new ViewThreadFragment();
-        fragments[SETTINGS_FRAGMENT] = new SettingsFragment();
-        fragments[VIEW_PROFILE_FRAGMENT] = new ProfileFragment();
-        fragments[CHAT_FRAGMENT] = new ChatFragment();
-    }
+	public void visitThread(Thread thread) {
+		((Engine) getApplication()).getPublicForum().loadReplies(this, thread,
+				SortType.STANDARD, false);
+		((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT])
+				.setCurrentThread(thread);
+		changeFragment(VIEW_THREAD_FRAGMENT);
+	}
 
-    public void visitThread(Thread thread) {
-        ((Engine) getApplication()).getPublicForum().loadReplies(this, thread, SortType.STANDARD, false);
-        ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
-        changeFragment(VIEW_THREAD_FRAGMENT);
-    }
+	public void visitAccount(Account account) {
+		((ProfileFragment) fragments[VIEW_PROFILE_FRAGMENT])
+				.setCurrentAccount(account);
+		changeFragment(VIEW_PROFILE_FRAGMENT);
+	}
 
-    public void visitAccount(Account account) {
-        ((ProfileFragment) fragments[VIEW_PROFILE_FRAGMENT]).setCurrentAccount(account);
-        changeFragment(VIEW_PROFILE_FRAGMENT);
-    }
+	public void changeFragment(int fragmentID) {
+		if (currentFragment != fragmentID) {
+			FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
+			transaction.replace(R.id.main_fragment_container,
+					fragments[fragmentID]).addToBackStack(currentFragment + "");
+			transaction.commit();
 
-    public void changeFragment(int fragmentID) {
-        if (currentFragment != fragmentID) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_fragment_container, fragments[fragmentID]).addToBackStack(currentFragment+"");
-            transaction.commit();
+			currentFragment = fragmentID;
+			updateBackground();
+			navigationMenu.updateNavigationMenu(currentFragment);
+		}
+	}
 
-            currentFragment = fragmentID;
-            updateBackground();
-            navigationMenu.updateNavigationMenu(currentFragment);
-        }
-    }
+	@Override
+	public void onBackPressed() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		if (fragmentManager.getBackStackEntryCount() > 0) {
+			try {
+				currentFragment = Integer.parseInt(fragmentManager
+						.getBackStackEntryAt(
+								fragmentManager.getBackStackEntryCount() - 1)
+						.getName());
+				navigationMenu.updateNavigationMenu(currentFragment);
+				updateBackground();
+			} catch (NumberFormatException e) {
+				Log.d(Constants.Log.TAG,
+						"Backstack entry didn't have number tag");
+			}
+		}
+		Log.d(Constants.Log.TAG, "Pressed back button!");
+		super.onBackPressed();
+	}
 
-    @Override
-    public void onBackPressed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            try {
-                currentFragment = Integer.parseInt(fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName());
-                navigationMenu.updateNavigationMenu(currentFragment);
-                updateBackground();
-            } catch (NumberFormatException e) {
-                Log.d(Constants.Log.TAG, "Backstack entry didn't have number tag");
-            }
-        }
-        Log.d(Constants.Log.TAG, "Pressed back button!");
-        super.onBackPressed();
-    }
+	/**
+	 * Methods used for the background change in the diary. Ugly
+	 */
+	public void updateBackground() {
+		if (currentFragment == DIARY_FRAGMENT) {
+			makeBlackBackground();
+		} else {
+			restoreBackground();
+		}
+	}
 
-    /**
-     * Methods used for the background change in the diary. Ugly
-     */
-    public void updateBackground() {
-        if (currentFragment == DIARY_FRAGMENT) {
-            makeBlackBackground();
-        } else {
-            restoreBackground();
-        }
-    }
+	public void makeBlackBackground() {
+		if (previousOuterBackground == null) {
+			LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
+			LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
+			previousOuterBackground = outerBackground.getBackground();
+			previousInnerBackground = innerBackground.getBackground();
 
-    public void makeBlackBackground() {
-        if (previousOuterBackground == null) {
-            LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
-            LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
-            previousOuterBackground = outerBackground.getBackground();
-            previousInnerBackground = innerBackground.getBackground();
-            outerBackground.setBackgroundResource(R.color.black);
-            innerBackground.setBackgroundResource(R.color.black);
-        }
-    }
+			int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+			int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
 
-    public void restoreBackground() {
-        if (previousOuterBackground != null) {
-            LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
-            LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
-            outerBackground.setBackground(previousOuterBackground);
-            innerBackground.setBackground(previousInnerBackground);
-            previousOuterBackground = null;
-            previousInnerBackground = null;
-        }
-    }
+			outerBackground.setBackgroundResource(R.color.black);
+			innerBackground.setBackgroundResource(R.color.black);
 
-    @Override
-    public void loadingStarted() {
-    }
+			outerBackground.setPadding(outerPadding[0], outerPadding[1],
+					outerPadding[2], outerPadding[3]);
+			innerBackground.setPadding(innerPadding[0], innerPadding[1],
+					innerPadding[2], innerPadding[3]);
 
-    @Override
-    public void loadingFailed() {
-    }
+		}
+	}
 
-    /**
-     * Called when forum have finished loading.
-     */
-    @Override
-    public void loadingFinished() {
-    }
+	@SuppressLint("NewApi")
+	public void restoreBackground() {
+		if (previousOuterBackground != null) {
+			LinearLayout outerBackground = (LinearLayout) findViewById(R.id.outer_main_background);
+			LinearLayout innerBackground = (LinearLayout) findViewById(R.id.inner_main_background);
 
-    @Override
-    public void categoriesLoaded() {
-        if (currentFragment == FORUM_FRAGMENT) {
-            ((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
-        } else if (currentFragment == DIARY_FRAGMENT) {
-            ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateCategories();
-        } else if (currentFragment == CREATE_THREAD_FRAGMENT) {
-            ((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT]).updateCategories();
-        }
+			int[] outerPadding = getPaddingFromLinearLayout(outerBackground);
+			int[] innerPadding = getPaddingFromLinearLayout(innerBackground);
 
-    }
+			outerBackground.setBackground(previousOuterBackground);
+			innerBackground.setBackground(previousInnerBackground);
 
-    @Override
-    public void threadsLoaded() {
-        List<Thread> threads = new LinkedList<Thread>();
-        if (currentFragment == FORUM_FRAGMENT) {
-            threads = ((ForumFragment) fragments[FORUM_FRAGMENT]).updateThreadList();
-        } else if (currentFragment == DIARY_FRAGMENT) {
-            threads = ((DiaryFragment) fragments[DIARY_FRAGMENT]).updateThreadList();
-        } else if (currentFragment == HOME_FRAGMENT) {
-            // Get latest threads
-            threads = ((HomeFragment) fragments[HOME_FRAGMENT]).updateThreadList();
-        }
-        List<Account> profilePicUpdateList = new LinkedList<Account>();
-        for(Thread thread: threads){
-            if(thread.getAccount().getProfilePicture() == null){
-                profilePicUpdateList.add(thread.getAccount());
-            }
-        }
-        if(!profilePicUpdateList.isEmpty()){
-            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(Thread.class, profilePicUpdateList, this);
-        }
+			outerBackground.setPadding(outerPadding[0], outerPadding[1],
+					outerPadding[2], outerPadding[3]);
+			innerBackground.setPadding(innerPadding[0], innerPadding[1],
+					innerPadding[2], innerPadding[3]);
 
-    }
+			previousOuterBackground = null;
+			previousInnerBackground = null;
+		}
+	}
 
-    @Override
-    public void repliesLoaded() {
-        List<Reply> replies = new LinkedList<Reply>();
-        if (currentFragment == VIEW_THREAD_FRAGMENT) {
-            replies =((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).updateReplies();
-        }
-        List<Account> profilePicUpdateList = new LinkedList<Account>();
-        for(Reply reply: replies){
-            if(reply.getAccount().getProfilePicture() == null){
-                profilePicUpdateList.add(reply.getAccount());
-            }
-        }
-        if(!profilePicUpdateList.isEmpty()){
-            ((Engine) this.getApplicationContext()).getServerLink().loadAvatars(Reply.class, profilePicUpdateList, this);
-        }
-    }
+	private int[] getPaddingFromLinearLayout(LinearLayout ll) {
+		int[] paddingList = new int[4];
+		paddingList[0] = ll.getPaddingLeft();
+		paddingList[1] = ll.getPaddingTop();
+		paddingList[2] = ll.getPaddingRight();
+		paddingList[3] = ll.getPaddingBottom();
 
-    @Override
-    public void threadCreated(Thread thread) {
-        if (currentFragment == CREATE_THREAD_FRAGMENT) {
-            visitThread(thread);
-        }
-    }
+		return paddingList;
 
-    @Override
-    public void replyCreated(Reply reply) {
-        visitThread(reply.getParentThread());
-    }
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-    }
+	@Override
+	public void loadingStarted() {
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.settings:
-                changeFragment(SETTINGS_FRAGMENT);
-                return true;
-        }
+	@Override
+	public void loadingFailed() {
+	}
 
-        return false;
-    }
+	/**
+	 * Called when forum have finished loading.
+	 */
+	@Override
+	public void loadingFinished() {
+	}
+
+	@Override
+	public void categoriesLoaded() {
+		if (currentFragment == FORUM_FRAGMENT) {
+			((ForumFragment) fragments[FORUM_FRAGMENT]).updateCategories();
+		} else if (currentFragment == DIARY_FRAGMENT) {
+			((DiaryFragment) fragments[DIARY_FRAGMENT]).updateCategories();
+		} else if (currentFragment == CREATE_THREAD_FRAGMENT) {
+			((CreateThreadFragment) fragments[CREATE_THREAD_FRAGMENT])
+					.updateCategories();
+		}
+
+	}
+
+	@Override
+	public void threadsLoaded() {
+		List<Thread> threads = new LinkedList<Thread>();
+		if (currentFragment == FORUM_FRAGMENT) {
+			threads = ((ForumFragment) fragments[FORUM_FRAGMENT])
+					.updateThreadList();
+		} else if (currentFragment == DIARY_FRAGMENT) {
+			threads = ((DiaryFragment) fragments[DIARY_FRAGMENT])
+					.updateThreadList();
+		} else if (currentFragment == HOME_FRAGMENT) {
+			// Get latest threads
+			threads = ((HomeFragment) fragments[HOME_FRAGMENT])
+					.updateThreadList();
+		}
+		List<Account> profilePicUpdateList = new LinkedList<Account>();
+		for (Thread thread : threads) {
+			if (thread.getAccount().getProfilePicture() == null) {
+				profilePicUpdateList.add(thread.getAccount());
+			}
+		}
+		if (!profilePicUpdateList.isEmpty()) {
+			((Engine) this.getApplicationContext()).getServerLink()
+					.loadAvatars(Thread.class, profilePicUpdateList, this);
+		}
+
+	}
+
+	@Override
+	public void repliesLoaded() {
+		List<Reply> replies = new LinkedList<Reply>();
+		if (currentFragment == VIEW_THREAD_FRAGMENT) {
+			replies = ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT])
+					.updateReplies();
+		}
+		List<Account> profilePicUpdateList = new LinkedList<Account>();
+		for (Reply reply : replies) {
+			if (reply.getAccount().getProfilePicture() == null) {
+				profilePicUpdateList.add(reply.getAccount());
+			}
+		}
+		if (!profilePicUpdateList.isEmpty()) {
+			((Engine) this.getApplicationContext()).getServerLink()
+					.loadAvatars(Reply.class, profilePicUpdateList, this);
+		}
+	}
+
+	@Override
+	public void threadCreated(Thread thread) {
+		if (currentFragment == CREATE_THREAD_FRAGMENT) {
+			visitThread(thread);
+		}
+	}
+
+	@Override
+	public void replyCreated(Reply reply) {
+		visitThread(reply.getParentThread());
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.settings:
+			changeFragment(SETTINGS_FRAGMENT);
+			return true;
+		}
+
+		return false;
+	}
 
     //--------------- admin actions ------------
 
@@ -282,7 +331,7 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void deleteThread(Thread thread) {
-            ((Engine) this.getApplicationContext()).getServerLink().deleteThread(thread.getId(), true, new NetworkCallback() {
+        ((Engine) this.getApplicationContext()).getServerLink().deleteThread(thread.getId(), true, new NetworkCallback() {
 
             @Override
             public Activity getActivity() {
@@ -305,7 +354,11 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         });
     }
 
-    @Override
     public void banAccount(Account account) {
+
     }
+
+
 }
+
+
