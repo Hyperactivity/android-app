@@ -44,11 +44,9 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
     }
 
     public List<Note> updateNoteList() {
-        // TODO Get Notes (Cast to PrivateCategory)
-//        List<Thread> threads = scrollPicker.getItemManager().getSelectedItem().getCategory().getThreads();
-//        updateThreadList(threads);
-//        return threads;
-        return null;
+        List<Note> notes = ((PrivateCategory) scrollPicker.getItemManager().getSelectedItem().getCategory()).getNotes();
+        updateNoteList(notes);
+        return notes;
     }
 
     public void updateNoteList(List<Note> notes) {
@@ -59,12 +57,12 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
     public void selectedItemChanged(final ScrollPickerItem selected) {
         //This callback will be executed as the scrollpicker thread.
 
-        final List<Note> notes = new LinkedList<Note>();
-//        if (selected != null) {
-//            threads = ((Engine) getActivity().getApplication()).getPrivateForum().getThreads(getActivity(), selected.getCategory());
-//        } else {
-//            threads = new LinkedList<Thread>();
-//        }
+        final List<Note> notes;
+        if (selected != null) {
+            notes = ((Engine) getActivity().getApplication()).getPrivateForum().getNotes(getActivity(), (PrivateCategory) selected.getCategory());
+        } else {
+            notes = new LinkedList<Note>();
+        }
 
         this.getActivity().runOnUiThread(new Runnable() {
             public void run() {

@@ -275,6 +275,15 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     @Override
+    public void notesLoaded() {
+        Log.d(Constants.Log.TAG, "Notes loaded!");
+        if (currentFragment == DIARY_FRAGMENT) {
+            Log.d(Constants.Log.TAG, "In diary!");
+            ((DiaryFragment) fragments[currentFragment]).updateNoteList();
+        }
+    }
+
+    @Override
     public void threadCreated(Thread thread) {
         if (currentFragment == CREATE_THREAD_FRAGMENT) {
             visitThread(thread);

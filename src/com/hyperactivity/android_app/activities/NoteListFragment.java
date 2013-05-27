@@ -2,6 +2,7 @@ package com.hyperactivity.android_app.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import com.hyperactivity.android_app.Constants;
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.AdminActionCallback;
 import com.hyperactivity.android_app.core.Engine;
@@ -41,9 +43,11 @@ public class NoteListFragment extends ListFragment {
     public void updateNoteList(List<Note> noteList) {
         data = new ArrayList<HashMap<String, String>>();
 
-        for (int i = 0; i < noteList.size(); i++) {
-            Note note = noteList.get(i);
-            data.add(noteToMap(note));
+        if (noteList != null) {
+            for (int i = 0; i < noteList.size(); i++) {
+                Note note = noteList.get(i);
+                data.add(noteToMap(note));
+            }
         }
 
         if (getActivity() != null) {

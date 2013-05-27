@@ -78,6 +78,7 @@ public class Constants {
         public static final String REPLY_ID = "reply_id";
         public static final String THUMB_UP = "thumb_up";
         public static final String REPLIES = "replies";
+        public static final String NOTES = "notes";
 
         public static final String REPLY = "reply";
 
