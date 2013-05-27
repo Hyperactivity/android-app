@@ -71,9 +71,7 @@ public class Account implements SimpleCallback{
     }
 
     public Bitmap getProfilePicture(){
-//        if(profilePicture == null){
-//            new GetProfilePictureTask(this).execute();
-//        }
+
         return profilePicture;
     }
 

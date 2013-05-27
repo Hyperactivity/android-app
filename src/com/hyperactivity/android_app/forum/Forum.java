@@ -330,8 +330,9 @@ public class Forum {
                     if (!thread.getReplies().equals(resultReplies)) {
                         thread.setReplies(resultReplies);
                         for(Reply reply: thread.getReplies()){
-                            reply.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(thread.getAccount().getId()));
+                            reply.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(reply.getAccount().getId()));
                         }
+                        thread.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(thread.getAccount().getId()));
                         newData = true;
                     }
                 } catch (Exception e) {

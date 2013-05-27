@@ -155,6 +155,8 @@ public class ViewThreadFragment extends Fragment {
 		List<Reply> replies = currentThread.getReplies();
 		if (replies != null) {
 			replyList.updateReplyList(replies);
+            currentThread.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(currentThread.getAccount().getId()));
+            firstPostImage.setImageBitmap(currentThread.getAccount().getProfilePicture());
             return replies;
 		}else{
             return new LinkedList<Reply>();
@@ -167,11 +169,11 @@ public class ViewThreadFragment extends Fragment {
 		textField.setText(currentThread.getText());
         firstPostAuthor.setText(currentThread.getAccount().getUsername());
         firstPostTimeStamp.setText(currentThread.getTime().toString());
+        currentThread.getAccount().setProfilePicture(MainActivity.cachedAccounts.get(currentThread.getAccount().getId()));
         firstPostImage.setImageBitmap(currentThread.getAccount().getProfilePicture());
 
 		clearWriteReplyContainer();
         updateReplies();
 	}
-
 
 }

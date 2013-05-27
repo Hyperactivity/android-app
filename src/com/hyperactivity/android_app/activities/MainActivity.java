@@ -2,6 +2,7 @@ package com.hyperactivity.android_app.activities;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -142,6 +143,13 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
 
     @Override
     public void onBackPressed() {
+        if(fragments[HOME_FRAGMENT].isVisible()){
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+            return;
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager.getBackStackEntryCount() > 0) {
             try {
