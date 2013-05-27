@@ -36,7 +36,7 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
         scrollPicker.getThread().setBackgroundColor(R.color.black);
 
         Engine engine = ((Engine) getActivity().getApplication());
-        scrollPicker.getItemManager().addCategories(getActivity(), engine.getPrivateForum().getCategories(getActivity()), Color.BLACK);
+        scrollPicker.getItemManager().addCategories(getActivity(), engine.getPrivateForum().getCategories(getActivity()), Color.WHITE);
 
         TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
         caption.setText(getResources().getText(R.string.diary_and_notes));
@@ -86,7 +86,7 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
             while (it.hasNext()) {
                 Category category = it.next();
 
-                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.BLACK, category);
+                scrollPicker.getItemManager().addItem(category.getImage(getActivity()), category.getHeadLine(), Color.WHITE, category);
             }
 
             scrollPicker.getItemManager().recalculateItems();

@@ -28,8 +28,8 @@ public class ViewNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_note_fragment, null);
 
-        headlineField = (TextView) view.findViewById(R.id.thread_headline_field);
-        textField = (TextView) view.findViewById(R.id.thread_text_field);
+        headlineField = (TextView) view.findViewById(R.id.note_headline_field);
+        textField = (TextView) view.findViewById(R.id.note_text_field);
 
         return view;
     }
