@@ -50,13 +50,7 @@ public class SettingsFragment extends Fragment {
         //profile_desc.setText(currentAccount.getProfileDescription());
 
         return view;
+
+        //((Engine) getActivity().getApplication()).getServerLink().updateAccount();
     }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-
 }

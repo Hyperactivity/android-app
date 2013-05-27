@@ -38,8 +38,7 @@ public class ReplyListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //TODO: debug only
-        if (true || ((Engine) getActivity().getApplication()).getClientInfo().getAccount().isAdmin()) {
+        if (((Engine) getActivity().getApplication()).getClientInfo().getAccount().isAdmin()) {
             registerForContextMenu(getListView());
         }
     }
@@ -100,8 +99,7 @@ public class ReplyListFragment extends ListFragment {
         inflater.inflate(R.menu.admin_edit_delete, menu);
     }
 
-    @Override
-    public
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
