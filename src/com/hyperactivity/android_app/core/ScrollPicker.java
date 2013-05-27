@@ -159,6 +159,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
         private Context context;                //Handle to the application context, used to e.g. fetch Drawables.
         private float canvasWidth = 1;          //width of the drawable area, will be updated by function below.
         private float canvasHeight = 1;         //height of the drawable area, will be update by function below.
+        private int backgroundColor = R.color.background;
         private ScrollPickerItemManager itemManager;
         private ScrollPickerEventCallback callback;
 
@@ -166,6 +167,10 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
             this.surfaceHolder = surfaceHolder;
             this.context = context;
             this.itemManager = new ScrollPickerItemManager(canvasWidth, canvasHeight, context.getResources().getInteger(R.integer.scroll_picker_categories_size) / 100f);
+        }
+
+        public void setBackgroundColor(int color) {
+            backgroundColor = color;
         }
 
         /**
@@ -190,7 +195,7 @@ public class ScrollPicker extends SurfaceView implements SurfaceHolder.Callback 
          * draw all the graphics
          */
         private void doDraw(Canvas canvas) {
-            canvas.drawColor(context.getResources().getColor(R.color.background));
+            canvas.drawColor(context.getResources().getColor(backgroundColor));
 
             if (state == STATE_RUNNING) {
                 itemManager.doDraw(canvas);

@@ -25,7 +25,7 @@ public class Constants {
         public static final String LOGIN = "login";
         public static final String REGISTER = "register";
         public static final String GET_PROFILE = "get_profile";
-        public static final String UPDATE_PROFILE = "update_profile";
+        public static final String UPDATE_PROFILE = "update_account";
         public static final String GET_CATEGORY_CONTENT = "get_category_content";
         public static final String GET_THREAD = "get_thread";
         public static final String CREATE_THREAD = "create_thread";
@@ -59,7 +59,7 @@ public class Constants {
         public static final String USER_ID = "userID";
         public static final String SUCCESS = "success";
         public static final String DESCRIPTION = "description";
-        public static final String SHOW_BIRTHDATE = "show_birthdate";
+        public static final String SHOW_BIRTHDATE = "show_birth_date";
         public static final String AVATAR = "avatar";
         public static final String TYPE = "type";
         public static final String PRIVATE = "private";

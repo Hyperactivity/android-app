@@ -16,10 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.hyperactivity.android_app.R;
 import com.hyperactivity.android_app.core.Engine;
@@ -36,32 +33,26 @@ public class SettingsFragment extends Fragment {
     private ImageView profilePictureView;
     private TextView profileNameField, birthDateField;
     private EditText profileDescriptionField;
+    private TextView caption;
+    private Button sendButton;
+    private CheckBox ageCheckBox;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.settings_fragment, null);
 
-        currentAccount = ((Engine) getActivity().getApplication())
-                .getClientInfo().getAccount();
-
-        profilePictureView = (ImageView) view
-                .findViewById(R.id.profile_picture_view);
-        profileNameField = (TextView) view
-                .findViewById(R.id.profile_name_field);
-        birthDateField = (TextView) view
-                .findViewById(R.id.profile_birth_date_field);
-        profileDescriptionField = (EditText) view
-                .findViewById(R.id.profile_description_field);
-        updateCurrentAccount();
-        TextView caption = (TextView) view.findViewById(R.id.caption)
+        caption = (TextView) view.findViewById(R.id.caption)
                 .findViewById(R.id.caption_text);
-        // caption.setText((String)getResources().getText(R.string.profile));
-        caption.setText("Profilinställningar");
-        updateCurrentAccount();
 
-        Button tv = (Button) view.findViewById(R.id.sendButton);
-        tv.setOnClickListener(new OnClickListener() {
+        caption.setText("Profilinställningar");
+
+        profileNameField = (TextView) view.findViewById(R.id.profile_name_field);
+        profileDescriptionField = (EditText) view.findViewById(R.id.profile_description_field);
+        ageCheckBox = (CheckBox) view.findViewById(R.id.showAge);
+
+        sendButton = (Button) view.findViewById(R.id.sendButton);
+        sendButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 save();
@@ -72,17 +63,24 @@ public class SettingsFragment extends Fragment {
     }
 
     public void save() {
-        final Activity mainActivity = getActivity();
-        ((Engine) getActivity().getApplication()).getServerLink()
-                .updateAccount(profileDescriptionField.getText().toString(), true, null, true, new NetworkCallback() {
-                    @Override
-                    public Activity getActivity() {
-                        return mainActivity; // To change body of
-                        // implemented methods
-                        // use File | Settings |
-                        // File Templates.
-                    }
-                });
+        Exception ex;
+        try {
+            final Activity mainActivity = getActivity();
+            ((Engine) getActivity().getApplication()).getServerLink().updateAccount(
+                    profileDescriptionField.getText().toString(),
+                    ageCheckBox.isChecked(),
+                    null,
+                    true,
+                    new NetworkCallback() {
+                @Override
+                public Activity getActivity() {
+                    return mainActivity;
+
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     public void onPause() {
@@ -90,28 +88,18 @@ public class SettingsFragment extends Fragment {
     }
 
     public void onResume() {
+
         super.onResume();
-        if (currentAccount != null) {
-            updateCurrentAccount();
-        }
-    }
 
-    public void setCurrentAccount(Account account) {
-        currentAccount = account;
-        if (getActivity() != null) {
-            updateCurrentAccount();
-        }
-    }
+        try {
+            currentAccount = ((Engine) getActivity().getApplication()).getClientInfo().getAccount();
 
-    public void updateCurrentAccount() {
-        // profilePictureView.setImageResource(R.drawable.com_facebook_profile_default_icon);
-        profilePictureView.setBackground(new BitmapDrawable(getResources(),
-                currentAccount.getProfilePicture()));
-        profileNameField.setText(currentAccount.getUsername());
-        if (currentAccount.isShowBirthDate()
-                && currentAccount.getBirthDate() != null)
-            birthDateField.setText(currentAccount.getBirthDate().toString());
-        profileDescriptionField.setText(currentAccount.getProfileDescription());
+            ageCheckBox.setChecked(currentAccount.isShowBirthDate());
+            profileNameField.setText(currentAccount.getUsername());
+            profileDescriptionField.setText(currentAccount.getProfileDescription());
+
+        } catch (Exception e) {
+        }
     }
 
 }
