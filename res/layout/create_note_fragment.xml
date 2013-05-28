@@ -36,7 +36,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/text"
-                android:singleLine="false"
+                android:singleLine="true"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textColor="#ffffff"
@@ -47,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/create"
+                android:textColor="#f7eded"
                 android:layout_gravity="center"
                 />
     </LinearLayout>

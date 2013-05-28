@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import com.hyperactivity.android_app.forum.models.Thread;
 
 import java.util.List;
@@ -21,6 +22,14 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment, null);
         threadList = new ThreadListFragment();
         threadList.setShowCategoryImages();
+
+        Button searchButton = (Button) view.findViewById(R.id.go_to_search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).changeFragment(MainActivity.SEARCH_FRAGMENT);
+            }
+        });
 
         TextView caption = (TextView) view.findViewById(R.id.caption).findViewById(R.id.caption_text);
         caption.setText((String) getResources().getText(R.string.latest_threads));

@@ -50,6 +50,8 @@ public class CreateThreadFragment extends Fragment {
                 if (h.length() > 0 && t.length() > 0 && h.length()<=35) {
                     ((Engine) getActivity().getApplication()).getPublicForum().createThread(getActivity(), scrollPicker.getThread().getItemManager().getSelectedItem().getCategory().getId(), headlineEditText.getText().toString().trim(), textEditText.getText().toString().trim(), true);
                     clearFields();
+                    InputMethodManager inputMethodManager = (InputMethodManager)  getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                 } else {
                     AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                     alert.setMessage(getString(R.string.headline_or_text_empty));

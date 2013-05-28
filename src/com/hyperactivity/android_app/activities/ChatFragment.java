@@ -35,6 +35,10 @@ public class ChatFragment extends Fragment {
 
         final EditText send_text = (EditText)view.findViewById(R.id.send_text);
         final Button   send_button = (Button)view.findViewById(R.id.send_button);
+
+        TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
+        //  caption.setText((String)getResources().getText(R.string.profile));
+        caption.setText(getResources().getText(R.string.chat));
         chatListFragment = new ChatListFragment();
         chatListFragment.updateData(new ArrayList<Shout>());
         send_button.setOnClickListener(new View.OnClickListener() {

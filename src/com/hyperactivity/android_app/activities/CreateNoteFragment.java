@@ -64,6 +64,7 @@ public class CreateNoteFragment extends Fragment {
 
         TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
         caption.setText((String)getResources().getText(R.string.new_note));
+        caption.setTextColor(Color.parseColor("#f7eded"));
 
         return view;
     }

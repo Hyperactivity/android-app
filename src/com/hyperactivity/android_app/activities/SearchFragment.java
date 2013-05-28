@@ -1,6 +1,7 @@
 package com.hyperactivity.android_app.activities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Locale;
 
 import android.content.Context;
@@ -52,22 +53,31 @@ public class SearchFragment extends Fragment {
 	}
 	
 	private void querySearchString(String text) {
-		text = text.toLowerCase(Locale.ENGLISH);
 		ArrayList<Thread> result = new ArrayList<Thread>();
 
-        //TODO: if no categories loaded, load them.
-
+        HashSet<Thread> resultSet = new HashSet<Thread>();
 		for (Category category : ((Engine) getActivity().getApplication()).getPublicForum().getCategories()) {
 			if (category.getThreads() == null) continue;
 			for (Thread thread : category.getThreads()) {
-				if (thread.getText().toLowerCase(Locale.ENGLISH).contains(text) || thread.getHeadLine().toLowerCase(Locale.ENGLISH).contains(text)) {
-					result.add(thread);
+				if (threadMatches(thread, text)) {
+					resultSet.add(thread);
 				}
 			}
 		}
+        for (Thread thread : ((Engine) getActivity().getApplication()).getPublicForum().getLatestThreads()) {
+            if (threadMatches(thread, text)) {
+                resultSet.add(thread);
+            }
+        }
+        for (Thread thread : resultSet) result.add(thread);
 		
 		searchResultList.updateThreadList(result);
 	}
+
+    private boolean threadMatches(Thread thread, String query) {
+        String text = query.toLowerCase(Locale.ENGLISH);
+        return thread.getText().toLowerCase(Locale.ENGLISH).contains(text) || thread.getHeadLine().toLowerCase(Locale.ENGLISH).contains(text);
+    }
 
     @Override
     public void onPause() {
