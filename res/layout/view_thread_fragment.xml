@@ -11,9 +11,9 @@
             android:layout_height="fill_parent" >
 
         <ImageView
-                android:id="@+id/myImageView"
+                android:id="@+id/category_image"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/logo2" />
 
@@ -24,9 +24,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true" android:textColor="#000000" android:textSize="@dimen/viewThreadView_headline"
-        android:paddingBottom="20dp"
-        android:gravity="center" android:layout_alignLeft="@+id/myImageView"
-        android:layout_alignBottom="@+id/myImageView"/>
+        android:paddingTop="20dp"
+        android:text="text"
+        android:gravity="center"
+  />
 
     </RelativeLayout>
 

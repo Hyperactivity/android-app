@@ -27,7 +27,7 @@ public class ViewThreadFragment extends Fragment {
     private ReplyListFragment replyList;
     private Thread currentThread;
     private TextView headlineField, textField, firstPostTimeStamp, firstPostAuthor;
-    private ImageView firstPostImage;
+    private ImageView firstPostImage, categoryImage;
     private EditText writeReplyField;
     private LinearLayout writeReplyButtonContainer, firstPostContainer;
     private Button writeReplyCancelButton, writeReplySubmitButton;
@@ -41,10 +41,14 @@ public class ViewThreadFragment extends Fragment {
         firstPostAuthor = (TextView) view.findViewById(R.id.firstPost_author);
         firstPostImage = (ImageView) view.findViewById(R.id.firstPost_image);
         firstPostContainer = (LinearLayout) view.findViewById(R.id.first_post_container);
+        categoryImage = (ImageView) view.findViewById(R.id.category_image);
 
         // Needed to take focus from writeReplyField
         headlineField.setFocusable(true);
         headlineField.setFocusableInTouchMode(true);
+
+        categoryImage.setImageBitmap(currentThread.getParentCategory().getImage(getActivity()));
+        categoryImage.setAlpha(30);
 
         initializeWriteReplyContainer(view);
 
