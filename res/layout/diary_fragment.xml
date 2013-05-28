@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="@string/new_note"
+            android:textColor="#f7eded"
             android:layout_gravity="center"
             />
 
