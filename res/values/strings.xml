@@ -37,6 +37,7 @@
     <string name="diary_and_notes"><![CDATA[Dagbok & anteckningar]]></string>
     <string name="select_category">Ny tråd</string>
     <string name="search">Sök</string>
+    <string name="search_threads">Sök trådar</string>
     <string name="profile">Min Profil</string>
     <string name="headline_or_text_empty">Rubriken får innehålla max 35 tecken och fälten får inte vara tomma</string>
     <string name="reply_empty">Fältet får inte vara tomt</string>
