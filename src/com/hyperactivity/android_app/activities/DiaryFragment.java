@@ -49,6 +49,7 @@ public class DiaryFragment extends Fragment implements ScrollPickerEventCallback
 
         TextView caption = (TextView)view.findViewById(R.id.caption).findViewById(R.id.caption_text);
         caption.setText(getResources().getText(R.string.diary_and_notes));
+        caption.setTextColor(Color.parseColor("#f7eded"));
 
         return view;
     }

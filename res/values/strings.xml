@@ -41,4 +41,5 @@
     <string name="headline_or_text_empty">Rubriken får innehålla max 35 tecken och fälten får inte vara tomma</string>
     <string name="reply_empty">Fältet får inte vara tomt</string>
     <string name="new_note">Ny Anteckning</string>
+    <string name="chat">Chatt</string>
 </resources>
