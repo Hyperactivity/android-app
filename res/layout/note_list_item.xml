@@ -8,16 +8,16 @@
              android:clickable="false"
              android:paddingBottom="5dp"
              android:descendantFocusability="blocksDescendants"
-             android:background="#ffffff" >
+             android:background="#000000" >
     <ImageButton
             android:id="@+id/button_x"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:src="@drawable/button_selector"
+            android:src="@drawable/button2_selector"
             android:clickable="false"
             android:focusable="false"
             android:scaleType="fitXY"
-            android:background="#ffffff" />
+            android:background="#000000" />
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:clickable="false"
+                android:textColor="#f7eded"
                 android:focusable="false"/>
 
         <TextView
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:autoText="false"
                 android:clickable="false"
+                android:textColor="#f7eded"
                 android:focusable="false"/>
     </LinearLayout>
 </FrameLayout>

@@ -94,7 +94,7 @@ public class SettingsFragment extends Fragment {
         try {
             currentAccount = ((Engine) getActivity().getApplication()).getClientInfo().getAccount();
 
-            ageCheckBox.setChecked(currentAccount.isShowBirthDate());
+           // ageCheckBox.setChecked(currentAccount.isShowBirthDate());
             profileNameField.setText(currentAccount.getUsername());
             profileDescriptionField.setText(currentAccount.getProfileDescription());
 
