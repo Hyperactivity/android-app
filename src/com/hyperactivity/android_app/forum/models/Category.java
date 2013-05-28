@@ -52,23 +52,22 @@ public class Category {
         String path = "";
         String extension = ".png";
 
-        switch (getId()) {
-            case 1:
-                return path + "c_contact" + extension;
-            case 2:
-                return path + "c_creativity" + extension;
-            case 3:
-                return path + "c_general" + extension;
-            case 4:
-                return path + "c_hobby" + extension;
-            case 5:
-                return path + "c_medicine" + extension;
-            case 6:
-                return path + "c_school" + extension;
-            case 8:
-                return path + "c_tips" + extension;
-            default:
-                return null;
+        if (getHeadLine().equals("Kontakt")) {
+            return path + "c_contact" + extension;
+        } else if (getHeadLine().equals("Kreativitet")) {
+            return path + "c_creativity" + extension;
+        } else if (getHeadLine().equals("Allmänt")) {
+            return path + "c_general" + extension;
+        } else if (getHeadLine().equals("Hobby")) {
+            return path + "c_hobby" + extension;
+        } else if (getHeadLine().equals("Medicin")) {
+            return path + "c_medicine" + extension;
+        } else if (getHeadLine().equals("Skola")) {
+            return path + "c_school" + extension;
+        } else if (getHeadLine().equals("Tips")) {
+            return path + "c_tips" + extension;
+        } else {
+            return null;
         }
     }
 

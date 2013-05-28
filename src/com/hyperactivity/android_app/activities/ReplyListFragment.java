@@ -25,7 +25,7 @@ import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.core.SimpleAdapterEx;
 import com.hyperactivity.android_app.forum.models.*;
 
-public class ReplyListFragment extends ListFragment {
+public class ReplyListFragment extends ListFragment  {
 
     private String[] from = new String[] {"reply_author", "reply_text", "reply_timestamp", "reply_image"};
 	private int[] to = new int[] {R.id.reply_author, R.id.reply_text, R.id.reply_timestamp, R.id.reply_image};

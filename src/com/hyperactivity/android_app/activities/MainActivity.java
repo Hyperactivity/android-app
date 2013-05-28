@@ -21,11 +21,10 @@ import com.hyperactivity.android_app.core.AdminActionCallback;
 import com.hyperactivity.android_app.core.Engine;
 import com.hyperactivity.android_app.forum.ForumEventCallback;
 import com.hyperactivity.android_app.forum.SortType;
-import com.hyperactivity.android_app.forum.models.Account;
-import com.hyperactivity.android_app.forum.models.Note;
-import com.hyperactivity.android_app.forum.models.Reply;
+import com.hyperactivity.android_app.forum.models.*;
 import com.hyperactivity.android_app.forum.models.Thread;
 import com.hyperactivity.android_app.network.NetworkCallback;
+import net.minidev.json.JSONObject;
 
 import java.util.*;
 
@@ -120,6 +119,12 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
         ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(thread);
         changeFragment(VIEW_THREAD_FRAGMENT);
     }
+
+//    public void visitCategory(Category category) {
+//        ((Engine) getApplication()).getPublicForum().loadThreads(this, category, false);
+//        ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).set(thread);
+//        changeFragment(VIEW_THREAD_FRAGMENT);
+//    }
 
     public void visitNote(Note note) {
         ((ViewNoteFragment) fragments[VIEW_NOTE_FRAGMENT]).setCurrentNote(note);
@@ -340,8 +345,25 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     @Override
-    public void deleteThread(Thread thread) {
+    public void deleteThread(final Thread thread) {
         ((Engine) this.getApplicationContext()).getServerLink().deleteThread(thread.getId(), true, new NetworkCallback() {
+            @Override
+            public void onOther(String status, JSONObject result, int userId) throws Exception {
+                super.onOther(status, result, userId);    //To change body of overridden methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);    //To change body of overridden methods use File | Settings | File Templates.
+                for(Category c: ((Engine)(getApplication())).getPublicForum().getCategories()){
+                    if(c.equals(thread.getParentCategory())){
+                        c.getThreads().remove(thread);
+                    }
+                }
+                    threadsLoaded();
+//                ((Engine)(getApplication())).getPublicForum().loadThreads(getActivity(),thread.getParentCategory(), false);
+//                categoriesLoaded();
+            }
 
             @Override
             public Activity getActivity() {
@@ -355,8 +377,31 @@ public class MainActivity extends FragmentActivity implements ForumEventCallback
     }
 
     @Override
-    public void deleteReply(Reply reply) {
+    public void deleteReply(final Reply reply) {
         ((Engine) this.getApplicationContext()).getServerLink().deleteReply(reply.getId(), true, new NetworkCallback() {
+            @Override
+            public void onSuccess(JSONObject result, int userId) throws Exception {
+                super.onSuccess(result, userId);    //To change body of overridden methods use File | Settings | File Templates.
+//                ((Engine)(getApplication())).getPublicForum().loadReplies(getActivity(), reply.getParentThread(), SortType.STANDARD, false);
+//                ((ViewThreadFragment) fragments[VIEW_THREAD_FRAGMENT]).setCurrentThread(reply.getParentThread());
+                for(Category c: ((Engine)(getApplication())).getPublicForum().getCategories()){
+                    if(c.equals(reply.getParentThread().getParentCategory())){
+                        for(Thread t: c.getThreads()){
+                            if(t.equals(reply.getParentThread())){
+                                t.getReplies().remove(reply);
+                            }
+                        }
+                    }
+                }
+                repliesLoaded();
+
+            }
+
+            @Override
+            public void onOther(String status, JSONObject result, int userId) throws Exception {
+                super.onOther(status, result, userId);    //To change body of overridden methods use File | Settings | File Templates.
+            }
+
             @Override
             public Activity getActivity() {
                 return mainActivity;  //To change body of implemented methods use File | Settings | File Templates.

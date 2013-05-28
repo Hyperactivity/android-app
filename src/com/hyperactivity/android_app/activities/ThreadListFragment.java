@@ -43,6 +43,8 @@ public class ThreadListFragment extends ListFragment {
 
             registerForContextMenu(getListView());
         }
+
+        callback = (MainActivity)getActivity();
     }
 
     public void updateThreadList(List<Thread> threadList) {
