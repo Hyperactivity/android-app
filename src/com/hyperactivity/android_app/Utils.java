@@ -12,7 +12,8 @@ import java.io.InputStream;
 public class Utils {
     public static Bitmap getBitmapFromAsset(Context context, String strName) {
         AssetManager assetManager = context.getAssets();
-
+	
+	//Hello!
         InputStream istr;
         Bitmap bitmap = null;
         try {
